@@ -18,9 +18,9 @@ affiliations:
    index: 2
  - name: Independent Researcher
    index: 3
-date: 13 August 2017
+date: 10 August 2021
 bibliography: paper.bib
-arxiv-doi: 10.3847/xxxxx
+arxiv-doi: 10.21105/joss.01667
 ---
 
 # Summary
