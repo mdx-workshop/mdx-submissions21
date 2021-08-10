@@ -49,3 +49,5 @@ All submissions are created via markdown files and uses the same template and sy
 ### How to preview and article
 
 All markdown papers are automatically compiled to PDF using a github action service. This can be used to preview the PDF before submission. Look for the `paper` artifacts of the `Paper Draft`.
+
+<img width="1369" alt="screenshot" src="https://user-images.githubusercontent.com/72940/128880968-51d10e51-c1d7-4892-bb4f-8071bb164594.png">
