@@ -98,11 +98,11 @@ For a quick reference, the following citation commands can be used:
 # Figures
 
 Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
+![Caption for example figure.\label{fig:example}](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg)
 and referenced from text using \autoref{fig:example}.
 
 Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
+![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=20% }
 
 # Acknowledgements
 
