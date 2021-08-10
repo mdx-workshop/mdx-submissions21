@@ -1,3 +1,5 @@
+⚠️ Submission system is not open yet. Please be patient.
+
 # MDX Workshop Submissions
 
 This is the submission repository for the [Music Demixing Workshop 2021](https://mdx-workshop.github.io). The submission system is based on Github pull requests and is fully transparent and open for both, authors and reviewers.
