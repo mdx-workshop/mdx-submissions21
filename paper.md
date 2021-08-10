@@ -1,5 +1,5 @@
 ---
-title: 'Music separation is all you need'
+title: 'Sauce Separation is all you need'
 tags:
   - separation
   - u-net
