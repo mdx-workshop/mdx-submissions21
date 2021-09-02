@@ -25,7 +25,7 @@ arxiv-doi: 10.21105/joss.01667
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
+The forces stars, galaxies, and dark matter under external gravitational
 fields lead to the dynamical evolution of structures in the universe. The orbits
 of these bodies are therefore key to understanding the formation, history, and
 future state of galaxies. The field of "galactic dynamics," which aims to model
