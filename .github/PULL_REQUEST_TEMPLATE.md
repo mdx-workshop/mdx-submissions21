@@ -5,16 +5,26 @@
 
 Dear mdx workshop committee,
 
-I request a review for the following submission:
+I request a review for the following MDX submission:
 
 ### **Title:**  
 
 **Author(s):**  
-**Category: ***
+
+**Category ***
+
+* [ ] Abstract + Poster
+* [ ] Long Talk
+* [ ] Seminar/Discussion
+
+**Preferred Timezone***
+
+* [ ] A 11:00 PM (PDT) to 9:00 AM PDT
+* [ ] B 11:00 AM (PDT) to 9:00 PM PDT
 
 ---
 
-**EDITOR**
+**ORGANISATION COMMITTEE (do not fill out)**
 
 * [ ] Editor acknowledgment
 * [ ] Reviewer 1 
