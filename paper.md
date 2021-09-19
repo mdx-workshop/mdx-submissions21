@@ -1,139 +1,52 @@
 ---
-title: 'Music separation is all you need'
+title: 'Music Demixing with the sliCQ Transform'
 tags:
   - separation
-  - u-net
+  - cqt
+  - time-frequency
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
+  - name: Sevag Hanssian
+    affiliation: "1"
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: DDMAL, McGill University
    index: 1
- - name: Institution Name
-   index: 2
- - name: Independent Researcher
-   index: 3
-date: 10 August 2021
+date: 14 September 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
 ---
 
 # Abstract
 
-The abstract should be around 250 words long as usual, and should be provided
-for submissions of all categories: posters, long talks and discussions.
-* Please briefly describe the particular points your submission focuses on and/or the
-problems it aims to solve.
-* For all categories except discussions, please also briefly summarize the contributions.
+Music source separation, or music demixing, is the task of decomposing a song into its constituent sources, which are typically isolated instruments (e.g., drums, bass, vocals). The ISMIR 2021 Music Demixing Challenge^[<https://www.aicrowd.com/challenges/music-demixing-challenge-ismir-2021>] was launched to inspire new demixing research. Open-Unmix or UMX [@umx], and the improved variant CrossNet-Open-Unmix or X-UMX [@xumx], are near-state-of-the-art models which were included in the challenge as the baselines, and both use the Short-Time Fourier Transform (STFT).
 
+From the time-frequency uncertainty principle [@gabor1946], the STFT of a signal cannot be maximally precise in both time and frequency, and the tradeoff of time-frequency resolution can significantly affect music demixing results [@tftradeoff1]. The proposed adaptation of Open-Unmix replaced the STFT with the sliCQT [@slicq], an STFT-like transform with varying time-frequency resolution designed for music analysis. The result, xumx-sliCQ,^[<https://github.com/sevagh/xumx-sliCQ>] was ~2x slower and ~1 dB worse than Open-Unmix, with a ~5x smaller model.
 
-# Paper structure depending on the category
+# Background
 
-## Posters
+The STFT is computed by applying the Discrete Fourier Transform on fixed-size windows of the input signal. From both auditory and musical motivations, variable-size windows are preferred, with long windows in low frequency regions to capture detailed harmonic information with a high frequency resolution, and short windows in high frequency regions to capture transients with a high time resolution [@doerflerphd]. The sliCQ Transform [sliCQT\; @slicq] is a realtime implementation of the Nonstationary Gabor Transform [NSGT\; @balazs], a time-frequency transform with complex Fourier coefficients and perfect inverse using time-varying windows. An important application of the NSGT or sliCQT is to create an invertible implementation of the Constant-Q Transform [CQT\; @jbrown].
 
-In case of a poster that presents a MDX submission, please atinclude a _method_ section,
-where you describe your system. It would be nice to have both explanations and at least
-one figure of the architecture / model / whatever you see fit.
+# Methodology
 
-## Long talks
-
-Long talks will use time slots of approximately 30', where the presenter will be free to
-either present some recent research or an overview of a topic that may be of interest
-to the music demixing community. You are free to present some work that was already
-published recently on arxiv, but this work shouldn't have been presented to a public
-conference already.
-
-The architecture of the paper for this category is classical and should be self contained.
-The length should be around 2 pages, excluding references, but we do accept longer papers.
-The point is: there should be enough information for the committee to decide whether it
-makes sense to give you the mic for half an hour !
-
-## Ideas / Discussions
-
-Submission from this category should include two sections:
-* A _Motivations_ section would give some context and would explain why having participants
-  discussing this particular topic is relevant.
-* A _Questions_ section provides a list of the actual questionns / points that you want to
-  raise. There should be at least around 5 of them.
-
-Pleas note that you tacitely agree to chair to discussion if you submit in this category.
-
-The expected length for submissions in this category is around one page, excluding references.
-It would be nice to have some illustration if applicable.
-
-
-# Example of content fitting the template
-
-## Introduction
-
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
-
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
-
-## Mathematics
-
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
-
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
+In music demixing, the oracle estimator represents the theoretical upper limit of performance of a given strategy using ground truth signals. In Open-Unmix, the phase of the STFT is discarded, and the estimated magnitude STFT of the target is combined with the phase of the mix to get the first estimate of the waveform. This is sometimes referred to as the "noisy phase" [@noisyphase1; @noisyphase2], described by \autoref{eq:noisyphaseoracle}.
+\begin{equation}\label{eq:noisyphaseoracle}
+\hat{X}_{\text{target}}(j\omega) = |X_{\text{target}}(j\omega)| \cdot \measuredangle{X_{\text{mix}}(j\omega)}, \hat{x}_{\text{target}}[n] = \text{iSTFT}(\hat{X}_{\text{target}}(j\omega))\\
 \end{equation}
-and refer to \autoref{eq:fourier} from text.
 
-## Figures
+![Spectrograms of the musical glockenspiel signal.\label{fig:spectrograms}](./static-assets/spectrograms_comparison.png){ width=100% }
 
-Figures can be included like this:
+The STFT outputs a single time-frequency matrix where all of the frequency bins have a uniform time resolution. The sliCQT by contrast outputs a ragged list of time-frequency matrices, where each matrix contains frequencies grouped by their common time resolution. In xumx-sliCQ, convolutional layers adapted from an STFT-based vocal separation model [@plumbley2] were applied separately to each time-frequency matrix, shown in \autoref{fig:ragged}.
 
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
+![Convolutional layers applied to the ragged sliCQT.\label{fig:ragged}](./static-assets/xumx_slicq_pertarget.png){ width=100% }
 
-and referenced from text using \autoref{fig:example}.
+# Results
 
-## Acknowledgements
+The proposed model, xumx-sliCQ, was evaluated on the test set of MUSDB18-HQ and compared to the pretrained models of UMX and X-UMX. xumx-sliCQ achieved a median SDR of **3.6 dB**, compared to the **4.64 dB** of UMX and **5.54 dB** of X-UMX. xumx-sliCQ's inference was ~2x slower than UMX, but the size of the trained model on disk was ~5x smaller. The overall system architecture of xumx-sliCQ, shown in \autoref{fig:blockdiagram}, is similar to UMX/X-UMX.
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+![xumx-sliCQ overall system diagram.\label{fig:blockdiagram}](./static-assets/xumx_overall_arch.png){ width=100% }
+
+\newpage
+
+# Acknowledgements
+
+Thanks to my colleagues at DDMAL, Nestor Lopez and Tim de Reuse, and to my thesis supervisor Ichiro Fujinaga, for brainstorming and help throughout the creation of xumx-sliCQ.
 
 # References
-All submissions should include a reference section.
-
-## How to cite
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
