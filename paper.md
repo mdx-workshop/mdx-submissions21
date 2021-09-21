@@ -17,13 +17,13 @@ authors:
     affiliation: 2
 
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Queen Mary University of London
    index: 1
- - name: Institution Name
+ - name: Korea University
    index: 2
- - name: Independent Researcher
+ - name: Korea National Open University
    index: 3
- - name: Test
+ - name: Seokyeong university
    index: 4
 
 date: 10 August 2021
@@ -100,7 +100,7 @@ For a quick reference, the following citation commands can be used:
 
 Figures can be included like this:
 
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
+![Caption for example figure.\label{fig:example}](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
 
 and referenced from text using \autoref{fig:example}.
 
