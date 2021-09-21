@@ -1,16 +1,21 @@
 ---
-title: 'Music separation is all you need'
+title: 'KUIELAB-MDX-Net'
 tags:
   - separation
   - u-net
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
+  - name: Woosung choi^[co-first author]
+    orcid: 0000-0003-2638-2097
+    affiliation: 1 # (Multiple affiliations must be quoted)
+  - name: Minseok Kim^[co-first author]
     affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
+  - name: Jaehwa Chung
     affiliation: 3
+  - name: Daewon Lee
+    affiliation: 4
+  - name: Soonyoung Jung^[corresponding author]
+    affiliation: 2
+
 affiliations:
  - name: Lyman Spitzer, Jr. Fellow, Princeton University
    index: 1
@@ -18,6 +23,9 @@ affiliations:
    index: 2
  - name: Independent Researcher
    index: 3
+ - name: Test
+   index: 4
+
 date: 10 August 2021
 bibliography: paper.bib
 arxiv-doi: 10.21105/joss.01667
