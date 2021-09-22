@@ -23,19 +23,53 @@ bibliography: paper.bib
 arxiv-doi: 10.21105/joss.01667
 ---
 
-# Summary
+# Abstract
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+The abstract should be around 250 words long as usual, and should be provided
+for submissions of all categories: posters, long talks and discussions.
+* Please briefly describe the particular points your submission focuses on and/or the
+problems it aims to solve.
+* For all categories except discussions, please also briefly summarize the contributions.
 
-# Statement of need
+
+# Paper structure depending on the category
+
+## Posters
+
+In case of a poster that presents a MDX submission, please atinclude a _method_ section,
+where you describe your system. It would be nice to have both explanations and at least
+one figure of the architecture / model / whatever you see fit.
+
+## Long talks
+
+Long talks will use time slots of approximately 30', where the presenter will be free to
+either present some recent research or an overview of a topic that may be of interest
+to the music demixing community. You are free to present some work that was already
+published recently on arxiv, but this work shouldn't have been presented to a public
+conference already.
+
+The architecture of the paper for this category is classical and should be self contained.
+The length should be around 2 pages, excluding references, but we do accept longer papers.
+The point is: there should be enough information for the committee to decide whether it
+makes sense to give you the mic for half an hour !
+
+## Ideas / Discussions
+
+Submission from this category should include two sections:
+* A _Motivations_ section would give some context and would explain why having participants
+  discussing this particular topic is relevant.
+* A _Questions_ section provides a list of the actual questionns / points that you want to
+  raise. There should be at least around 5 of them.
+
+Pleas note that you tacitely agree to chair to discussion if you submit in this category.
+
+The expected length for submissions in this category is around one page, excluding references.
+It would be nice to have some illustration if applicable.
+
+
+# Example of content fitting the template
+
+## Introduction
 
 `Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
 enables wrapping low-level languages (e.g., C) for speed without losing
@@ -57,7 +91,7 @@ design, and support for Astropy functionality in `Gala` will enable exciting
 scientific explorations of forthcoming data releases from the *Gaia* mission
 [@gaia] by students and experts alike.
 
-# Mathematics
+## Mathematics
 
 Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
 
@@ -74,7 +108,23 @@ You can also use plain \LaTeX for equations
 \end{equation}
 and refer to \autoref{eq:fourier} from text.
 
-# Citations
+## Figures
+
+Figures can be included like this:
+
+![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
+
+and referenced from text using \autoref{fig:example}.
+
+## Acknowledgements
+
+We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
+Oh, and support from Kathryn Johnston during the genesis of this project.
+
+# References
+All submissions should include a reference section.
+
+## How to cite
 
 Citations to entries in paper.bib should be in
 [rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
@@ -87,18 +137,3 @@ For a quick reference, the following citation commands can be used:
 - `@author:2001`  ->  "Author et al. (2001)"
 - `[@author:2001]` -> "(Author et al., 2001)"
 - `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
-
-and referenced from text using \autoref{fig:example}.
-
-# Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
-
-# References
