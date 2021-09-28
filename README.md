@@ -62,7 +62,7 @@ All submissions are created via markdown files and uses the same template and sy
 
 10. The pull request will be closed when the paper is accepted and published.
 
-### How to preview and article
+### How to preview an article
 
 All markdown papers are automatically compiled to PDF using a github action service. This can be used to preview the PDF before submission. Look for the `paper` artifacts of the `Paper Draft`.
 
