@@ -1,8 +1,24 @@
-⚠️ Submission system is not open yet. Please be patient.
-
 # MDX Workshop Submissions
+⏰ _Abstract Deadline:_ October 22th 2021 (Anywhere on Earth)
+
+The MDX21 workshop is a satellite event at [ISMIR 2021](https://ismir2021.ismir.net/). We will feature invited talks as well as presentations and posters from submitted extended abstracts. The contents of the extended abstracts can be descriptions of your submission to the MDX21 challenge as well as other topics around audio source separation that you would like to share with the community.
 
 This is the submission repository for the [Music Demixing Workshop 2021](https://mdx-workshop.github.io). The submission system is based on Github pull requests and is fully transparent and open for both, authors and reviewers.
+
+Extended abstracts are written in markdown and following the [MDX workshop template](https://github.com/mdx-workshop/mdx-submissions21) (originally forked from the [JOSS](https://joss.theoj.org/) paper system).
+
+There is no page limit on the papers, but please make sure that the abstract itself is within 250 words.
+In case you have any question, please open an [issue in this repository](https://github.com/mdx-workshop/mdx-submissions21/issues).
+
+### Submission types
+
+We accept three kinds of submissions:
+
+- **Posters.** We encourage everyone who participated in the Music Demixing Challenge to submit a poster. After a minimal prescreening, you would have the opportunity to present your work in the online virtual space for the conference. Pick the `POSTERS` category, and submit a title + short abstract.
+
+- **Long presentations** (20min+questions), during which you can present a recent research or some topic you think could be of interest to the community. Pick the `LONG TALK` category, and submit a title + extended abstract for your talk.
+
+- **Discussions** (30min), during which you propose to initiate and moderate a group discussion about a particular topic after a 5min introduction. The objective is to stimulate new ideas and collaborations on music separations. Pick the `DISCUSSIONS` category, and submit a title + extended abstract that describes discussion topics.
 
 ### How to write an article
 
