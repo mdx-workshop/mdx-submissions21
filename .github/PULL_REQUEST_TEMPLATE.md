@@ -16,7 +16,7 @@ I request a review for the following MDX submission:
 * [ ] `POSTERS` _(+Abstract: 250 Words+one page pdf)_
   > As a participant of the MDX challenge, please know that your poster would be automatically accepted after a minimal prescreening. Hence, don't forget to provide us with the link to your team in the AIcrowd website.
   > You are also welcome to submit us some unrelated abstract, in case your interest would be in presenting some method or idea you would just like to discuss with the participants passing by.  
-  > => In your PR, please include a one page PDF named `poster.pdf` that will serve a a supporting document for the discussions. 
+  > => You *don't* need to include your poster in the PR. Just be ready to have it for D-day and show it to the audience through screen sharing.
 * [ ] `LONG TALK`
   > A long talk will last about 20-30min, including questions. This can be about some recent paper you published, or may also present some original research and investigations you did. If you pick this category, please provide us with an extended abstract of the talk, or directly with the slides if you have them available, even in an unfinished state, at your convenience. 
 * [ ] `DISCUSSIONS`
