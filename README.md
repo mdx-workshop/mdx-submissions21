@@ -22,7 +22,7 @@ We accept three kinds of submissions:
 
 ### How to write an article
 
-All submissions are created via markdown files and uses the same template and syntax as in the [Journal of Open Source Software](https://joss.readthedocs.io/en/latest/submitting.html). An example paper can be seen in [paper.md].
+All submissions are created via markdown files and uses the same template and syntax as in the [Journal of Open Source Software](https://joss.readthedocs.io/en/latest/submitting.html). An example paper can be seen in [paper.md](/paper.md).
 
 ### How to submit an article ?
 
