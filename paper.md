@@ -24,9 +24,9 @@ bibliography: paper.bib
 
 # Abstract
 
-In the last decade, using deep learning to solve music source separation problem has gained a lot of interests progressively. Different types of model have been proposed, and most of them can be categorized into two categories: one that use time-frequency representation like Short-Time Fourier Transform (STFT) as input to the model, or the other one that directly operate on time domain signals. 
+In the last decade, using deep learning to solve music source separation problems has gained a lot of interests progressively. Different types of models have been proposed, and most of them can be categorized into two categories: one that uses time-frequency representation like Short-Time Fourier Transform (STFT) as input to the model, or the other one that directly operate on time domain signals. 
 
-The choice of representations could affect the separation result. It has been shown that time-domain models tend to have better performances on percussions and bass instruments, while frequency-domain models are more capable on harmonic instruments like vocals [@defossez2019music]. We tried to combine the advantages of these models with a relatively naive blending method. The resulting model, Danna-Sep^[https://github.com/yoyololicon/danna-sep], surpassed published state-of-the-art by a large margin in respect to Signal-to-Distortion Ratio (SDR) [@vincent2006performance]. 
+The choice of representations could affect the separation result. It has been shown that time-domain models tend to have better performances on percussions and bass instruments, while frequency-domain models are more capable on harmonic instruments like vocals [@defossez2019music]. We tried to mitigate this problem by blending different models together with a relatively naive approach. The resulting model, Danna-Sep^[<https://github.com/yoyololicon/danna-sep>], surpassed published state-of-the-art by a large margin in respect to Signal-to-Distortion Ratio (SDR) [@vincent2006performance]. 
 
 # Method
 
@@ -52,7 +52,7 @@ All models were trained on the training set of musdb18-hq [@musdb18-hq] using Ad
 
 # Separation performances
 
-We evaluated our models in terms of SDR scores evaluated on musdb18 dataset [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model. The results are presented in the following table compared to the original X-UMX and Demucs, which is, to author's knowledge, the only published system that has state-of-the-art performances. These baselines^[https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth] were also trained on musdb18-hq for a fair comparison. As can be seen, our X-UMX gains extra 0.27 dB on average than the original X-UMX, and our Demucs scores are on par with the original Demucs even the shift trick has not been applied. These results shows the effectiveness of our training method and architecture changes to the models. Furthermore, the score of Danna-Sep even surpass Demucs by a great margin (+0.5 dB on average), which implies the importance of blending.
+We evaluated our models in terms of SDR scores evaluated on musdb18 dataset [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model. The results are presented in the following table compared to the original X-UMX and Demucs, which is, to author's knowledge, the only published system that has state-of-the-art performances. These baselines^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] were also trained on musdb18-hq for a fair comparison. As can be seen, our X-UMX gains extra 0.27 dB on average than the original X-UMX, and our Demucs scores are on par with the original Demucs even the shift trick has not been applied. These results shows the effectiveness of our training method and architecture changes to the models. Furthermore, the score of Danna-Sep even surpass Demucs by a great margin (+0.5 dB on average), which implies the importance of blending.
 
 |         | Drums | Bass | Other | Vocals | Avg. |
 |---------|:-----:|:----:|:-----:|:------:|:----:|
@@ -62,10 +62,6 @@ We evaluated our models in terms of SDR scores evaluated on musdb18 dataset [@mu
 | Demucs (baseline) | 6.67 | 6.98 | 4.33 | 6.89 | 6.21 
 | Demucs (ours) | 6.72 | 6.97 | 4.4 | 6.88 | 6.24
 | Danna-Sep | 7.2 | 7.05 | 5.2 | 7.63 | 6.77
-
-# Future Work
-
-The choice of blending weights plays a critical role on the model performances, so we plan to emphasize it more in the future, like developinig a systematic way to come up a set of weights given a couple of source separation models (it were set empirically for Danna-Sep). Also, since pre-trained models are stored as TorchScript which can be easily converted to ONNX format, we would like to make Danna-Sep as a standalone application without python dependency.
 
 
 # Acknowledgements
