@@ -20,27 +20,21 @@ affiliations:
    index: 2
 date: 14 September 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
 ---
 
-# Summary
+# Abstract
 
-We present and release a new tool for music source separation with pre-trained models called
-Danna-Sep. Danna-Sep is designed for ease of use and separation performance with a compact command-line interface. Danna-Sep is based on PyTorch[@NEURIPS2019_9015], and it incorporates:
+In the last decade, using deep learning to solve music source separation problem has gained a lot of interests progressively. Different types of model have been proposed, and most of them can be categorized into two categories: one that use time-frequency representation like Short-Time Fourier Transform (STFT) as input to the model, or the other one that directly operate on time domain signals. 
 
-- split music audio files into 4 stems (vocals, drums, bass, and other) as .wav files with a single command line using pre-trained
-models. 
-- train source separation models or fine-tune pre-trained ones with PyTorch on musdb18-hq dataset [@musdb18-hq].
+The choice of representations could affect the separation result. It has been shown that time-domain models tend to have better performances on percussions and bass instruments, while frequency-domain models are more capable on harmonic instruments like vocals [@defossez2019music]. We tried to combine the advantages of these models with a relatively naive blending method. The resulting model, Danna-Sep^[https://github.com/yoyololicon/danna-sep], surpassed published state-of-the-art by a large margin in respect to Signal-to-Distortion Ratio (SDR) [@vincent2006performance]. 
 
-The performance of the pre-trained models surpassed published state-of-the-art and won the 4th place at Music Demixing Challenge 2021 [@mitsufuji2021music] under the constraint of training solely on musdb18.
-
-# Implementation details
+# Method
 
 The output of Danna-Sep is computed by blending three different models. The first one is X-UMX [@sawata20]. We trained it using the same loss function as the original, but modified the frequency domain loss to the following equation:
 
 $$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
 
-Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline. The training was done by using the official X-UMX model as initial values and continue training around 70 epochs with a batch size of 4.
+Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train in an end-to-end fashion. The training was done by using the official X-UMX model as initial values and continue training around 70 epochs with a batch size of 4.
 
 The second one was originated from Demucs [@defossez2019music]. We chose the version with 48 hidden channel size as our starting point, then we replaced the decoder part of the network by four independent decoders, each of which corresponds to one source. These four decoders have the same architecture compared to the original decoder network while the hidden channel size was reduced to 24 so the total number of parameters is roughly the same. The training loss is a L1-norm between predicted waveform and source-target waveform, and it took about 10 days to train on a single RTX 3070 using mixed precision with a batch size of 16, 4 steps of gradient accumulation.
 
@@ -58,21 +52,20 @@ All models were trained on the training set of musdb18-hq [@musdb18-hq] using Ad
 
 # Separation performances
 
-We evaluated our models in terms of Signal-to-Distortion Ratio (SDR) [@vincent2006performance] scores evaluated on musdb18 dataset [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't use the shift trick [@defossez2019music] for our Demucs model. The results are presented in the following table compared to the original X-UMX and Demucs, which is, to author's knowledge, the only published system that has state-of-the-art performances. As can be seen, our X-UMX gains extra 0.11 dB on average than the original X-UMX, and our Demucs scores are on par with the original Demucs even the shift trick was not applied. These results shows the effectiveness of our training method and architecture changes to the models. Furthermore, the score of Danna-Sep even surpass Demucs by a great margin (+0.5 dB on average), which implies the importance of blending.
+We evaluated our models in terms of SDR scores evaluated on musdb18 dataset [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model. The results are presented in the following table compared to the original X-UMX and Demucs, which is, to author's knowledge, the only published system that has state-of-the-art performances. These baselines^[https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth] were also trained on musdb18-hq for a fair comparison. As can be seen, our X-UMX gains extra 0.27 dB on average than the original X-UMX, and our Demucs scores are on par with the original Demucs even the shift trick has not been applied. These results shows the effectiveness of our training method and architecture changes to the models. Furthermore, the score of Danna-Sep even surpass Demucs by a great margin (+0.5 dB on average), which implies the importance of blending.
 
 |         | Drums | Bass | Other | Vocals | Avg. |
 |---------|:-----:|:----:|:-----:|:------:|:----:|
-| U-Net (ours) | 6.09 | 5.25 | 4.52 | 7.08 | 5.74
-| X-UMX | 6.47 | 5.43 | 4.64 | 6.61 | 5.79
-| X-UMX (ours) | 6.26 | 5.73 | 4.56 | 7.04 | 5.90
-| Demucs (48 channels) | - | - | - | - | 6.20
-| Demucs (ours) | 6.63 | 6.9 | 4.39 | 6.97 | 6.22
-| Demucs | 6.86 | 7.01 | 4.42 | 6.84 | 6.28
-| Danna-Sep | 7.04 | 6.97 | 5.18 | 7.71 | 6.73
+| X-UMX (baseline) | 6.44 | 5.54 | 4.46 | 6.54 | 5.75
+| U-Net (ours) | 6.43 | 5.35 | 4.67 | 7.05 | 5.87
+| X-UMX (ours) | 6.71 | 5.79 | 4.63 | 6.93 | 6.02
+| Demucs (baseline) | 6.67 | 6.98 | 4.33 | 6.89 | 6.21 
+| Demucs (ours) | 6.72 | 6.97 | 4.4 | 6.88 | 6.24
+| Danna-Sep | 7.2 | 7.05 | 5.2 | 7.63 | 6.77
 
 # Future Work
 
-The choice of blending weights plays a critical role on the model performances, so we plan to emphasize it more in the future, like developinig a systematic way to come uup a set of weights given a couple of source separation models (it were set empirically for Danna-Sep). Also, since pre-trained models are stored as TorchScript which can be easily converted to ONNX format, we would like to make Danna-Sep as a standalone application without python dependency.
+The choice of blending weights plays a critical role on the model performances, so we plan to emphasize it more in the future, like developinig a systematic way to come up a set of weights given a couple of source separation models (it were set empirically for Danna-Sep). Also, since pre-trained models are stored as TorchScript which can be easily converted to ONNX format, we would like to make Danna-Sep as a standalone application without python dependency.
 
 
 # Acknowledgements
