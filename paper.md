@@ -40,13 +40,13 @@ The second one was originated from Demucs [@defossez2019music]. We chose the ver
 
 The third one is a U-Net with 6 layers for the decoder and the encoder. We use D3 Block [@Takahashi2021CVPR] for each layer and add two layers of 2D local attention [@parmar2018image] at the bottleneck. The same loss fucntion we trained on X-UMX was used with MWF being disabled. Training time took approximately 9 days with a batch size of 16 on four Tesla V100.
 
-Finally, we multiply each source from each model with different weights, and take summation among the models as our final values. The weights for each source and the size of the models are given in the following table.
+Finally, we multiply each source from each model with different weights, and take summation among the models as our final values. The weights for each source, representation type, and the size of the models are given in the following table.
 
-|         | Drums | Bass | Other | Vocals | Size (Mb) |
-|---------|:-----:|:----:|:-----:|:------:|:---------:|
-| X-UMX   | 0.2   | 0.1  | 0     | 0.2    | 136
-| U-Net   | 0.2   | 0.17 | 0.5   | 0.4    | 61
-| Demucs  | 0.6   | 0.73 | 0.5   | 0.4    | 733
+|         | Drums | Bass | Other | Vocals | Input Domain | Size (Mb) |
+|---------|:-----:|:----:|:-----:|:------:|:------------:|:---------:|
+| X-UMX   | 0.2   | 0.1  | 0     | 0.2    | TF | 136
+| U-Net   | 0.2   | 0.17 | 0.5   | 0.4    | TF | 61
+| Demucs  | 0.6   | 0.73 | 0.5   | 0.4    | T | 733
 
 All models were trained on the training set of musdb18-hq [@musdb18-hq] using Adam [@kingma2014adam]. 
 
