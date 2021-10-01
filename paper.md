@@ -32,7 +32,7 @@ The outputs of Danna-Sep consist of drums, bass, vocals and other, which are com
 
 $$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
 
-Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train in an end-to-end fashion. The training was done by initializing with the official pre-trained X-UMX model^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continue training around 70 epochs with a batch size of 4.
+where $j$ denotes the jth source, $Y(t, f)$ and $\hat{Y}(t, f)$ are the time-frequency presentations of estimation and ground truth, respectively. The difference is that we calculated the Euclidean norm in complex numbers. Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train in an end-to-end fashion. The training was done by initializing with the official pre-trained X-UMX model^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continue training around 70 epochs with a batch size of 4.
 
 The second one is an adaptation of Demucs [@defossez2019music]. We chose the version with 48 hidden channel size as our starting point, then we replaced the decoder part of the network by four independent decoders, each of which corresponds to one source. These four decoders have the same architecture compared to the original decoder network while the hidden channel size was reduced to 24 so the total number of parameters is roughly the same. The training loss is a L1-norm between predicted waveform and source-target waveform, and it took about 10 days to train on a single RTX 3070 using mixed precision with a batch size of 16, 4 steps of gradient accumulation.
 
@@ -59,7 +59,7 @@ We evaluated our models in terms of Signal-to-Distortion Ratio (SDR) [@vincent20
 | X-UMX (ours) | 6.71 | 5.79 | 4.63 | 6.93 | 6.02
 | Demucs (baseline) | 6.67 | 6.98 | 4.33 | 6.89 | 6.21 
 | Demucs (ours) | 6.72 | 6.97 | 4.4 | 6.88 | 6.24
-| Danna-Sep | 7.2 | 7.05 | 5.2 | 7.63 | 6.77
+| Danna-Sep | **7.2** | **7.05** | **5.2** | **7.63** | **6.77**
 
 
 # Acknowledgements
