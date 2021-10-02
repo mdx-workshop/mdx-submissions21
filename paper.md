@@ -24,21 +24,27 @@ bibliography: paper.bib
 
 # Abstract
 
-Using deep learning to do music source separation has gained a lot of interests recently, in the last decade. Different types of models have been proposed, and most of them can be categorized into two categories. One of them is to compute masks for the magnitude spectrogram, and the other is to directly generate the waveform. The choice of representations could affect the separation result. It has been shown that waveform models tend to have better performances on percussions and bass instruments, while masking models are more capable on harmonic instruments like vocals. We tried to mitigate this problem by blending different models together in a relatively naive way. We first adapt X-UMX and Demucs as our base models to generate masks and waveform, respectively, with some minor tweaks on the training and model architectures. In addition, we developed an U-Net to emphasize the masking approach. Finally, we add the outputs from different models together with different weights. The resulting model, Danna-Sep^[<https://github.com/yoyololicon/danna-sep>], surpassed published state-of-the-art by a large margin in respect to SDR scores. However, due to its heavy size and computational workload, the running time is quiet long.
+Deep learning-based music source separation has gained a lot of interest in the last decades. Existing models mainly operate on spectrograms or waveforms. Spectrogram-based models learn suitable masks for separating magnitude spectrogram into different sources while waveform-based models directly generate the waveforms for different sources. Each type has its own strengths and weaknesses. For example, spectrogram-based models are more capable on harmonic instruments such as vocals; waveform-based models tend to perform better on percussion and bass instruments. We tried to mitigate the weaknesses by blending different models together in a relatively naive way. We improved upon original X-UMX (spectrogram-based) and Demucs (waveform-based) by tweaking the training parameters and model architectures. In addition, we developed an U-Net model to emphasize the masking approach of spectrograms. Finally, we combined the outputs from different models together with different weights as our resulting model, and named it as Danna-Sep^[<https://github.com/yoyololicon/danna-sep>]. Danna-Sep surpassed published state-of-the-art models by a large margin in terms of SDR scores. However, due to its huge size and heavy computations, it takes longer to train and infer when comparing to other models. We leave this as our future work to reduce the model size or improve the training and inferring speed.
 
 # Method
 
-The outputs of Danna-Sep consist of drums, bass, vocals and other, which are computed by blending three different models. The first one is X-UMX [@sawata20], which concatenate hidden layers of UMX[@stoter19] to share informations from different target instruments. We trained it using the same loss function as the original, but modified the frequency domain loss to the following equation:
+Danna-Sep is a combination of three different models: X-UMX, Demucs, and U-Net. In the following sub-sections, the modifications made in each model will be discussed.
 
-$$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
+## X-UMX
+X-UMX [@sawata20] is an improved version of UMX[@stoter19] in which it concatenates different hidden layers of UMX to share information among all target instruments. We trained it using the same time domain loss as the original X-UMX, but modified the frequency domain loss such that:
 
-where $j$ denotes the jth source, $Y(t, f)$ and $\hat{Y}(t, f)$ are the time-frequency presentations of estimation and ground truth, respectively. The difference is that we calculated the Euclidean norm in complex numbers. Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train in an end-to-end fashion. The training was done by initializing with the official pre-trained X-UMX model^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continue training around 70 epochs with a batch size of 4.
+$$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$,
 
-The second one is an adaptation of Demucs [@defossez2019music]. We chose the version with 48 hidden channel size as our starting point, then we replaced the decoder part of the network by four independent decoders, each of which corresponds to one source. These four decoders have the same architecture compared to the original decoder network while the hidden channel size was reduced to 24 so the total number of parameters is roughly the same. The training loss is a L1-norm between predicted waveform and source-target waveform, and it took about 10 days to train on a single RTX 3070 using mixed precision with a batch size of 16, 4 steps of gradient accumulation.
+where $j$ denotes the jth source, $Y(t, f)$ and $\hat{Y}(t, f)$ are the time-frequency presentations of estimation and ground truth respectively. The difference is that we calculated the Euclidean norm in complex numbers instead of taking norm on the absolute value as in the original X-UMX. Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train our model in an end-to-end fashion. We initialized our X-UMX with the official pre-trained X-UMX weights^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continue training for around 70 epochs with a batch size of 4.
 
-The third one is a U-Net with 6 layers for the decoder and the encoder. We use D3 Block [@Takahashi2021CVPR] for each layer and add two layers of 2D local attention [@parmar2018image] at the bottleneck. The same loss fucntion we trained on X-UMX was used with MWF being disabled. Training time took approximately 9 days with a batch size of 16 on four Tesla V100.
+## Demucs
+For Demucs [@defossez2019music], we chose the version with 48 hidden channels as our starting point. Then we replaced the decoder part of the network with four independent decoders, each corresponds to one source. These four decoders have the same architecture as the original decoder network while the hidden channel size was reduced to 24 so the total number of parameters is roughly the same. The training loss is a L1-norm between predicted waveforms and source-target waveforms, and it took around 10 days to train on a single RTX 3070 using mixed precision with a batch size of 16, and 4 steps of gradient accumulation.
 
-Finally, we multiply each source from each model with different weights, and take summation among the models as our final values. The weights for each source, representation type (T for waveforms, TF for frequency masking), and the size of the models are given in the following table.
+## U-Net
+The encoder and decoder of our U-Net consist of six D3 Blocks [@Takahashi2021CVPR] and we added two layers of 2D local attention [@parmar2018image] layers at the bottleneck. We used the same loss function as X-UMX during training but with MWF being disabled. It took approximately 9 days to train with a batch size of 16 on four Tesla V100 GPUs. We also experimented with using biaxial biLSTM along the time and frequency axes as the bottleneck layers. But it takes slightly longer to train, yet does not offer any significant improvements.
+
+## Danna-Sep
+Finally, we calculated the weighted average of the outputs obtained from the models mentioned above as our final output. Experiments are conducted to search for optimal weighting. The optimal weights for each source, input domain type (T for waveforms, TF for frequency masking), and the size of the models are given in the following table.
 
 |         | Drums | Bass | Other | Vocals | Input Domain | Size (Mb) |
 |---------|:-----:|:----:|:-----:|:------:|:------------:|:---------:|
@@ -46,11 +52,10 @@ Finally, we multiply each source from each model with different weights, and tak
 | U-Net   | 0.2   | 0.17 | 0.5   | 0.4    | TF | 61
 | Demucs  | 0.6   | 0.73 | 0.5   | 0.4    | T | 733
 
-All models were trained on the training set of musdb18-hq [@musdb18-hq] using Adam [@kingma2014adam]. 
+All models were trained on the training set of musdb18-hq [@musdb18-hq] using an Adam optmizier[@kingma2014adam]. 
 
 # Separation performances
-
-We evaluated our models in terms of Signal-to-Distortion Ratio (SDR) [@vincent2006performance] on musdb18 [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model. The results are presented in the following table compared to the original X-UMX and Demucs, which is, to author's knowledge, the only published system that has state-of-the-art performances. We pick baselines that were also trained on musdb18-hq for a fair comparison. As can be seen, our X-UMX gains extra 0.27 dB on average than the original X-UMX, and our Demucs scores are on par with the original Demucs even the shift trick has not been applied. These results shows the effectiveness of our training method and architecture changes to the models. Furthermore, the score of Danna-Sep even surpass Demucs by a great margin (+0.5 dB on average), which implies the importance of blending.
+We evaluated our models in terms of Signal-to-Distortion Ratio (SDR) [@vincent2006performance] on musdb18 [@musdb18] using the *museval* toolbox [@fabian_robert_stoter_2019_3376621]. One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model. The results of our models and the original X-UMX and Demucs are shown in the table below.
 
 |         | Drums | Bass | Other | Vocals | Avg. |
 |---------|:-----:|:----:|:-----:|:------:|:----:|
@@ -60,6 +65,10 @@ We evaluated our models in terms of Signal-to-Distortion Ratio (SDR) [@vincent20
 | Demucs (baseline) | 6.67 | 6.98 | 4.33 | 6.89 | 6.21 
 | Demucs (ours) | 6.72 | 6.97 | 4.4 | 6.88 | 6.24
 | Danna-Sep | **7.2** | **7.05** | **5.2** | **7.63** | **6.77**
+
+As can be seen from the table our modified X-UMX gained an extra 0.27 dB on average SDR compared to the original X-UMX while our modified Demucs still gained an extra 0.03 dB on average SDR compared to the original Demucs despite the fact that the shift trick has not been applied. To ensure a fair comparison, the all models reported in this table are trained on musdb18-hq. To the best of our knowledge, Demucs is currently the state-of-the-art demixing model. Yet, our Danna-Sep still surpasses Demucs by a great margin (+0.53 dB on average SDR). These results show the effectiveness of our training method and architecture change and the importance of model blending.
+
+
 
 
 # Acknowledgements
