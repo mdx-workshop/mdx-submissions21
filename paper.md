@@ -73,7 +73,7 @@ Experiments were conducted to search for optimal weighting. The optimal weights 
 All models were trained on the training set of musdb18-hq [@musdb18-hq] using an Adam optmizier[@kingma2014adam]. 
 
 # Separation performances
-For a fair comparison, we trained all the models with musdb18-hq [@musdb18-hq] and performed the evaluation using the compressed version of the dataset [musdb18].
+For a fair comparison, we trained all the models with musdb18-hq [@musdb18-hq] and performed the evaluation using the compressed version of the dataset [@musdb18].
 One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our enhanced Demucs.
 In the table below, we report the Signal-to-Distortion Ratio (SDR) [@vincent2006performance], calculated using *museval* [@fabian_robert_stoter_2019_3376621], attained by our modified models and the original counterparts, as well as the proposed framework.
 
