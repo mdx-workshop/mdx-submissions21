@@ -63,6 +63,7 @@ The model took approximately 10 days to train on a single RTX 3070 using mixed p
 ## Danna-Sep
 In order to obtain the final output of our framework, we calculated weighted average of individual outputs from the above-mentioned models.
 Experiments were conducted to search for optimal weighting. The optimal weights for each source, types of input domain (T for waveforms, TF for frequency masking), and the sizes of the models are given in the following table.
+
 |         | Drums | Bass | Other | Vocals | Input Domain | Size (Mb) | 
 |---------|:-----:|:----:|:-----:|:------:|:------------:|:---------:| 
 | X-UMX   | 0.2   | 0.1  | 0     | 0.2    | TF | 136
