@@ -44,7 +44,7 @@ We trained the model using the same time-domain loss as the original X-UMX, but 
 
 $$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
 
-where $Y(t, f)$ and $\hat{Y}(t, f)$ are ground-truth and estimated time-frequency representations, respectively. 
+where $Y_j(t, f)$ and $\hat{Y}_j(t, f)$ are ground-truth and estimated time-frequency representations for the $j$-th source, respectively. 
 That is, instead of taking norm of the absolute value as in the original X-UMX, we calculated Euclidean norm in the complex domain.
 Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train our model in an end-to-end fashion. We initialized our modified X-UMX with the official pre-trained X-UMX weights^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continued training for approximately 70 epochs with a batch size of four.
 
