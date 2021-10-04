@@ -40,7 +40,7 @@ We describe the enhancements made for each model in the following subsections.
 
 ## X-UMX
 X-UMX [@sawata20] improved upon UMX[@stoter19] by concatenating hidden layers of UMX to enable sharing information among all target instruments.
-We trained the model using the same time-domain loss as the original X-UMX, but modified the frequency-domain loss for $j$-th source as follows:
+We trained the model using the same time-domain loss as the original X-UMX, but modified the frequency-domain loss for $J$ sources as follows:
 
 $$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
 
