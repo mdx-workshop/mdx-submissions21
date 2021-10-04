@@ -33,7 +33,7 @@ Danna-Sep is a combination of three different models: X-UMX, Demucs, and U-Net. 
 ## X-UMX
 X-UMX [@sawata20] is an improved version of UMX[@stoter19] in which it concatenates different hidden layers of UMX to share information among all target instruments. We trained it using the same time domain loss as the original X-UMX, but modified the frequency domain loss such that:
 
-$$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$,
+$$\mathcal{L}_{MSE}^J = \sum_{j=1}^J\sum_{t,f}|Y_j(t, f) - \hat{Y}_j(t, f)|^2$$
 
 where $j$ denotes the jth source, $Y(t, f)$ and $\hat{Y}(t, f)$ are the time-frequency presentations of estimation and ground truth respectively. The difference is that we calculated the Euclidean norm in complex numbers instead of taking norm on the absolute value as in the original X-UMX. Also, we incorporated Multichannel Wiener Filtering (MWF)[@antoine_liutkus_2019_3269749] into our training pipeline in order to train our model in an end-to-end fashion. We initialized our X-UMX with the official pre-trained X-UMX weights^[<https://zenodo.org/record/4740378/files/pretrained_xumx_musdb18HQ.pth>] and continue training for around 70 epochs with a batch size of 4.
 
