@@ -73,9 +73,9 @@ Experiments were conducted to search for optimal weighting. The optimal weights 
 All models were trained on the training set of musdb18-hq [@musdb18-hq] using an Adam optmizier[@kingma2014adam]. 
 
 # Separation performances
-We performed the benchmark using musdb18-hq [@musdb18] as the dataset for a fair comparison, and evaluated the models in terms of Signal-to-Distortion Ratio (SDR) [@vincent2006performance] derived from *museval* [@fabian_robert_stoter_2019_3376621].
-One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our Demucs model.
-The results of our models and their original counterparts are shown in the table below.
+For a fair comparison, we trained all the models with musdb18-hq [@musdb18-hq] and performed the evaluation using the compressed version of the dataset [musdb18].
+One iteration of MWF was used for X-UMX and U-Net, and we didn't apply the shift trick [@defossez2019music] for our enhanced Demucs.
+In the table below, we report the Signal-to-Distortion Ratio (SDR) [@vincent2006performance], calculated using *museval* [@fabian_robert_stoter_2019_3376621], attained by our modified models and the original counterparts, as well as the proposed framework.
 
 |         | Drums | Bass | Other | Vocals | Avg. |
 |---------|:-----:|:----:|:-----:|:------:|:----:|
@@ -87,9 +87,9 @@ The results of our models and their original counterparts are shown in the table
 | Danna-Sep | **7.2** | **7.05** | **5.2** | **7.63** | **6.77**
 
 As can be seen from the table, our modified X-UMX gained an extra 0.27 dB on average SDR compared to the original X-UMX.
-Our enhanced Demucs outperformed the original model by 0.03 dB of SDR, despite the fact that the shift trick was not applied.
+The enhanced Demucs outperformed the original model by 0.03 dB of SDR, despite the fact that the shift trick was not applied.
 Notably, Danna-Sep surpassed both the original and enhanced Demucs by a large margin (+0.53 dB on average SDR).
-Altogether, the results demonstrate the efficacy of the proposed fusion method in addition to our modifications for the training scheme and architecture.
+Altogether, the results demonstrate the efficacy of the proposed fusion method in addition to our modifications to the training scheme and architecture.
 The proposed framework, however, is more reliant on computing power due to the nature of model fusion, which we would like to address in furture work.
 
 
