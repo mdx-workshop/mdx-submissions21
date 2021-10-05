@@ -35,7 +35,7 @@ The sliCQT parameters were chosen by maximizing the median SDR across all 4 targ
 
 \autoref{fig:spectrograms} shows the magnitude STFT and sliCQT spectrograms of a glockenspiel signal.^[<https://github.com/ltfat/ltfat/blob/master/signals/gspi.wav>]
 
-![STFT and sliCQT spectrograms of the musical glockenspiel signal.\label{fig:spectrograms}](https://raw.githubusercontent.com/sevagh/mdx-submissions21/HANSSIAN/static-assets/spectrograms_comparison.png){ width=100% }
+![STFT and sliCQT spectrograms of the musical glockenspiel signal.\label{fig:spectrograms}](https://raw.githubusercontent.com/sevagh/mdx-submissions21/HANSSIAN/static-assets/spectrograms_comparison.png){ width=95% }
 
 The STFT outputs a single time-frequency matrix where all of the frequency bins are spaced uniformly apart and have the same time resolution. The sliCQT by contrast groups the frequency bins, which may be nonuniformly spaced, in a ragged list of time-frequency matrices, where each matrix contains frequency bins that share the same time resolution. In xumx-sliCQ, convolutional layers adapted from an STFT-based vocal separation model [@plumbley2] were applied separately to each time-frequency matrix, shown in \autoref{fig:ragged}.
 
