@@ -1,5 +1,5 @@
 ---
-title: 'Danna-Sep: the ultimate music source separation tool'
+title: 'Danna-Sep: Unite to separate them all'
 tags:
   - separation
   - music information retrieval
