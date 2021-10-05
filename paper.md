@@ -16,7 +16,7 @@ authors:
 affiliations:
  - name: Independent Researcher
    index: 1
- - name: Singapore University of Technology and Design
+ - name: Information Systems and Technology Design, Singapore University of Technology and Design
    index: 2
 date: 14 September 2021
 bibliography: paper.bib
