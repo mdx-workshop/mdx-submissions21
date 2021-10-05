@@ -38,6 +38,8 @@ We showed in the experiments that, despite its simplicity, Danna-Sep surpassed t
 Danna-Sep is a combination of three different models: X-UMX, U-Net, and Demucs.
 We describe the enhancements made for each model in the following subsections.
 
+![Fig. 1. The schematic diagram of our proposed system.](diagram.jpg){ width=40% }
+
 ## X-UMX
 X-UMX [@sawata20] improved upon UMX[@stoter19] by concatenating hidden layers of UMX to enable sharing information among all target instruments.
 We trained the model using the same time-domain loss as the original X-UMX, but modified the frequency-domain loss for $J$ sources as follows:
