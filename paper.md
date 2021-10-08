@@ -1,44 +1,34 @@
 ---
-title: 'Music separation is all you need'
+title: 'Hybrid Spectrogram Waveform Music Source Separation'
 tags:
   - separation
   - u-net
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
+  - name: Alexandre Défossez
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Facebook AI Research
    index: 1
- - name: Institution Name
-   index: 2
- - name: Independent Researcher
-   index: 3
-date: 10 August 2021
+date: 8 October 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
 ---
 
 # Abstract
 
-The abstract should be around 250 words long as usual, and should be provided
-for submissions of all categories: posters, long talks and discussions.
-* Please briefly describe the particular points your submission focuses on and/or the
-problems it aims to solve.
-* For all categories except discussions, please also briefly summarize the contributions.
+Source separation models either work on the spectrogram or waveform domain.
+In this work, we show how to perform end-to-end hybrid source separation,
+letting the model decide which domain is best suited for each source, and even combining
+both prediction. We propose a hybrid version of the Demucs architecture [@defossez2019music]
+which won the Music Demixing Challenge 2021 organized by Sony.
+This architecture also comes with additional improvements, such as compressed residual branches,
+local attention or singular value regularization.
+Overall, a 1.5dB improvement of the Signal-To-Distortion (SDR) was observed across all sources,
+an improvement confirmed by human subjective evaluation, with an overall quality
+rated at 2.83 out of 5, and absence of contamination at 3.04 (against 2.86 and 2.44
+for the second ranking model submitted at the competition).
 
 
-# Paper structure depending on the category
-
-## Posters
-
-In case of a poster that presents a MDX submission, please atinclude a _method_ section,
-where you describe your system. It would be nice to have both explanations and at least
-one figure of the architecture / model / whatever you see fit.
+# Introduction
 
 ## Long talks
 
