@@ -1,5 +1,5 @@
 ---
-title: 'Hybrid Spectrogram Waveform Music Source Separation'
+title: 'Hybrid Spectrogram and Waveform Music Source Separation'
 tags:
   - separation
   - u-net
@@ -18,7 +18,7 @@ bibliography: paper.bib
 Source separation models either work on the spectrogram or waveform domain.
 In this work, we show how to perform end-to-end hybrid source separation,
 letting the model decide which domain is best suited for each source, and even combining
-both prediction. We propose a hybrid version of the Demucs architecture [@defossez2019music]
+both prediction. We propose a hybrid version of the Demucs architecture [@demucs]
 which won the Music Demixing Challenge 2021 organized by Sony.
 This architecture also comes with additional improvements, such as compressed residual branches,
 local attention or singular value regularization.
@@ -44,7 +44,7 @@ into two categories: spectrogram or waveform based methods.
 The former consists in models that are fed with the input spectrogram,
 either represented by its amplitude, such as Open-Unmix [@umx] and its variant
 CrossNet Open-Unmix [@xumx], or as the concatenation of its real and imaginary part
-(Complex-As-Channels, CAC, following [@choi_2020]), such as LaSAFT [@lasaft].
+(Complex-As-Channels, CAC, following [@cac]), such as LaSAFT [@lasaft].
 Similarly, the output can be either a mask on the input spectrogram, complex numbers
 or complex modulation of the input spectrogram [@kong2021decoupling].
 
@@ -110,3 +110,4 @@ although other team in the MDX competition used model blending across domains as
 
 # Architecture
 
+In this Section we recall briefly the original [@demucs] architecture
