@@ -1,4 +1,4 @@
-all:  hybrid.pdf
+all:  hybrid.pdf residual.pdf
 
 %.pdf: %.tex
 	pdflatex --interaction=nonstopmode $^

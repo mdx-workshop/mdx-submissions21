@@ -95,7 +95,7 @@ as well as [@waveunet_singing] and [@waveunet] with Wave-U-Net.
 However, those methods were lagging in term of quality,
 almost 2 dB behind their spectrogram based competitors.
 Demucs [@demucs] was built upon Wave-U-Net, using faster strided convolutions rather
-than DSP based downsampling, allowing for much larger number of channels, and
+than DSP based downsampling, allowing for much larger number of channels (but potentially introducing aliasing artifacts [@pons2021upsampling]), and
 extra Gated Linear Unit layers [@glu] and biLSTM.
 For the first time, waveform domain methods surpassed spectrogram ones when considering
 the overall SDR (6.3 dB on MusDB), although its performance is still inferior
@@ -139,6 +139,8 @@ capabilities.
 The model is composed of a temporal branch, a spectral branch, and shared layers.
 The temporal branch takes the input waveform and process like the standard Demucs.
 It contains 5 layers, which are going to reduce the number of time steps by a factor of $4^5 = 1024$.
+Compared with the original architecture, all ReLU activations are replaced by
+Gaussian Error Linear Units (GELU) [@gelu].
 
 The spectral branch takes the spectrogram obtained from an STFT over 4096 time steps,
 with a hop length of 1024. Notice that the number of time steps immediately matches
@@ -159,6 +161,7 @@ The output of the spectral branch is inversed with the ISTFT, and summed with th
 temporal branch output, giving the final model prediction. Due to this overall design,
 the model is free to use whichever representation is most conveniant for different parts of the signal,
 even within one source, and can freely share information between the two representations.
+The hybrid architecture is represented on \autoref{fig:hyb}.
 
 ### Padding for easy alignment
 
@@ -167,7 +170,7 @@ and temporal representations for any input length.
 For an input length $L$, kernel size $K$, stride $S$ and padding on each side $P$, the output of a convolution
 is of length $(L - K + 2 * P) / S + 1$. The usual choice of $P = K/2$ gives an output of size
 $L / S + 1$. For the STFT, we have a single convolution with $K=4096$ and $S=1024$.
-However, the extra $+1$ becomes problematic when stacking convolutions, and iterating the previous formula. Indeed, it is easy to have a mismatch between the time step of the temporal and spectral encoder.
+However, the extra $+1$ becomes problematic when stacking convolutions, and iterating the previous formula. Indeed, it is easy to have a mismatch between the number of time steps for the temporal and spectral representations.
 
 In order to simplify computations, we instead pad by $P = (K - S) / 2$, giving an output of
 $L / S$, so that matching the overall stride is now sufficiant to exactly match the length
@@ -185,7 +188,7 @@ a convolution with a kernel size of 8 and no padding.
 However, it has been noted that unlike the time axis, the distribution of musical audio signals
 is not truely invariant to translation along the frequency axis. Instruments have specific
 pitch range, vocals have well defined formants etc.
-To account for that, [zemb] suggest injecting an embedding of the frequency before applying
+To account for that, [@zemb] suggest injecting an embedding of the frequency before applying
 the convolution. We use the same approach, with the addition that we smooth the initial
 embedding so that close frequencies have similar embeddings. We inject this embedding just before
 the second spectral encoder layer.
@@ -212,5 +215,76 @@ The $\mathrm{Z}$ prefix is used for spectral layers, and $\mathrm{T}$ prefix for
 temporal ones.](figures/hybrid.pdf){width=80%, #fig:hyb}
 
 ## Compressed residual branches
+
+The original Demucs encoder layer is composed of a convolution with kernel size of 8 and stride of 4,
+followed by a ReLU, and of a convolution with kernel size of 1 followed by a GLU.
+Between those two convolutions, we introduce a novel compressed residual branch, composed
+of dilated convolutions, and for the innermost layers, of a biLSTM with limited span and local attention layer.
+
+There are two compressed residual branch per encoder layer.
+Both are composed
+of a convolution with a kernel size of 3, stride of 1, dilation of 1 for the first branch and 2 for the second, and times less output dimensions than the input,
+followed by layer normalization [@layernorm] and a GELU activation.
+
+For layer 4, 5 and 6 of the encoder (with the 6-th layer being shared by the
+spectral and temporal branch), long range context is processed through a local
+attention layer (see definition hereafter) as well as a biLSTM with 2 layers, inserted with a skip connection, and with a maximum span of 200 steps.
+In practice, the input is splitted into frames of 200 time steps, with a stride of 100
+time steps. Each frame is processed concurrently by the biLSTM. Then, for any
+time step, the output from the frame for which it is the furthest away from the edge is kept.
+
+Finally, and for all layers, a final convolution with a kernel size of 1
+outputs twice as many channels as the input dimension of the residual branch,
+followed by a GLU. This output is then summed with the original input,
+after having been scaled through a LayerScale layer [@layerscale], with an initial scale of
+$1\mathrm{e}{-}3$.
+A complete representation of the compressed residual branches is given on \autoref{fig:residual}.
+
+
+![Representation of the compressed residual branches
+that are added to each encoder layer. For the 5th and 6th layer,
+a BiLSTM and a local attention layer are added.](figures/residual.pdf){width=80%, #fig:residual}
+
+### Local attention
+
+Local attention builds on regular attention [@attention] but replaces positional embedding
+by a controllable penalty term that penalizes attending to positions that are far away.
+Formally, the attention weights from position $i$ to position $j$ is given by
+$$
+w_{i, j} = \mathrm{softmax}(Q_i^T K_j - \sum_{k=1}^4 k \beta_{i, k} |i -j|) $$
+where $Q_i$ are the queries and $K_j$ are the keys. The value $\beta_{i, k}$
+is obtained as the output of a linear layer, initialized so that it is initially very close to 0.
+Having multiple $\beta_{i, k}$ with different weights $k$ allows the network
+to efficiently reduce its receptive field without requiring $\beta_{i, k}$ to take large values. In practice, we use a sigmoid activation to derive the values $\beta_{i, k}$.
+
+
+## Stabilizing training
+
+We observed that Demucs training could be unstable, especially as we added more layers
+and increased the training set size with 50 extra songs.
+Loading the model just before its divergence point, we realized that the weights
+for the innermost encoder and decoder layers would get very large eigen values.
+
+A first solution is to use group normalization (with a 4 groups) just after
+the non residual convolutions for the layers 5 and 6 of the encoder and the decoder. Using normalization on all layers will deteriorate
+performance, but using it only on the innermost layer seems to stabilize training
+without hurting performance. Interestingly, when the training is stable (in particular
+when trained only on MusDB), using normalization was at best neutral with respect
+to the separation score, but never improved it, and considerably slowed down
+training during the first half of the epochs.
+When the training was unstable, using normalization would improve the overall performance
+as it allows the model to train for a larger number of epochs.
+
+A second solution we investigated was to use singular value regularization [@spectral].
+While previous work used the power method iterative procedure, we obtained better and faster
+approximations of the largest singular value using a low rank SVD method [@lowranksvd].
+This solution had the advantage of always improving generalization, even when
+the training was already stable. Sadly, it was not sufficient on its own to
+remove entirely instabilities, but only to reduce them. Another down side
+was the longer training time due to the extra low rank SVD evaluation.
+
+In the end, in order to both achieve the best performance and remove entirely
+training instabilities, the two solutions were combined.
+
 
 
