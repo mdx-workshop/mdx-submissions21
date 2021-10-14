@@ -282,7 +282,6 @@ This solution had the advantage of always improving generalization, even when
 the training was already stable. Sadly, it was not sufficient on its own to
 remove entirely instabilities, but only to reduce them. Another down side
 was the longer training time due to the extra low rank SVD evaluation.
-
 In the end, in order to both achieve the best performance and remove entirely
 training instabilities, the two solutions were combined.
 
