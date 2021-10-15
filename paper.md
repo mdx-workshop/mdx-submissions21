@@ -29,12 +29,18 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 # Methodology
 
-![graphs](graphs/cws.png){ width=60% }![graphs](graphs/main.png){ width=30% }
+![Diagram of CWS-PResUNet.](graphs/main.png){ width=30% }![The first convolution layer of ResUNet. Comparison between using magnitude spectrogram (left) and CWS (right) as input feature.](graphs/cws.png){ width=60% }
 
 
 # Experiment Results
 
-
+|    Models    | Vocals | Drums |  Bass | Other | Average |
+|:------------:|:------:|:-----:|:-----:|:-----:|:-------:|
+|      UMX     |  6.25  |  6.04 |  5.07 |  4.28 |  5.41   |
+|     X-UMX    |  6.61  | 6.47  | 5.43  | 4.64  |  5.79   |
+|    Demucs    |  6.89  | **6.57**  | **6.53**  | 5.14  |  6.28   |
+| CWS-PResUNet |  **8.92**  | 6.38  | 5.93  | **5.84**  |  6.77   |
+|    ByteMSS   |  8.92  | 6.57  | 6.53  | 5.84  |  **6.97**   |
 
 # Discussions
 
