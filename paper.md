@@ -29,9 +29,9 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 # Methodology
 
-![graphs](graphs/cws.png) { width=40% }
+![graphs](graphs/cws.png){ width=40% }
 
-![graphs](graphs/main.png) { width=35% }
+![graphs](graphs/main.png){ width=35% }
 
 
 # Experiment Results
