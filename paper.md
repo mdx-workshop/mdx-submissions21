@@ -29,8 +29,7 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 # Methodology
 
-![Diagram of CWS-PResUNet.](graphs/main.png){ width=30% }![The first convolution layer of ResUNet. Comparison between using magnitude spectrogram (left) and CWS (right) as input feature.](graphs/cws.png){ width=60% }
-
+![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.](graphs/main.png){ width=100% }
 
 # Experiment Results
 
