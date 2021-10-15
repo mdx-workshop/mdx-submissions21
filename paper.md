@@ -23,7 +23,7 @@ bibliography: paper.bib
 # arxiv-doi: 10.21105/joss.01667
 ---
 
-# Abstract
+# Abstract	
 
 Music source separation (MSS) has shown tremendous success with deep learning models. Many MSS models perform separations on spectrogram by estimating bounded ratio masks and reusing the phase of mixture. If the model is convolutional neural network (CNN) based, weights are usually shared in each channel during convolution, regardless of the dissimilar patterns between frequency bands. In this study, we proposed a new model, channel-wise subband phase-aware ResUNet (CWS-PResUNet), which estimates unbound mask and phase variations in subbands for separations. CWS-PResUNet utilizes channel-wise subband (CWS) feature to limit unnecessary global weight sharing on spectrogram and reduce computational resource consumptions. The resource saved by CWS can in turn allow for a larger architecture. On MUSDB18HQ test set, a 276-layer CWS-PResUNet achieves state-of-the-art performance on *vocals* with a 8.92 SDR score. Based on CWS-PResUNet and Demucs, our system ranks 2nd on *vocals* score and 5th on average score in 2021 ISMIR Music Demixing Challenge limited training data track (leaderboard A).
 
@@ -31,8 +31,13 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 ![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.](graphs/main.png){ width=100% }
 
-# Experiment Results
+The overview of our system is illustrated in Figure. 1.
 
+# Experiments
+
+The experiment results are shown in the following table.  
+
+<p style="text-align: center;"><b>Table 1 SDR value on different sources</b></p>
 |    Models    | Vocals | Drums |  Bass | Other | Average |
 |:------------:|:------:|:-----:|:-----:|:-----:|:-------:|
 |      UMX     |  6.25  |  6.04 |  5.07 |  4.28 |  5.41   |
