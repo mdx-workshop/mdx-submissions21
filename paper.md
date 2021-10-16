@@ -31,13 +31,19 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 ![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.](graphs/main.png){ width=100% }
 
-**ByteMSS** is our system submitted for the MDX Challenge[@mitsufuji2021music]. we set up a 276-layer CWS-ResUNet to separate the `vocals` track, a 166-layer CWS-PResUNet for `other` track, and the open-sourced demucs[@defossez2019demucs] for `bass` and `drums` tracks. 
+**ByteMSS** is our system submitted for the MDX Challenge[@mitsufuji2021music]. we set up the open-sourced demucs[@defossez2019demucs] to separate `bass` and `drums` tracks, a 276-layer CWS-ResUNet for the `vocals` track, and a 166-layer CWS-PResUNet for `other` track.
 
-**CWS-PResUNet** is a ResUNet[@zhang2018road;@liu2021voicefixer] based model integrating CWS feature [@liu2020channel] and the complex ideal ratio mask (cIRM) estimation strategies described in [@kong2021decoupling]. The overall pipeline is summarized in Figure 1a. For a one dimensional mixture signal ${x} \in R^{L}$, where L stands for signal length, we use pre-defined analysis filters ${h}_1$,${h}_2$,${h}_3$, and ${h}_4$ to perform 4 subbands decomposition:
+**Demucs** is a time domain MSS model. In our study, we adopted the open-sourced pre-trained demucs^[https://github.com/facebookresearch/demucs] and do not apply the shift trick because it will slow down the inference speed.
+
+**CWS-PResUNet** is a ResUNet[@zhang2018road;@liu2021voicefixer] based model integrating CWS feature [@liu2020channel] and the complex ideal ratio mask (cIRM) estimation strategies described in [@kong2021decoupling]. The overall pipeline is summarized in Figure 1a. For a one dimensional mixture signal ${x} \in R^{L}$, where L stands for signal length, we first utilize pre-defined analysis filters ${h}_1$,${h}_2$,${h}_3$, and ${h}_4$ to perform subband decompositions:
 $$
 x_{sub} = [\text{DS}_4({x}*{h}_j)]_{j=1,2,3,4},
 $$
-where * stands for convolution operations and $\text{DS}_{4}$ is the downsampling operator. Then we calcuate the short time fourier transform (STFT) of the downsampled subband signals to get their magnitude spectrograms $|{X}_{sub}|$. The phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. Then the complex spectrogram can be reconstruct with the following equation:
+where * stands for convolution operations and $\text{DS}_{4}(\dot)$ is the downsampling operator. Then we calcuate the short time fourier transform (STFT) of the downsampled subband signals to obtain their magnitude spectrograms $|{X}_{sub}|$. 
+
+![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
+
+As is shown in Figure.2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. Then the complex spectrogram can be reconstruct with the following equation:
 $$
 \hat{S}_{sub} = relu(|{X}_{sub}|\cdot \hat{M}+\hat{Q})e^{j(\angle X_{sub} +\angle \hat{\theta})},
 $$
@@ -45,11 +51,9 @@ in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2}
 $$
 \hat{s} = \sum_{j=1}^{4}\text{US}_4(\hat{s}_{sub})*g_j,
 $$
-where g_j is the synthesis filter and $\text{US}_4$ is the zero-insertion upsampling function.
+where $g_j$ is the synthesis filter and $\text{US}_4(\dot)$ is the zero-insertion upsampling function.
 
-As is illustrated in Figure 1b, the CWS feature can make the CNN featuremaps smaller and save computational resources. Also, CWS input makes CNN to have separate weights for each subband, in which case the model becomes more efficient by diverging subband information into channels and enlarging receptive fields. Moreover, because bounded mask and mixture phase can limit the theoretical upper bound of the MSS system [@kong2021decoupling], we estimate unbounded mask and phase variations in each subband to compute the unbounded cIRM. Our `vocals` model is optimized by calcualting L1 loss between $\hat{s}$ and target source $s$. Despite we also use a model dedicated to separate `other` track, we notice estimating and optimizing four sources together can result in a 0.2 SDR gain on `other`. So, we calculate both L1 loss and energy-conservation loss across four sources to optimize our `other` model. Our CWS-PResUNet `bass` and `drums` models employ the same set up as the `other` model.
-
-**Demucs** is a time domain MSS model. In our study, we adopted the open-sourced pre-trained demucs^[https://github.com/facebookresearch/demucs] and do not apply the shift trick because it will slow down the inference speed.
+As is illustrated in Figure 1b, the CWS feature can make the CNN featuremaps smaller and save computational resources. Also, CWS input makes CNN having separate weights for each subband, in which case the model becomes more efficient by diverging subband information into channels and enlarging receptive fields. Moreover, because bounded mask and mixture phase can limit the theoretical upper bound of the MSS system [@kong2021decoupling], we estimate unbounded mask and phase variations in each subband to compute the unbounded cIRM. Our `vocals` model is optimized by calcualting L1 loss between $\hat{s}$ and target source $s$. Despite we also use a model dedicated to separate `other` track, we notice estimating and optimizing four sources together can result in a 0.2 SDR gain on `other`. So, we calculate both L1 loss and energy-conservation loss across four sources to optimize our `other` model. Our CWS-PResUNet `bass` and `drums` models employ the same set up as the `other` model.
 
 # Experiments
 
