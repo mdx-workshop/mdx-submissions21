@@ -43,11 +43,11 @@ where * stands for convolution operations and $\text{DS}_{4}(\dot)$ is the downs
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
-As is shown in Figure.2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. Then the complex spectrogram can be reconstruct with the following equation:
+As is shown in Figure.2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. The complex spectrogram can be reconstruct with the following equation:
 $$
 \hat{S}_{sub} = relu(|{X}_{sub}|\cdot \hat{M}+\hat{Q})e^{j(\angle X_{sub} +\angle \hat{\theta})},
 $$
-in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We use relu activation to ensure the positve magnitude value. Finally we perform inverse STFT and subband reconstruction to obtain $\hat{s}_{sub}$ and source estimation $\hat{s}$:
+in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$ and $sin\angle \hat{\theta}=\hat{P}_{i}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We use relu activation to ensure the positve magnitude value. Finally we perform inverse STFT and subband reconstruction to obtain $\hat{s}_{sub}$ and source estimation $\hat{s}$:
 $$
 \hat{s} = \sum_{j=1}^{4}\text{US}_4(\hat{s}_{sub})*g_j,
 $$
@@ -68,7 +68,6 @@ The following table lists the results of the baselines and our proposed system. 
 |    Demucs    |  6.89  | **6.57**  | **6.53**  | 5.14  |  6.28   |
 | CWS-PResUNet |  **8.92**  | 6.38  | 5.93  | **5.84**  |  6.77   |
 |    ByteMSS   |  8.92  | 6.57  | 6.53  | 5.84  |  **6.97**   |
-
 
 <!-- # Conclusion -->
 
