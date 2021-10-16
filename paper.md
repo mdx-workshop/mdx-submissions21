@@ -43,8 +43,6 @@ Normally source-dedicated model only need to predict one source. For example, ou
 
 Models are optimized using the training part of MUSDB18HQ[@rafii2019musdb18]. We use Adam optimizer with learning-rate warmup and exponential decay tricks. CWS-PResUNet takes approximately five days to train on a Tesla V100 GPU. We use a 10-second long `boxcar` windowing function with no overlapping to segment signal during inference. The evaluation is performed on MUSDB18HQ test set with the open-sourced tool *museval*[@SiSEC18]. 
 
-<!-- We suppose freqeuncy domain model is more powerful on modeling complex harmonic patterns and time domain model is better for purcussive and band-limited patterns.  -->
-
 The following table lists the results of the baselines and our proposed system. Evaluation  shows our CWS-PResUNets achieve a SDR of 8.92 and 5.84 on `vocals` and `other` sources, respectively, outperforming baseline system X-UMX[@x-umx-sawata2021all], D3Net[@takahashi2020d3net], and Demucs by a large margin. The SDR of the `other` model will decrease to 5.62 if not trained with four sources. The open-sourced demucs perform better than CWS-PResUNet on `bass` and `drums` and we integrate demucs directly in ByteMSS. 
 
 |    Models    | Vocals | Drums |  Bass | Other | Average |
