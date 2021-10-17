@@ -29,7 +29,7 @@ Music source separation (MSS) shows active progresses with deep learning models 
 
 # Method
 
-![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.^[We draw the input of this graph as mono for simplicity.]](graphs/main.png){ width=100% }
+![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.^[We use mono signal for simple illustration.]](graphs/main.png){ width=100% }
 
 **ByteMSS** is our system submitted for the MDX Challenge [@mitsufuji2021music]. we set up the open-sourced Demucs [@defossez2019demucs] to separate `bass` and `drums` tracks because it perform better than CWS-PResUNet on these two sources. Demucs is a time-domain MSS model. In our study, we adopted the open-sourced pre-trained Demucs^[https://github.com/facebookresearch/demucs] and do not apply the shift trick because it will slow down the inference speed. Also, we utilize a 276-layer CWS-PResUNet to separate the `vocals` track, and a 166-layer CWS-PResUNet for the `other` track. We set the latter with less layers for faster inference speed concern. 
 
@@ -37,11 +37,11 @@ Music source separation (MSS) shows active progresses with deep learning models 
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [DS_4({x_{2\times L}}*{h}_j)]_{j=1,2,3,4},
 $$
-where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the short-time fourier transform (STFT) of the downsampled subband signals to obtain their magnitude spectrograms $|X^{\prime}|$. 
+where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the short-time fourier transform (STFT) of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times F}$. 
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
-As is shown in Figure 2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip-connections between the same level. It accepts $|X|^{\prime}_{8\times T \times F}$ as input and estimates four tensors with the same shape: mask estimation $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. The complex spectrogram can be reconstructed with the following equation:
+As is shown in Figure 2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip-connections between the same level. It accepts $|X^{\prime}|$ as input and estimates four tensors with the same shape: mask estimation $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. The complex spectrogram can be reconstructed with the following equation:
 $$
 \hat{S}^{\prime} = \text{relu}(|X^{\prime}|\odot \text{sigmoid}(\hat{M})+\hat{Q})e^{j(\angle X^{\prime} +\angle \hat{\theta})},
 $$
