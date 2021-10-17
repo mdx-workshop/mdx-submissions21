@@ -43,7 +43,7 @@ where * stands for convolution operations and $DS_{4}(\dot)$ is the downsampling
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
-As is shown in Figure.2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. The complex spectrogram can be reconstruct with the following equation:
+As is shown in Figure 2, the phase-aware ResUNet is a symmetric architecture containing a down-sampling and an up-sampling path with skip connections between the same level. It accepts $|{X}_{sub}|$ as input and estimates four tensors with the same shape: ratio mask $\hat{M}$, phase variation $\hat{P}_{r}$, $\hat{P}_{i}$, and direct magnitude prediction $\hat{Q}$. The complex spectrogram can be reconstruct with the following equation:
 $$
 \hat{S}_{sub} = relu(|{X}_{sub}|\cdot sigmoid(\hat{M})+\hat{Q})e^{j(\angle X_{sub} +\angle \hat{\theta})},
 $$
