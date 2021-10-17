@@ -31,7 +31,7 @@ Music source separation (MSS) has shown tremendous success with deep learning mo
 
 ![Overview of our system and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.](graphs/main.png){ width=100% }
 
-**ByteMSS** is our system submitted for the MDX Challenge[@mitsufuji2021music]. we set up the open-sourced demucs[@defossez2019demucs] to separate `bass` and `drums` tracks, a 276-layer CWS-ResUNet for the `vocals` track, and a 166-layer CWS-PResUNet for `other` track.
+**ByteMSS** is our system submitted for the MDX Challenge[@mitsufuji2021music]. we set up the open-sourced demucs[@defossez2019demucs] to separate `bass` and `drums` tracks, a 276-layer CWS-ResUNet for the `vocals` track, and a 166-layer CWS-PResUNet for the `other` track.
 
 **Demucs** is a time domain MSS model. In our study, we adopted the open-sourced pre-trained demucs^[https://github.com/facebookresearch/demucs] and do not apply the shift trick because it will slow down the inference speed.
 
