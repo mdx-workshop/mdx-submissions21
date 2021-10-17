@@ -33,9 +33,9 @@ Music source separation (MSS) shows active progresses with deep learning models 
 
 **ByteMSS** is our system submitted for the MDX Challenge [@mitsufuji2021music]. we set up the open-sourced Demucs [@defossez2019demucs] to separate `bass` and `drums` tracks because it perform better than CWS-PResUNet on these two sources. Demucs is a time-domain MSS model. In our study, we adopted the open-sourced pre-trained Demucs^[https://github.com/facebookresearch/demucs] and do not apply the shift trick because it will slow down the inference speed. Also, we utilize a 276-layer CWS-PResUNet to separate the `vocals` track, and a 166-layer CWS-PResUNet for the `other` track. We set the latter with less layers for faster inference speed concern. 
 
-**CWS-PResUNet** is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. For a stereo mixture signal $x \in R^{2\times L}$, where $L$ stands for signal length, we first utilize pre-defined analysis filters ${h}_1$,${h}_2$,${h}_3$, and ${h}_4$ to perform subband decompositions:
+**CWS-PResUNet** is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. For a stereo mixture signal $x \in R^{2\times L}$, where $L$ stands for signal length, we first utilize pre-defined analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
 $$
-x^{\prime}_{8\times \frac{L}{4}} = [DS_4({x_{2\times L}}*{h}_j)]_{j=1,2,3,4},
+x^{\prime}_{8\times \frac{L}{4}} = [DS_4({x_{2\times L}}*{h}^{(j)}_{2\times 64}]_{j=1,2,3,4},
 $$
 where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the short-time fourier transform (STFT) of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times F}$. 
 
@@ -47,9 +47,9 @@ $$
 $$
 in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$ and $sin\angle \hat{\theta}=\hat{P}_{i}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We pass the mask estimation $\hat{M}$ through a sigmoid function to obtain a mask with values between 0 and 1. Then by estimating $\hat{Q}$ and $\hat{\theta}$, models can calculate the unbounded cIRM and avoid the limited upper bound brought by estimating mask with bounded values and using mixture phase [@kong2021decoupling]. We use relu activation to ensure the positve magnitude value. Finally, after the inverse STFT, we perform subband reconstructions to obtain the source estimation $\hat{s}$:
 $$
-\hat{s}_{2\times L} = \sum_{j=1}^{4}US_4(\hat{s}^{\prime}_{8\times \frac{L}{4}})*g_j,
+\hat{s}_{2\times L} = \sum_{j=1}^{4}US_4(\hat{s}^{\prime}_{8\times \frac{L}{4}})*g^{(j)}_{8\times 64},
 $$
-where $g_j$ is the pre-defined synthesis filters and $US_4(\cdot)$ is the zero-insertion upsampling function.
+where $g^{(j)}, j=1,2,3,4$ are the pre-defined synthesis filters and $US_4(\cdot)$ is the zero-insertion upsampling function.
 
 As is illustrated in Figure 1b, the CWS feature can make the CNN feature-maps smaller and save computational resources. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels. Our model for `vocals` is optimized by calculating L1 loss between $\hat{s}$ and its target source $s$. Despite we also use a model dedicated to separate the `other` track, we notice estimating and optimizing four sources together can result in a 0.2 SDR [@vincent2006performance] gain on `other`. So, we calculate both L1 loss and energy-conservation loss across four sources to optimize the model for `other`. Our CWS-PResUNet models for `bass` and `drums` reported in the next section employ the same setup as the model for `other`.
 
@@ -69,7 +69,7 @@ The subband analysis and synthesis operations usually cannot achieve perfect rec
 
 Table 2 lists the results of the baselines and our proposed systems. Our CWS-PResUNets achieve an SDR of 8.92 and 5.84 on `vocals` and `other` sources, respectively, outperforming the baseline X-UMX [@x-umx-sawata2021all], D3Net [@takahashi2020d3net], and Demucs systems by a large margin. Demucs performs better than CWS-PResUNet on `bass` and `drums` tracks. We assume that is because time-domain models can learn better representations than time-frequency features so are more suitable on separating percussive and band-limited sources. The average performance of our ByteMSS system is 6.97, marking a SoTA performance on MSS. Considering the high performance of the `vocals` model, we also attempt to separate three instrumental sources from `mixture` minus `vocals`. In this case, the average score remains 6.97, in which the `drums` score increase to 6.72 but the other three sources drop slightly. In the future we will address the integration of time and frequency models for the compensations in both domains.
 
-![](graphs/table2.png){ width=75% }
+![](graphs/table2.png){ width=100% }
 
 <!-- |    Models    | Vocals | Drums |  Bass | Other | Average |
 |:------------:|:------:|:-----:|:-----:|:-----:|:-------:|
