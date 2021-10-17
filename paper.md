@@ -61,19 +61,23 @@ Our models are optimized using the training subset of MUSDB18HQ [@rafii2019musdb
 
 The subband analysis and synthesis operations usually cannot achieve perfect reconstruction. To assess the errors introduced by subband operations, we decompose the test set `vocals` tracks into 2,4 and 8 subbands and reconstruct them back for evaluations. As is presented in Table 1, in all cases subband reconstructions achieve a high performance with only neglectable errors.
 
-| Subband numbers |   2   |   4  |   8  |
+<!-- | Subband numbers |   2   |   4  |   8  |
 |:---------------:|:-----:|:----:|:----:|
-|       SDR       | 102.3 | 93.7 | 79.9 |
+|       SDR       | 102.3 | 93.7 | 79.9 | -->
+
+![](graphs/table1.png){ width=100% }
 
 Table 2 lists the results of the baselines and our proposed systems. Our CWS-PResUNets achieve an SDR of 8.92 and 5.84 on `vocals` and `other` sources, respectively, outperforming the baseline X-UMX [@x-umx-sawata2021all], D3Net [@takahashi2020d3net], and Demucs systems by a large margin. Demucs performs better than CWS-PResUNet on `bass` and `drums` tracks. We assume that is because time-domain models can learn better representations than time-frequency features so are more suitable on separating percussive and band-limited sources. The average performance of our ByteMSS system is 6.97, marking a SoTA performance on MSS. Considering the high performance of the `vocals` model, we also attempt to separate three instrumental sources from `mixture` minus `vocals`. In this case, the average score remains 6.97, in which the `drums` score increase to 6.72 but the other three sources drop slightly. In the future we will address the integration of time and frequency models for the compensations in both domains.
 
-|    Models    | Vocals | Drums |  Bass | Other | Average |
+![](graphs/table2.png){ width=75% }
+
+<!-- |    Models    | Vocals | Drums |  Bass | Other | Average |
 |:------------:|:------:|:-----:|:-----:|:-----:|:-------:|
 |     X-UMX    |  6.61  |  6.47  | 5.43  | 4.64  |  5.79  |
 |     D3Net    |  7.24  |  7.01 |  5.25 |  4.53 |  6.01   |
 |    Demucs    |  6.89  | **6.57**  | **6.53**  | 5.14  |  6.28   |
 | CWS-PResUNet |  **8.92**  | 6.38  | 5.93  | **5.84**  |  6.77   |
-|    ByteMSS   |  8.92  | 6.57  | 6.53  | 5.84  |  **6.97**   |
+|    ByteMSS   |  8.92  | 6.57  | 6.53  | 5.84  |  **6.97**   | -->
 
 # Acknowledgements
 
