@@ -75,7 +75,9 @@ The table below lists the results of the baselines and our proposed systems. Our
 | CWS-PResUNet |  **8.92**  | 6.38  | 5.93  | **5.84**  |  6.77   |
 |    ByteMSS   |  8.92  | 6.57  | 6.53  | 5.84  |  **6.97**   |
 
-<!-- # Conclusion -->
+# Acknowledgements
+
+This project is funded by ByteDance Inc. We acknowledge the support from Haonan Chen for testing our system. 
 
 
 # Reference
