@@ -34,7 +34,7 @@ arxiv-doi: 10.21105/joss.01667
 # Summary
 
 This paper presents KUIELAB-MDX-Net, a source separation model based on deep learning.
-KIELab-MDX-Net took a second place on the leaderboard A and a third place on the leaderboard B in the Music Demixing Challenge.
+KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge.
 
 # Introduction
 
@@ -82,7 +82,7 @@ It should be noted that a latent source is not manually defined but automaticall
 
 ## Mixer
 
-## Blending with Demux
+## Blending with Demucs
 
 # Experimental Results
 
