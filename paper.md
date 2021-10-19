@@ -4,22 +4,22 @@ tags:
   - separation
   - u-net
 authors:
+  - name: Minseok Kim^[co-first author]
+    affiliation: 1
   - name: Woosung choi^[co-first author]
     orcid: 0000-0003-2638-2097
-    affiliation: 1 # (Multiple affiliations must be quoted)
-  - name: Minseok Kim^[co-first author]
-    affiliation: 2
+    affiliation: 2 # (Multiple affiliations must be quoted)
   - name: Jaehwa Chung
     affiliation: 3
   - name: Daewon Lee
     affiliation: 4
   - name: Soonyoung Jung^[corresponding author]
-    affiliation: 2
+    affiliation: 1
 
 affiliations:
- - name: Queen Mary University of London
-   index: 1
  - name: Korea University
+   index: 1
+ - name: Queen Mary University of London
    index: 2
  - name: Korea National Open University
    index: 3
@@ -33,80 +33,60 @@ arxiv-doi: 10.21105/joss.01667
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+This paper presents KUIELAB-MDX-Net, a source separation model based on deep learning.
+KIELab-MDX-Net took a second place on the leaderboard A and a third place on the leaderboard B in the Music Demixing Challenge.
 
-# Statement of need
+# Introduction
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+# Related work
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+## Frequency Transformation for Source Separation
 
-# Mathematics
+<!-- from lasaft-v2 -->
+A Frequency Transformation} (FT) block captures frequency patterns of the target source observed in the Time-Frequency (TF) spectrograms.
+Recently proposed methods have shown that employing FT blocks in a source separation model can significantly enhance the performance.
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+For example, proposed an FT block called Time Distributed Fully connected layers (TDF).
+%It is a series of fully connected layers.
+A TDF is applied to each frame of a spectrogram-like internal feature map.
+It aims to analyse frequency-to-frequency dependencies that are helpful to capture distinguishable characteristics such as the timbre of the target source.
+By applying an FT block after each convolutional building block in a conventional U-Net structure, their model achieved outstanding performance of 7.98dB SDR on the singing voice separation task of the MUSDB18 benchmark.
 
-Double dollars make self-standing equations:
+### Visualizations
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
+<!-- from mapping or masking -->
+\caption{Weight Visualization in single-layered TIFs}
+\label{fig:vis}
+\end{figure}
 
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
+\subsubsection{Bottleneck Layers in TIFs}
+The second row in Table \ref{table:ablation} shows the SDR performance of TFC-TIF-U-Net architecture without bottleneck layers in TIFs. Its performance is slightly lower than that of the reference model. However, it is worthy to say we can reduce a large amount of the number of parameters for each TIFs: about $bf^{2}/2$ times smaller than a single-layered TIF, where $bf$ is a bottleneck factor.
 
-# Citations
+Despite its low SDR, single-layered TIFs provide us insight for a better understanding of how it enhances frequency correlation features. Inspired by \cite{phasen}, we also visualized the weight matrix after training, as shown in Figure \ref{fig:vis}. Figure \ref{fig:vis} (a),(b),(c) and (d) visualize the weight matrix of the first TIFs for each model. We can observe each matrix is optimized to enhance timbre features for its own instrument by capturing distinct frequency dependencies observed along the frequency axis. Also, we can observe that each TIF still performs well in multi-scales.
 
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
+## Latent Source Analysis
 
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
+<!-- from lasaft-v2 -->
+Humans are used to classifying a group of instruments as a single label, such as `drums'.
+However, a symbolically labelled source comprises sub-components with different sonic characteristics such as `kick', `snare', and `hats.'
+Recent methods introduced the concept called {latent sources} to take such sub-components into account.
+We can perform fine-grained sound analysis with this approach by relaxing the hard-coded labelling over instruments.
+For example, models can learn the characteristics of `kick drums', which is not human-labelled, from training data.
+It should be noted that a latent source is not manually defined but automatically trained to minimise the loss function.
 
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+# KUIELAB-MDX-Net
 
-# Figures
+## Overall Architecture
 
-Figures can be included like this:
+## Conv-TDF-U-Net
 
-![Caption for example figure.\label{fig:example}](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
+## Mixer
 
-and referenced from text using \autoref{fig:example}.
+## Blending with Demux
+
+# Experimental Results
+
 
 # Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
