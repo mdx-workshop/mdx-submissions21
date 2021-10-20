@@ -103,7 +103,7 @@ Table1 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to r
 |-----------------|--------|-------|------|-------|
 | Conv-TDF-U-Net  | 8.91   | 6.86  | 7.30 | 6.18 |
 | Conv-TDF-U-Net + Mixer   | 8.88  | **7.09** | **7.38** | **6.29** |
-| KUIELAB-MDX-Net | 8.91   | 6.86  | 7.30 | 6.18 |
+| KUIELAB-MDX-Net | 8.99   | 7.69  | 7.62 | 6.56 |
 
 
 # Acknowledgements
