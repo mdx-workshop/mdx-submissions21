@@ -91,19 +91,19 @@ It should be noted that a latent source is not manually defined but automaticall
 ## Performance on the MUSDB Benchmark
 We compare our models with current state-of-the-art models on the MUSDB benchmark using the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR). We report the median SDR over all 50 songs in the MUSDB test set. Only models for Leaderboard A were evaluated, since our submissions for Leaderboard B uses the MUSDB test set as part of the training set.
 
-Table1 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. Since KUIELAB-MDX-Net is an ensemble, we also included our base architecture (Conv-TDF-U-Net + Mixer) for a better comparison. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves best SDR for "bass" and "other".
+Table1 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. Since KUIELAB-MDX-Net is an ensemble, we also included our base architecture (Conv-TDF-U-Net + Mixer) for a better comparison. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves best SDR for every instrument except "vocals".
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
 | TFC-TDF-U-Net   | 7.98   | 6.11  | 5.94 | 5.02  |
 | X-UMX           | 6.61   | 6.47  | 5.43 | 4.64  |
 | Demucs_v2       | 6.84   | 6.86  | 7.01 | 4.42  |
-| D3Net           | 7.24   | **7.01**  | 5.25 | 4.53  |
-| ResUNetDecouple+| **8.98**   | 6.62  | 6.04 | 5.29  |
+| D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
+| ResUNetDecouple+| **8.98** | 6.62  | 6.04 | 5.29  |
 |-----------------|--------|-------|------|-------|
-| Conv-TDF-U-Net  | 8.91   | 6.86  | **7.30** | **6.18** |
-| Conv-TDF-U-Net + Mixer   | 8.91   | 6.86  | **7.30** | **6.18** |
-| KUIELAB-MDX-Net | 8.91   | 6.86  | **7.30** | **6.18** |
+| Conv-TDF-U-Net  | 8.91   | 6.86  | 7.30 | 6.18 |
+| Conv-TDF-U-Net + Mixer   | 8.88  | **7.09** | **7.38** | **6.29** |
+| KUIELAB-MDX-Net | 8.91   | 6.86  | 7.30 | 6.18 |
 
 
 # Acknowledgements
