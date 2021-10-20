@@ -1,8 +1,8 @@
 ---
-title: 'Decomposed Latent Source'
+title: 'Learning source-aware representations of music on a discrete latent space'
 tags:
   - separation
-  - u-net
+  - vq-vae
 authors:
   - name: Jinsung Kim^[co-first author]
     affiliation: 1
