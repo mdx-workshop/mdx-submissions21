@@ -1,5 +1,5 @@
 ---
-title: 'LightSAFT'
+title: 'LightSAFT: Light weight Latent Source Aware Source Frequency Transform for Source Separation'
 tags:
   - separation
   - u-net
@@ -7,7 +7,7 @@ authors:
   - name: Yeong-Seok Jeong^[co-first author] # note this makes a footnote saying 'co-first author'
     orcid: 0000-0003-0872-7098
     affiliation: 1 # (Multiple affiliations must be quoted)
-  - name: Jinsung Kim[co-first author] # note this makes a footnote saying 'co-first author'
+  - name: Jinsung Kim^[co-first author] # note this makes a footnote saying 'co-first author'
     affiliation: 1
   - name: Woosung Choi
     orcid: 0000-0003-2638-2097
