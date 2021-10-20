@@ -1,5 +1,5 @@
 ---
-title: 'Source Separation Explorations and Applications'
+title: 'Source Separation: Explorations and Applications'
 tags:
   - separation
   - TagBox
@@ -61,7 +61,9 @@ Jukebox as the pretrained generative model, and we couple it with four
 kinds of pretrained music taggers (two architectures and two tagging datasets).
 Experimental results on two source separation datasets, show this approach can
 produce separation estimates for a wider variety of sources than any tested
-supervised or unsupervised system. This work points to the vast and heretofore
+supervised or unsupervised system. I will also show a fun example of how this
+setup can do unsupervised musical style transfer.
+This work points to the vast and heretofore
 untapped potential of large pretrained music models for audio-to-audio tasks
 like source separation.
 
