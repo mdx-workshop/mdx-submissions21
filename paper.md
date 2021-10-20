@@ -100,7 +100,7 @@ All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval 
 | DGRU-DGConv     | 6.85   | 5.85  | 4.86 | 4.65  |
 | MMDenseLSTM     | 6.60   | 6.43  | 5.16 | 4.15  |
 | D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
-| KUIELAB-MDX-Net |        |       |      |       |
+| **KUIELAB-MDX-Net** |        |       |      |       |
 
 
 ## Ablation Study
