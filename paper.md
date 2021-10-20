@@ -99,8 +99,7 @@ All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval 
 | D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
 | ResUNetDecouple+| 8.98   | 6.62  | 6.04 | 5.29  |
 | **KUIELAB-MDX-Net** |        |       |      |       |
-
-Table: Comparison with state-of-the-art models on MUSDB dataset
+[Comparison with state-of-the-art models on MUSDB dataset]
 
 ## Ablation Study
 
