@@ -1,15 +1,19 @@
 ---
-title: 'Music separation is all you need'
+title: 'Source Separation Explorations and Applications'
 tags:
   - separation
-  - u-net
+  - TagBox
+  - OpenAI's Jukebox
+  - Music Taggers
+  - Audacity
+  - HuggingFace
 authors:
   - name: Ethan Manilow
     affiliation: 1
 affiliations:
  - name: Interactive Audio Lab, Northwestern University
    index: 1
-date: 10 August 2021
+date: 12 November 2021
 bibliography: paper.bib
 arxiv-doi: 10.21105/joss.01667
 ---
@@ -34,7 +38,7 @@ getting trained models into the hands of end-users. This work lets model
 creators a way to sidestep DAW-specific development work and enables them to
 upload pretrained PyTorch models to HuggingFace, where they will automatically
 be discoverable and runnable within Audacity's UI by end-users. In this talk,
-I will provide a high level overview of this software framework.
+I will provide a high level overview of this software framework. We hope 
 
 
 
@@ -67,10 +71,15 @@ like source separation.
 ![TagBox diagram.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/){ width=40% }
 
 
-In the second part of this talk, I will talk about our software framework that
-integrates neural networks into Audacity. 
-
-
+In the second part of this talk, I will talk about our newly developed software
+framework that integrates neural networks into Audacity. Once a developer
+has a trained PyTorch model, they are able to compile it using torchscript and
+upload it to HuggingFace. Once on HuggingFace, the model will be available
+to users of Audacity, directly accessible through the GUI. This enables
+end-users to run deep learning models without learning how to code and enables
+model creators to put their work into the hands of end-users, without extra
+development. We hope this work will reduce the gap between model creators
+and artists.
 
 
 ## How to cite
