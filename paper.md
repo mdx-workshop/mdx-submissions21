@@ -91,6 +91,18 @@ All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval 
 
 ## Performance on the MUSDB18 Benchmark
 
+|                 | vocals | drums | bass | other |
+|-----------------|--------|-------|------|-------|
+| Demucs          | 6.84   | 6.86  | 7.01 | 4.42  |
+| Conv-Tasnet     | 6.43   | 6.02  | 6.20 | 4.27  |
+| Meta-TasNet     | 6.40   | 5.91  | 5.58 | 4.19  |
+| UMX             | 6.32   | 5.73  | 5.23 | 4.02  |
+| DGRU-DGConv     | 6.85   | 5.85  | 4.86 | 4.65  |
+| MMDenseLSTM     | 6.60   | 6.43  | 5.16 | 4.15  |
+| D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
+| KUIELAB-MDX-Net |        |       |      |       |
+
+
 ## Ablation Study
 
 
