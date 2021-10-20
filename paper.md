@@ -44,7 +44,7 @@ I will provide a high level overview of this software framework. We hope
 
 # TagBox
 
-![TagBox diagram.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/){ width=40% }
+![TagBox diagram.](https://github.com/ethman/mdx-submissions21/raw/EthanManilow/tagbox_diagram.png){ width=40% }
 
 The first part of this talk is about TagBox. TagBox is an method that repurposes
 deep models trained for music generation and music tagging for audio source
@@ -68,7 +68,7 @@ like source separation.
 
 # Deep Learning Tools for Audacity 
 
-![TagBox diagram.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/){ width=40% }
+![Audacity diagram.](https://github.com/ethman/mdx-submissions21/raw/EthanManilow/audacity_diagram.png){ width=40% }
 
 
 In the second part of this talk, I will talk about our newly developed software
