@@ -89,20 +89,23 @@ It should be noted that a latent source is not manually defined but automaticall
 We give two experimental results: a comparison with current state-of-the-art models on the MUSDB benchmark, and ablation results. 
 All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB test set.
 
-## Performance on the MUSDB18 Benchmark
+Table1 shows MUSDB benchmark performance of our base architecture Conv-TDF-U-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. 
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
-| UMX             | 6.61   | 6.47  | 5.43 | 4.64  |
-| DGRU-DGConv     | 6.85   | 5.85  | 4.86 | 4.65  |
+| X-UMX           | 6.61   | 6.47  | 5.43 | 4.64  |
 | Demucs v2       | 6.84   | 6.86  | 7.01 | 4.42  |
-| D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
-| ResUNetDecouple+| 8.98   | 6.62  | 6.04 | 5.29  |
-| **KUIELAB-MDX-Net** |        |       |      |       |
-[Comparison with state-of-the-art models on MUSDB dataset]
+| D3Net           | 7.24   | **7.01**  | 5.25 | 4.53  |
+| ResUNetDecouple+| **8.98**   | 6.62  | 6.04 | 5.29  |
+| TFC-TDF-U-Net   | 7.98   | 6.11  | 5.94 | 5.02  |
+| Conv-TDF-U-Net  | 8.91   | 6.86  | **7.30** | **6.18** |
 
-## Ablation Study
 
+|                 | vocals | drums | bass | other |
+|-----------------|--------|-------|------|-------|
+| KUIELAB-MDX-Net            | 6.61   | 6.47  | 5.43 | 4.64  |
+| w/o Demucs                 | 6.85   | 5.85  | 4.86 | 4.65  |
+| w/o Mixer (Conv-TDF-U-Net) | 6.84   | 6.86  | 7.01 | 4.42  |
 
 # Acknowledgements
 
