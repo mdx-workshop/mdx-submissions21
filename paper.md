@@ -86,26 +86,26 @@ It should be noted that a latent source is not manually defined but automaticall
 
 # Experimental Results
 
-We give two experimental results: a comparison with current state-of-the-art models on the MUSDB benchmark, and ablation results. 
-All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB test set.
+## Setup
 
-Table1 shows MUSDB benchmark performance of our base architecture Conv-TDF-U-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. 
+## Performance on the MUSDB Benchmark
+In this section we give a compare our models with current state-of-the-art models on the MUSDB benchmark. 
+All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB test set. Only models for Leaderboard A were evaluated, since our submissions for Leaderboard B uses the MUSDB test set as part of the training set.
+
+Table1 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. Since KUIELAB-MDX-Net is an ensemble, we also included our base architecture (Conv-TDF-U-Net + Mixer) for a better comparison. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves best SDR for "bass" and "other".
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
+| TFC-TDF-U-Net   | 7.98   | 6.11  | 5.94 | 5.02  |
 | X-UMX           | 6.61   | 6.47  | 5.43 | 4.64  |
-| Demucs v2       | 6.84   | 6.86  | 7.01 | 4.42  |
+| Demucs_v2       | 6.84   | 6.86  | 7.01 | 4.42  |
 | D3Net           | 7.24   | **7.01**  | 5.25 | 4.53  |
 | ResUNetDecouple+| **8.98**   | 6.62  | 6.04 | 5.29  |
-| TFC-TDF-U-Net   | 7.98   | 6.11  | 5.94 | 5.02  |
-| Conv-TDF-U-Net  | 8.91   | 6.86  | **7.30** | **6.18** |
-
-
-|                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
-| KUIELAB-MDX-Net            | 6.61   | 6.47  | 5.43 | 4.64  |
-| w/o Demucs                 | 6.85   | 5.85  | 4.86 | 4.65  |
-| w/o Mixer (Conv-TDF-U-Net) | 6.84   | 6.86  | 7.01 | 4.42  |
+| Conv-TDF-U-Net  | 8.91   | 6.86  | **7.30** | **6.18** |
+| Conv-TDF-U-Net + Mixer   | 8.91   | 6.86  | **7.30** | **6.18** |
+| KUIELAB-MDX-Net | 8.91   | 6.86  | **7.30** | **6.18** |
+
 
 # Acknowledgements
 
