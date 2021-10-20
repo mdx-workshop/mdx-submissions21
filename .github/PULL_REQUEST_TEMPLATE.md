@@ -14,7 +14,7 @@ I request a review for the following MDX submission:
 **Category ***
 
 * [ ] Abstract + Poster
-* [ ] Long Talk
+* [x] Long Talk
 * [ ] Seminar/Discussion
 
 **Preferred Timezone***

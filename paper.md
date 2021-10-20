@@ -1,22 +1,29 @@
 ---
-title: 'Music separation is all you need'
+title: 'LightSAFT'
 tags:
   - separation
   - u-net
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
+  - name: Yeong-Seok Jeong^[co-first author] # note this makes a footnote saying 'co-first author'
     orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
+    affiliation: 1 # (Multiple affiliations must be quoted)
+  - name: Jinsung Kim[co-first author] # note this makes a footnote saying 'co-first author'
+    affiliation: 1
+  - name: Woosung Choi
+    orcid: 0000-0003-2638-2097
     affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
+  - name: Jaehwa Chung
     affiliation: 3
+  - name: Soonyoung Jung^[corresponding author]
+    affiliation: 1
+    
+
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Korea University
    index: 1
- - name: Institution Name
+ - name: Queen Mary University of London
    index: 2
- - name: Independent Researcher
+ - name: Korea National Open University
    index: 3
 date: 10 August 2021
 bibliography: paper.bib
@@ -25,80 +32,43 @@ arxiv-doi: 10.21105/joss.01667
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+Conditioned source separations have attracted significant attention because of their flexibility, applicability and extensionality.
+Their performance was usually inferior to the existing approaches such as the single source separation model.
+However, a recently proposed method called LaSAFT-Net has shown that conditioned models can show comparable performance against existing single source separation models.
+This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a plausible SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
+This paper also enhances the existing Lightsaft-Net by replacing the  Lightsaft blocks in the encoder with TFC-TDF blocks.
+Our enhanced Lightsaft-Net outperforms another baseline, demucs48-HQ.
 
-# Statement of need
+# Introduction
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+Many methods were conducted for Music Source Separation task. 
+They can be distinguished depending on their approach: single source separation, multi-head source separation, 
+conditioned source separation.
+The conditioned source separation method, which shares the parameters for each source separation, 
+is the most attractive approach even though it falls short of other methods' 
+performance since it shares parameter for each separation task. 
+The LaSAFT-Net is representative conditioned source separation model. 
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+The LaSAFT-Net applies the LaSAFT blocks, capturing the latent source's frequency patterns depending on the target source's condition.
+They assume that each latent source independently separates the mixture source, 
+and the attention mechanism can capture the relevant latent sources on the target source's condition. 
+According to their assumption, they show comparable performance in the MusDB18 benchmark. 
+However, they consume lots of parameters for generating latent sources. 
+It prevents the model's applicability in a restricted environment like Music Demix Challenge (MDX) in ISMIR. 
+Therefore, we explore the methods to decrease the LaSAFT-Net's parameters. 
 
-# Mathematics
+We focus on the latent source separation procedure. 
+The LaSAFT-Net redundantly spends its parameters to identify each latent source.
+Our model LightSAFT-Net reduce the redundant parameter via removing unnecessary weights from 
+LaSAFT blocks. 
+Furthermore, we find performance enhancing method that replacing LaSAFT block in the encoder with the Time-Frequency Convolution
+(TFC) and Time Distributed Fully-connected networks (TDF) is more adaptive for this task.
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+In this paper, we explore the method for light version of LaSAFT.
+Our method already present the performance as comparison at MDX in ISMIR. 
+This paper's contributions are as follows:
+- The LightSAFT-Net, which is available applying in poor condition, shows plausible performance in MDX. 
+- The enhanced version of LightSAFT shows the better performance than demucs48-HQ which is another baseline model in MDX.
 
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
-
-and referenced from text using \autoref{fig:example}.
-
-# Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
