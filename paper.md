@@ -86,6 +86,13 @@ It should be noted that a latent source is not manually defined but automaticall
 
 # Experimental Results
 
+We give two experimental results: a comparison with current state-of-the-art models on the MUSDB18 benchmark, and ablation results. 
+All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB18 test set.
+
+## Performance on the MUSDB18 Benchmark
+
+## Ablation Study
+
 
 # Acknowledgements
 
