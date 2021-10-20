@@ -86,22 +86,21 @@ It should be noted that a latent source is not manually defined but automaticall
 
 # Experimental Results
 
-We give two experimental results: a comparison with current state-of-the-art models on the MUSDB18 benchmark, and ablation results. 
-All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB18 test set.
+We give two experimental results: a comparison with current state-of-the-art models on the MUSDB benchmark, and ablation results. 
+All comparisons are made with the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR) and we report the median SDR over all 50 songs in the MUSDB test set.
 
 ## Performance on the MUSDB18 Benchmark
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
-| Demucs          | 6.84   | 6.86  | 7.01 | 4.42  |
-| Conv-Tasnet     | 6.43   | 6.02  | 6.20 | 4.27  |
-| Meta-TasNet     | 6.40   | 5.91  | 5.58 | 4.19  |
-| UMX             | 6.32   | 5.73  | 5.23 | 4.02  |
+| UMX             | 6.61   | 6.47  | 5.43 | 4.64  |
 | DGRU-DGConv     | 6.85   | 5.85  | 4.86 | 4.65  |
-| MMDenseLSTM     | 6.60   | 6.43  | 5.16 | 4.15  |
+| Demucs v2       | 6.84   | 6.86  | 7.01 | 4.42  |
 | D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
+| ResUNetDecouple+| 8.98   | 6.62  | 6.04 | 5.29  |
 | **KUIELAB-MDX-Net** |        |       |      |       |
 
+Table: Comparison with state-of-the-art models on MUSDB dataset
 
 ## Ablation Study
 
