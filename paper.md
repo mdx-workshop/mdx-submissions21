@@ -1,104 +1,83 @@
 ---
-title: 'Music separation is all you need'
+title: 'Decomposed Latent Source'
 tags:
   - separation
   - u-net
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
+  - name: Jinsung Kim^[co-first author]
+    affiliation: 1
+  - name: Yeong-Seok Jeong^[co-first author]
+    affiliation: 1
+  - name: Woosung choi
+    orcid: 0000-0003-2638-2097
+    affiliation: 2 # (Multiple affiliations must be quoted)
+  - name: Jaehwa Chung
     affiliation: 3
+  - name: Soonyoung Jung^[corresponding author]
+    affiliation: 1
+
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Korea University
    index: 1
- - name: Institution Name
+ - name: Queen Mary University of London
    index: 2
- - name: Independent Researcher
+ - name: Korea National Open University
    index: 3
 date: 10 August 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
+arxiv-doi: 
 ---
 
-# Summary
+# Abstract
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+Since humans have an auditory cortex, we can decompose individual sources by capturing the unique acoustic characteristics of them.
+Within the same perspective, we claim that the representation of music can be decomposed into the representation of the sources.
+In this paper, we propose a novel method to learn a decomposed latent representation of music through Vector-Quantized Variational Auto-Encoder (VQ-VAE).
+We train our VQ-VAE to encode an input mixture into a tensor of integers in a discrete latent space. 
+We designed the discrete latent space to have a decomposed structure which allows us to manipulate the encoded latent vector adaptive to human perception.
+We claim that it can be adopted for various applications.
+To verify this idea, we show that we can generate bass lines by estimating the sequential distribution of our model.
 
-# Statement of need
+# Introduction
+Music is a protean art, combining distinctive individual sources (e.g., vocal, instrumental sounds) in such a way to produce a creative single audio signal.
+Humans have a unique auditory cortex, allowing proficiency at hearing sounds, and sensitiveness in frequencies.
+For this reason, humans can differentiate individual sources by capturing the unique acoustic characteristics (e.g., timbre and tessitura) of them, even though what they hear is a mixture of sources.
+Moreover, experts or highly skilled composers are able to produce sheet music for different instruments.
+Meanwhile, trained orchestras or band can reproduce the original music by playing the transcribed scores.
+However, if the unskilled transcriber who writes the sheet music lacks the ability to distinguish between different music sources, no matter how good the performers are, they cannot recreate the original music.
+This procedure resembles the encoder-decoder concept, widely used in the machine learning field; a transcriber is an encoder, and an orchestra/band is a decoder.
+Motivated by this analogy, this paper proposes a method that aims to learn source-aware decomposed audio representations for the given music.
+To the best of our knowledge, numerous methods have been proposed for audio representation, yet no existing works have learned decomposed music representations.
+For Automatic Speech Recognition, \cite{baevski2020wav2vec,sadhu2021wav2vec} are proposed using Transformer\cite{vaswani2017attention}-based models to predict quantized latent vectors.
+From this approach, they trained their models to understand linguistic information in human utterance.
+\cite{ericsson2020adversarial,mun2020sound} learn voice style representations for human voice information. 
+They applied learned representations for speech separation and its enhancement. 
+Several studies have applied contrastive learning, used in representation learning\cite{niizumi2021byol,wang2021multi} for computer vision.
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+However, the goal of this paper is different from the above audio representation researches.
+We aim to learn decomposed representations through instruments' categories.
+In this work, we train a model through source separation for learning decomposed representations.
+In section \ref{sec:exp}, we show that we can easily manipulate latent representations for various applications such as source separation and music synthesis.
+Source Separation tasks have been studied both in music source separation and on speech enhancement tasks. 
+Within the generating perspective, they can be categorized into two groups. 
+The first group attempts to generate masks multiplying with the input audio through this preserving target source \cite{chien2017variational,jansson2017orcid}.
+The second group aims to directly estimate a raw audio or spectrogram \cite{kameoka2019supervised, 9053513, choi2020lasaft}.
+We adopt the latter method to obtain more various applicable tasks.
+It can generate audio samples directly when we have a prior distribution of representation.
+Many studies have proposed methods based on Variational Auto-Encoder (VAE)\cite{kameoka2019supervised} or U-Net \cite{choi2020lasaft,9053513,yuan2019skip} for source separation.
+The U-Net-based models usually show high performance in the source separation task.
+However, some studies have pointed out the fundamental limitation of U-Nets; the skip connections used in U-Nets may lead to weakening the expressive power of encoded representations \cite{yuan2019skip}.
+Therefore, we choose a VAE-based model to extract meaningful representation from the input audio.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
 
-# Mathematics
+# Proposed Methods
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+# Model
 
-Double dollars make self-standing equations:
+# Experiment
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
-
-and referenced from text using \autoref{fig:example}.
+# Conclusion
 
 # Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
