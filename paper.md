@@ -25,7 +25,8 @@ bibliography: paper.bib
 
 # Abstract  
 
-Music source separation (MSS) shows active progress with deep learning models in recent years. Many MSS models perform separations on spectrogram by estimating bounded ratio masks and reusing the phases of the mixture. When using convolutional neural networks (CNN), weights are usually shared within spectrogram during convolution regardless of the different patterns between frequency bands. In this study, we propose a new MSS model, channel-wise subband phase-aware ResUNet (CWS-PResUNet), to decompose signals into subbands and estimate the source unbound complex ideal ratio mask (cIRM) for MSS. CWS-PResUNet utilizes channel-wise subband (CWS) feature to limit unnecessary global weights sharing on the spectrogram and reduce computational resource consumptions. The saved computational cost and memory can in turn allow for a larger architecture. On the MUSDB18HQ test set, we proposed a 276-layer CWS-PResUNet and achieve state-of-the-art (SoTA) performance on `vocals` with an 8.92 signal-to-distortion ratio (SDR) score. By combining CWS-PResUNet and Demucs, our ByteMSS system^[https://github.com/haoheliu/2021-ISMIR-MSS-Challenge-CWS-PResUNet] ranks the 2nd on `vocals` score and 5th on average score in the 2021 ISMIR Music Demixing (MDX) Challenge limited training data track (leaderboard A).
+Music source separation (MSS) shows active progress with deep learning models in recent years. Many MSS models perform separations on spectrogram by estimating bounded ratio masks and reusing the phases of the mixture. When using convolutional neural networks (CNN), weights are usually shared within spectrogram during convolution regardless of the different patterns between frequency bands. In this study, we propose a new MSS model, channel-wise subband phase-aware ResUNet (CWS-PResUNet), to decompose signals into subbands and estimate the source unbound complex ideal ratio mask (cIRM) for MSS. CWS-PResUNet utilizes channel-wise subband (CWS) feature to limit unnecessary global weights sharing on the spectrogram and reduce computational resource consumptions. The saved computational cost and memory can in turn allow for a larger architecture. On the MUSDB18HQ test set, we propose a 276-layer CWS-PResUNet and achieve state-of-the-art (SoTA) performance on `vocals` with an 8.92 signal-to-distortion ratio (SDR) score. By combining CWS-PResUNet and Demucs, our ByteMSS system^[https://github.com/haoheliu/2021-ISMIR-MSS-Challenge-CWS-PResUNet] ranks the 2nd on `vocals` score and 5th on average score in the 2021 ISMIR Music Demixing (MDX) Challenge limited training data track (leaderboard A).
+
 
 # Method
 
@@ -37,7 +38,7 @@ Music source separation (MSS) shows active progress with deep learning models in
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [DS_4({x_{2\times 1 \times L}}*{h}^{(j)}_{1\times 64}]_{j=1,2,3,4},
 $$
-where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the short-time fourier transform (STFT) of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times F}$. 
+where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the short-time fourier transform (STFT) of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times \frac{F}{4}}$. 
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
@@ -47,7 +48,7 @@ $$
 $$
 in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$ and $sin\angle \hat{\theta}=\hat{P}_{i}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We pass the mask estimation $\hat{M}$ through a sigmoid function to obtain a mask with values between 0 and 1. Then by estimating $\hat{Q}$ and $\hat{\theta}$, models can calculate the unbounded cIRM and avoid the limited upper bound brought by estimating mask with bounded values and using mixture phase [@kong2021decoupling]. We use relu activation to ensure the positve magnitude value. Finally, after the inverse STFT, we perform subband reconstructions to obtain the source estimation $\hat{s}$:
 $$
-\hat{s}_{2\times L} = \sum_{j=1}^{4}US_4(\hat{s}^{\prime}_{2\times 4\times \frac{L}{4}})*g^{(j)}_{4\times 64},
+\hat{s}_{2\times L} = \sum_{j=1}^{4}(US_4(\hat{s}^{\prime}_{2\times 4\times \frac{L}{4}})*g^{(j)}_{4\times 64}),
 $$
 where $g^{(j)}, j=1,2,3,4$ are the pre-defined synthesis filters and $US_4(\cdot)$ is the zero-insertion upsampling function.
 
