@@ -86,10 +86,11 @@ The following changes were made to the original TFC-TDF-U-Net architecture:
 
 On top of these architectural changes, we also use a different loss function (waveform L1 loss) as well as source-specific data preprocessing. 
 As shown in Figure2, high frequencies that are above the expected frequency range of the target source were cut off from the mixture spectrogram. 
-This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the separation time limit), and using a larger *n_fft* usually leads to better SDR.
-
+This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the separation time limit), and using a larger *n_fft* usually leads to better SDR. This is also our main reason we did not use a multi-target model (a single model that is trained to estimate all four sources), where we can't use source-specific frequency cutting.
 
 ## Mixer
+Although training one separation model for each source can have the benefit of source-specific preprocessing and model configurations, these models lack the knowledge that they are separating using the same mixture. We thought an additional network that *can* exploit this knowledge (which we call the Mixer) could further enhance the "independently" estimated sources.
+For example, estimated 'vocals' often have drum snare noises left. The Mixer can learn to remove sounds from 'vocals' that are also present in the estimated 'drums' or vice versa.
 
 # Experimental Results
 In this section we describe the model configurations, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
