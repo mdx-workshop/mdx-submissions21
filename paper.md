@@ -76,7 +76,7 @@ It should be noted that a latent source is not manually defined but automaticall
 
 # KUIELAB-MDX-Net
 
-KUIELAB-MDX-Net consists of five networks, all trained separately. 
+As in Figure1, KUIELAB-MDX-Net consists of five networks, all trained separately. Figure1 depicts the overall flow at inference time: the four separation models (TFC-TDF-U-Net v2) first estimate each source independently, then the *Mixer* model takes these estimated sources (+ mixture) and outputs enhanced estimated sources.
 
 ## TFC-TDF-U-Net v2
 The following changes were made to the TFC-TDF-U-Net architecture:
@@ -87,15 +87,13 @@ In short, reverting back to the original U-Net architecture was better in terms 
 
 On top of these architectural changes, we also use a different loss function (waveform L1 loss) as well as source-specific data preprocessing. 
 As shown in Figure1, high frequencies that are above the expected frequency range of the target source were cut off from the mixture spectrogram. 
-This way, we can increase *n_fft* while using the same input spectrogram size (which we needed contrain for the inference time limit), and using a larger *n_fft* usually leads to better SDR.
+This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the inference time limit), and using a larger *n_fft* usually leads to better SDR.
 
 
 ## Mixer
 
 # Experimental Results
-In this section we describe our data preprocessing and augmentation techniques, network hyperparameters, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
-
-## Data Preprocessing and Augmentation
+In this section we describe the model configurations, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
 
 ## Model Configurations
 
