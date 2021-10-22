@@ -79,7 +79,7 @@ It should be noted that a latent source is not manually defined but automaticall
 As in Figure1, KUIELAB-MDX-Net consists of five networks, all trained separately. Figure1 depicts the overall flow at inference time: the four separation models (TFC-TDF-U-Net v2) first estimate each source independently, then the *Mixer* model takes these estimated sources (+ mixture) and outputs enhanced estimated sources.
 
 ## TFC-TDF-U-Net v2
-The following changes were made to the TFC-TDF-U-Net architecture:
+The following changes were made to the original TFC-TDF-U-Net architecture:
 - For "U" connections, we used multiplication instead of concatenation. 
 - Other than U connections, all skip connections were removed.
 - In TFC-TDF-U-Net v1, the number of intermediate channels are not changed after down/upsamples. For v2, they are increased when downsampling and decreased when upsampling. 
