@@ -79,7 +79,7 @@ It should be noted that a latent source is not manually defined but automaticall
 KUIELAB-MDX-Net consists of five networks, all trained separately. 
 
 ## TFC-TDF-U-Net v2
-For the MDX Challenge we modified TFC-TDF-U-Net with two objectives, fast inference and high SDR. 
+For the MDX Challenge we modified TFC-TDF-U-Net for faster inference as well as higher SDR. 
 
 The following changes were made to the network architecture:
 - For "U" connections, we used multiplication instead of concatenation. 
