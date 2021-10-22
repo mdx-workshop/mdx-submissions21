@@ -85,8 +85,8 @@ The following changes were made to the original TFC-TDF-U-Net architecture:
 - In TFC-TDF-U-Net v1, the number of intermediate channels are not changed after down/upsamples. For v2, they are increased when downsampling and decreased when upsampling. 
 
 On top of these architectural changes, we also use a different loss function (waveform L1 loss) as well as source-specific data preprocessing. 
-As shown in Figure1, high frequencies that are above the expected frequency range of the target source were cut off from the mixture spectrogram. 
-This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the inference time limit), and using a larger *n_fft* usually leads to better SDR.
+As shown in Figure2, high frequencies that are above the expected frequency range of the target source were cut off from the mixture spectrogram. 
+This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the separation time limit), and using a larger *n_fft* usually leads to better SDR.
 
 
 ## Mixer
@@ -101,7 +101,7 @@ In this section we describe the model configurations, training procedure, and ev
 ## Performance on the MUSDB Benchmark
 We compare our models with current state-of-the-art models on the MUSDB benchmark using the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR). We report the median SDR over all 50 songs in the MUSDB test set. Only models for Leaderboard A were evaluated, since our submissions for Leaderboard B uses the MUSDB test set as part of the training set.
 
-Table1 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. We also included our 2nd place submission for the MDX Challenge, which is a Blend of KUIELAB-MDX-Net and Demucs. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves best SDR for every instrument except "vocals".
+Figure3 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to recent state-of-the-art models: TFC-TDF-U-Net, X-UMX, Demucs, D3Net, ResUNetDecouple. We also included our 2nd place submission for the MDX Challenge, which is a Blend of KUIELAB-MDX-Net and Demucs. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves best SDR for every instrument except "vocals".
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
