@@ -79,9 +79,16 @@ It should be noted that a latent source is not manually defined but automaticall
 ## Overall Architecture
 
 ## TFC-TDF-U-Net v2
-For the MDX Challenge, we modified TFC-TDF-U-Net with two objectives: fast inference and high SDR.
-The following improvements were made
-- asdf
+For the MDX Challenge we modified TFC-TDF-U-Net with two objectives, fast inference and high SDR. 
+
+The following changes were made:
+- For "U" connections, we used multiplication instead of concatenation. 
+- Other than U connections, all skip connections were removed.
+- In TFC-TDF-U-Net v1, the number of intermediate channels are not changed after down/upsamples. For v2, they are increased when downsampling and decreased when upsampling.
+-  
+ 
+In short, reverting back to the original U-Net architecture was better in terms of SDR per inference time.
+However, the amount of SDR improvement is subtle compared to the improvements made with data preprocessing, which is described in Section.
 
 ## Mixer
 
