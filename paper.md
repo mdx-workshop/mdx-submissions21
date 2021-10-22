@@ -84,7 +84,6 @@ The following changes were made to the original TFC-TDF-U-Net architecture:
 - Other than U connections, all skip connections were removed.
 - In TFC-TDF-U-Net v1, the number of intermediate channels are not changed after down/upsamples. For v2, they are increased when downsampling and decreased when upsampling. 
 
-In short, we reverted back to the original U-Net architecture.
 On top of these architectural changes, we also use a different loss function (waveform L1 loss) as well as source-specific data preprocessing. 
 As shown in Figure1, high frequencies that are above the expected frequency range of the target source were cut off from the mixture spectrogram. 
 This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to contrain for the inference time limit), and using a larger *n_fft* usually leads to better SDR.
