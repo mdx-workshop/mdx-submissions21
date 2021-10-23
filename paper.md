@@ -80,7 +80,7 @@ It should be noted that a latent source is not manually defined but automaticall
 As in Figure1, KUIELAB-MDX-Net consists of five networks, all trained separately. Figure1 depicts the overall flow at inference time: the four separation models (TFC-TDF-U-Net v2) first estimate each source independently, then the *Mixer* model takes these estimated sources (+ mixture) and outputs enhanced estimated sources.
 
 ## TFC-TDF-U-Net v2
-![Figure 2](TFC_TDF_Unet_v2.png)
+![Figure 2](TFC_TDF_v2.png)
 
 The following changes were made to the original TFC-TDF-U-Net architecture:
 - For "U" connections, we used multiplication instead of concatenation. 
@@ -98,9 +98,9 @@ For example, estimated 'vocals' often have drum snare noises left. The Mixer can
 During the MDX Challenge we only tried very shallow models (such as a single convolution layer) for the Mixer due to the time limit. We look forward to trying more complex models in the future, since even a single 1x1 convolution layer was enough to make some improvement on total SDR (Experimental Results). 
 
 # Experimental Results
-In this section we describe the model configurations, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
+In this section we describe the model configurations and STFT parameters, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
 
-## Model Configurations
+## Configurations
 
 ## Training Procedure
 
