@@ -75,6 +75,7 @@ For example, models can learn the characteristics of `kick drums', which is not 
 It should be noted that a latent source is not manually defined but automatically trained to minimise the loss function.
 
 # KUIELAB-MDX-Net
+![Figure 1](mdx_net.png)
 
 As in Figure1, KUIELAB-MDX-Net consists of five networks, all trained separately. Figure1 depicts the overall flow at inference time: the four separation models (TFC-TDF-U-Net v2) first estimate each source independently, then the *Mixer* model takes these estimated sources (+ mixture) and outputs enhanced estimated sources.
 
