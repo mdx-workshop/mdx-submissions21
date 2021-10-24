@@ -101,20 +101,20 @@ During the MDX Challenge we only tried very shallow models (such as a single con
 In this section we describe the model configurations and STFT parameters, training procedure, and evaluation results on the MUSDB benchmark. For training, we used the MUSDB-HQ dataset with default 86/14 train and validation splits.
 
 ## Configurations
-Figure3 shows a comparison between configurations of TFC-TDF-U-Net v1 and v2. This applies to all models regardless of the target source (we did not explore different model configurations for each source).
+Figure3 shows a comparison between configurations of TFC-TDF-U-Net v1 and v2. This applies to all models regardless of the target source (we did not explore different model configurations for each source). In short, v2 is a more shallow but wider model than v1.
 |    | # TFC-TDF blocks | # convs per block | bottleneck factor | # params | # freq bins, # STFT frames, hop size |
 |----|----|----|----|----|----|
 | v1 | 9   | 5  | 16 | 2.2M | 2048, 128, 1024 |
-| v2 | 11  | 3  | 8  | M  | 2048, 256, 1024 |
+| v2 | 11  | 3  | 8  | 7.4M  | 2048, 256, 1024 |
 
 In addition to these changes, for v2, the number of intermediate channels are increased/decreased after down/upsamples with a linear factor of 32. Also, as mentioned in Section "TFC-TDF-U-Net v2", we used different *n_fft* for each source: (6144, 4096, 16384, 8192) for (vocals, drums, bass, other).
 
 ## Training Procedure
+All five models (four separation models + mixer) were optimized with RMSProp with no momentum. For data augmentation, we used random chunking and mixing instruments from different songs, and also pitch shift and time stretch.
+
 The overall training procedure can be summarized into two steps:
 1. Train single-target separation models (TFC-TDF-U-Net v2) for each source.
 2. Train the Mixer while freezing the pretrained weights of the separation models.
-
-
 
 ## Performance on the MUSDB Benchmark
 We compare our models with current state-of-the-art models on the MUSDB benchmark using the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR). We report the median SDR over all 50 songs in the MUSDB test set. Only models for Leaderboard A were evaluated, since our submissions for Leaderboard B uses the MUSDB test set as part of the training set.
