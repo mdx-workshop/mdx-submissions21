@@ -46,7 +46,7 @@ Our architecture utilizes _Jukebox's_ [@dhariwal2020jukebox] the standard varian
 The rate of compression for a sequence is called the hop length, for which a value of 8 is used. It depends on the stride values of the convolutional layers. We set the stride value to 2 as well as the down sampling to 3. All other values remain as defined in [@dhariwal2020jukebox]. After mapping to the codebook, a decoder $D$ aims to reconstruct the original sequence. In summary, equation (\autoref{eq:1})
 
 \begin{equation}
-\label{\autoref}
+\label{eq:1}
 y_t=D(argmin(\|E_1(x_t)- c)\|) \;\; \text{for} \;\; c \in C
 \end{equation}
 
@@ -58,19 +58,68 @@ Our models are trained on the MUSDB18-HQ [@musdb18-hq] dataset, also used in the
 
 ## Training
 
-One model is trained per stem (see Fig.\autoref{fig:fig1}), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
+![Visualization of the proposed transfer learning model architecture.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/Figure.jpg){ width=40% }
 
-For stage two, the second encoder is trained on the mix to learn the same encoding as the already trained encoder in the VQ-VAE. So for each training sample ($x_mt$: the sequence of the mixed audio, $x_st$: the sequence of stem audio), we feed $x_st$, to the already trained encoder $E_1$, producing $e_{st}$. Separately, the full mixture $x_mt$ is passed through the new encoder $E_2$, yielding $e_{mt}$. Now, we can backpropagate through $E_2$ using MSE loss $||e_{st}-e_{mt}||^2$. To clarify, we should mention that the weights of $E_1$ are not updated in stage 2. For deployment, we use the VQ-VAE trained in stage 1, but swap in the encoder trained in stage 2. On a more technical note, in both training stages and deployment, the data is processed chunk wise, with a size of about 9 seconds. For a clear overview of the content of this chapter refer to Figure \autoref{fig:fig1}.
+One model is trained per stem (see Fig.\autoref{fig:Figure}), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
+
+For stage two, the second encoder is trained on the mix to learn the same encoding as the already trained encoder in the VQ-VAE. So for each training sample ($x_mt$: the sequence of the mixed audio, $x_st$: the sequence of stem audio), we feed $x_st$, to the already trained encoder $E_1$, producing $e_{st}$. Separately, the full mixture $x_mt$ is passed through the new encoder $E_2$, yielding $e_{mt}$. Now, we can backpropagate through $E_2$ using MSE loss $||e_{st}-e_{mt}||^2$. To clarify, we should mention that the weights of $E_1$ are not updated in stage 2. For deployment, we use the VQ-VAE trained in stage 1, but swap in the encoder trained in stage 2. On a more technical note, in both training stages and deployment, the data is processed chunk wise, with a size of about 9 seconds. For a clear overview of the content of this chapter refer to Figure \autoref{fig:Figure}.
 
 For all conducted experiments that will be defined in the next section, two Tesla GPUs with 16Gb each are used. The length of each input sequence is equal to 393216 data points as used by _Jukebox_. The batch size is equal to 4.
 
 To benchmark the conducted experiments, signal-to-distortion ratio (SDR) metric is used, which is a common metric in other SOTA papers[@DBLP:journals/corr/abs-1909-01174][@stoeter2019][@Hennequin2020][@sawata2021all][@stoller2018waveunet].
 'Total' SDR is the mean SDR for all stems.
 
-## Figures
+# Experiments and Results
 
-Figures can be included like this:
+The main key point of this paper consists of proving that it is possible to get decent audio quality by using transfer learning. For this, we did two different experiments on the four audio stems. We trained the first VQ-VAE networks for each audio stem from scratch without using any pretraining values. Then, we trained in a second experiment, the VQ-VAE with pretrained weights of the _Jukebox_. For all these VQ-VAE we pick the checkpoint 80K and train the corresponding encoder of the second model. For all the second models (experiment 1 and 2) we initialized randomly the weights, when starting the training.
 
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
+For the first experiment, we found out that all the results are low, and no good audio quality is reached. The SDR values are equal or near 0 for all the four stems.
 
-and referenced from text using \autoref{fig:example}.
+For the second experiment, the model converges after 32 hours of training in total on two Tesla GPU units with 16GB of VRAM each.
+
+We present the results in the following figure \ref{fig:fig_1}, corresponding each to the SDR results of the second experiment for the four audio stems.
+
+![SDR results of the 4 audio signal stems for the second experiment.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/fig_1.jpg){ width=40% }
+
+In Figure \ref{fig:fig_1} demonstrates decent SDR values for networks trained with a pretraining weights in comparison to others trained with random initialized weights from scratch. It is also to be deduced that it is even enough to train until early checkpoint values, such as 20K, in order to get fairly good SDR values. Then, the checkpoint 20K is reached after 16 hours for each of the two models on two Tesla GPUs.
+Table (1) gives a comparison of different approaches for audio signal separation. Our approach achieves here comparable results, when benchmarked with other state-of-the-art networks.
+
+## Table 1: SDR Values
+
+Methods:
+
+- DEMUCS
+- Our Approach
+- Wave-U-Net
+- ScaledMixturePredictor
+  Drum:
+- 6.509
+- 4.925
+- 4.22
+- 0.578
+  Bass:
+- 6.470
+- 4.073
+- 3.21
+- 0.745
+  Other:
+- 4.018
+- 2.695
+- 2.25
+- 1.136
+  Vocal:
+- 6.496
+- 5.060
+- 3.25
+- 1.090
+  Total:
+- 5.873
+- 4.188
+- 3.23
+- 0.887
+
+---
+
+# Conclusion
+
+Transfer learning is used in modern architectures for image processing, neural language processing, etc. In this work we demonstrate how to use transfer learning for the problem of audio signal processing and in particular in demixing audio signal from a single mixed audio channel into four different stems: drums, bass, vocals and rest. We show that it is possible to succeed in such tasks with a small-sized dataset and this is achieved, when using pretrained weights from _Jukebox_ [@dhariwal2020jukebox] network.
