@@ -66,7 +66,7 @@ For stage two, the second encoder is trained on the mix to learn the same encodi
 
 For all conducted experiments that will be defined in the next section, two Tesla GPUs with 16Gb each are used. The length of each input sequence is equal to 393216 data points as used by _Jukebox_. The batch size is equal to 4.
 
-To benchmark the conducted experiments, signal-to-distortion ratio (SDR) metric is used, which is a common metric in other SOTA papers[@DBLP:journals/corr/abs-1909-01174][@stoeter2019][@Hennequin2020][@sawata2021all][@stoller2018waveunet].
+To benchmark the conducted experiments, signal-to-distortion ratio (SDR) metric is used, which is a common metric in other SOTA papers[@DBLP:journals/corr/abs-1909-01174][@Stoeter2019][@Hennequin2020][@sawata2021all][@stoller2018waveunet].
 'Total' SDR is the mean SDR for all stems.
 
 # Experiments and Results
