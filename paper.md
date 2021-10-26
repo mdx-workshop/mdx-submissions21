@@ -58,7 +58,7 @@ Our models are trained on the MUSDB18-HQ [@musdb18-hq] dataset, also used in the
 
 ## Training
 
-![Visualization of the proposed transfer learning model architecture.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/Figure.jpg){ width=40% }
+![Visualization of the proposed transfer learning model architecture.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/Figure.jpg){ width=30% }
 
 One model is trained per stem (see Fig.\autoref{fig:Figure}), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
 
