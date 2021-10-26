@@ -6,7 +6,7 @@ tags:
 authors:
   - name: Minseok Kim^[co-first author]
     affiliation: 1
-  - name: Woosung choi^[co-first author]
+  - name: Woosung Choi^[co-first author]
     orcid: 0000-0003-2638-2097
     affiliation: 1 
   - name: Jaehwa Chung
