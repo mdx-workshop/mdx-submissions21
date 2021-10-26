@@ -84,7 +84,7 @@ We present the results in the following figure \ref{fig:fig_1}, corresponding ea
 In Figure \ref{fig:fig_1} demonstrates decent SDR values for networks trained with a pretraining weights in comparison to others trained with random initialized weights from scratch. It is also to be deduced that it is even enough to train until early checkpoint values, such as 20K, in order to get fairly good SDR values. Then, the checkpoint 20K is reached after 16 hours for each of the two models on two Tesla GPUs.
 Table (1) gives a comparison of different approaches for audio signal separation. Our approach achieves here comparable results, when benchmarked with other state-of-the-art networks.
 
-![Table 1: SDR values for different approaches for the four stems.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/res_1.jpg){ width=40% }
+![Table 1: SDR values for different approaches for the four stems.](https://github.com/wzaielamri/mdx-submissions21/blob/ZaiElAmri-Tautz-Ritter-Melnik/res_1.png){ width=100% }
 
 # Conclusion
 
