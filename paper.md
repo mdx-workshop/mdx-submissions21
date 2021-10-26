@@ -58,7 +58,7 @@ Our models are trained on the MUSDB18-HQ [@musdb18-hq] dataset, also used in the
 
 ## Training
 
-![Visualization of the proposed transfer learning model architecture.\label{fig:Figure}](Figure.jpg){ width=30% }
+![Visualization of the proposed transfer learning model architecture.\label{fig:Figure}](Figure.jpg){ width=100% }
 
 One model is trained per stem (see Fig. 1), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
 
@@ -79,7 +79,7 @@ For the second experiment, the model converges after 32 hours of training in tot
 
 We present the results in the following figure 2, corresponding each to the SDR results of the second experiment for the four audio stems.
 
-![SDR results of the 4 audio signal stems for the second experiment.\label{fig:fig_1}](fig_1.jpg){ width=40% }
+![SDR results of the 4 audio signal stems for the second experiment.\label{fig:fig_1}](fig_1.jpg){ width=100% }
 
 In Figure 2 demonstrates decent SDR values for networks trained with a pretraining weights in comparison to others trained with random initialized weights from scratch. It is also to be deduced that it is even enough to train until early checkpoint values, such as 20K, in order to get fairly good SDR values. Then, the checkpoint 20K is reached after 16 hours for each of the two models on two Tesla GPUs.
 Table (1) gives a comparison of different approaches for audio signal separation. Our approach achieves here comparable results, when benchmarked with other state-of-the-art networks.
