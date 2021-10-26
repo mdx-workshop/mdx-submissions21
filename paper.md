@@ -33,8 +33,7 @@ arxiv-doi:
 
 # Summary
 
-Recently, many methods based on deep learning have been proposed for music source separation. Some state-of-the-art methods have shown that stacking many layers with many skip connections improve the SDR performance. Although a deep and complex architecture usually shows outstanding performance, it might be impractical because it consumes numerous computing resources and time for training and evaluation. This paper presents KUIELAB-MDX-Net, a source separation model. We empirically find a model with a good balance of the performance and the required resource.
-It took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021. This paper also summarizes experimental results on another benchmark, MusDB18.
+Recently, many methods based on deep learning have been proposed for music source separation. Some state-of-the-art methods have shown that stacking many layers with many skip connections improve the SDR performance. Although a deep and complex architecture usually shows outstanding performance, it might be impractical because it consumes numerous computing resources and time for training and evaluation. This paper presents KUIELAB-MDX-Net, a source separation model. We empirically find a model with a good balance of performance and required resources. It took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021. This paper also summarizes experimental results on another benchmark, MusDB18.
 
 # Introduction
 
@@ -43,7 +42,7 @@ It took second place on leaderboard A and third place on leaderboard B in the Mu
 ## Frequency Transformation for Source Separation
 
 
-### Visualizations
+## Visualizations
 
 
 # KUIELAB-MDX-Net
