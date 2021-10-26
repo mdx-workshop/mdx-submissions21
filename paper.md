@@ -22,7 +22,7 @@ The time-frequency uncertainty principle states that the STFT of a signal cannot
 
 # Background
 
-The STFT is computed by applying the Discrete Fourier Transform on fixed-size windows of the input signal. From both auditory and musical motivations, variable-size windows are preferred, with long windows in low frequency regions to capture detailed harmonic information with a high frequency resolution, and short windows in high frequency regions to capture transients with a high time resolution [@doerflerphd]. The sliCQ Transform (sliCQT) [@slicq] is a realtime variant of the Nonstationary Gabor Transform (NSGT) [@balazs]. These are time-frequency transforms with complex Fourier coefficients and perfect inverses that use varying windows to achieve nonlinear time or frequency resolution. An example application of the NSGT/sliCQT is an invertible Constant-Q Transform (CQT) [@jbrown].
+The STFT is computed by applying the Discrete Fourier Transform on fixed-size windows of the input signal. From both auditory and musical motivations, variable-size windows are preferred, with long windows in low-frequency regions to capture detailed harmonic information with a high frequency resolution, and short windows in high-frequency regions to capture transients with a high time resolution [@doerflerphd]. The sliCQ Transform (sliCQT) [@slicq] is a realtime variant of the Nonstationary Gabor Transform (NSGT) [@balazs]. These are time-frequency transforms with complex Fourier coefficients and perfect inverses that use varying windows to achieve nonlinear time or frequency resolution. An example application of the NSGT/sliCQT is an invertible Constant-Q Transform (CQT) [@jbrown].
 
 # Method
 
@@ -33,7 +33,7 @@ In music demixing, the oracle estimator represents the theoretical upper limit o
 
 The sliCQT parameters were chosen by maximizing the median SDR across all 4 targets from the noisy-phase waveforms in a 60-iteration random grid search on the validation set of MUDB18-HQ [@musdb18hq]. The sliCQT parameters of 262 frequency bins on the Bark scale between 32.9-22050 Hz achieved 7.42 dB, which surpassed the 6.23 dB of the STFT using the Open-Unmix default window and overlap of 4096 and 1024 respectively.
 
-\autoref{fig:spectrograms} shows the magnitude STFT and sliCQT spectrograms of a glockenspiel signal.^[<https://github.com/ltfat/ltfat/blob/master/signals/gspi.wav>]
+The magnitude STFT and sliCQT spectrograms of a glockenspiel signal^[<https://github.com/ltfat/ltfat/blob/master/signals/gspi.wav>] are shown in \autoref{fig:spectrograms}.
 
 ![STFT and sliCQT spectrograms of the musical glockenspiel signal.\label{fig:spectrograms}](https://raw.githubusercontent.com/sevagh/mdx-submissions21/HANSSIAN/static-assets/spectrograms_comparison.png){ width=95% }
 
