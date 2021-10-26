@@ -25,42 +25,47 @@ arxiv-doi:
 
 # Abstract
 
-In this paper, we demonstrate a neural network architecture that uses representations of a publicly available pretrained 'Jukebox' model and transfer learning to solve the problem of audio source separation. Jukebox takes 3 days of training on 256 GPUs. In this work, we demonstrate how to adapt Jukebox's audio representations for the problem of extraction of an audio source from a single mixed audio channel. Results demonstrate competitive performance to the other state-of-the-art approaches. Our approach is fast to train. We provide an open-source code implementation of our architecture.
+In this paper, we demonstrate a neural network architecture that uses representations of a publicly available pretrained _Jukebox_ model and transfer learning to solve the problem of audio source separation. Jukebox takes 3 days of training on 256 GPUs. In this work, we demonstrate how to adapt Jukebox's audio representations for the problem of extraction of an audio source from a single mixed audio channel. Results demonstrate competitive performance to the other state-of-the-art approaches. Our approach is fast to train. We provide an open-source code implementation of our architecture.
 
-# Paper structure depending on the category
+# Introduction
 
-## Posters
+Music source separation from mixed audio is a challenging problem, especially if the source itself should be learned from a dataset of examples. Additionally, such models are expensive to train from scratch. We tested our model on the MUSDB18-HQ [@MUSDB18HQ] dataset which supplies full songs with groundtruth stems of: bass, drums, vocals and other, which includes instruments such as guitars, synths etc. The task is to separate a mixed audio channel into the separately recorded instruments, called stems here. Most baseline models in the Music Demixing Challenge 2021 [@mitsufuji2021music] used masking of input transformed to frequency domain by short-time Fourier transformation. _Demucs_ [@DBLP:journals/corr/abs-1909-01174] showed a successful approach that works in waveform domain. _Demucs_ is an autoencoder, based on a bidirectional long short-term memory network, with an architecture inspired by generative approaches. This encouraged us to adapt _Jukebox_ [@dhariwal2020jukebox], a powerful, generative model using multiple, deep Vector Quantized-Variational Autoencoders (VQ-VAE) [@DBLP:journals/corr/abs-1711-00937] to automatically generate real sounding music, and using its publicly available pretrained weights for the task.
 
-In case of a poster that presents a MDX submission, please atinclude a _method_ section,
-where you describe your system. It would be nice to have both explanations and at least
-one figure of the architecture / model / whatever you see fit.
+# Related Works
 
-## Long talks
+Transfer learning helped deep learning models reach new heights in many domains, such as natural language processing [@DBLP:journals/corr/abs-1810-04805],[@DBLP:journals/corr/abs-1910-10683] and computer vision [@HAN201843],[@https://doi.org/10.1111/mice.12363]. Although relatively unexplored for the audio domain, [@7472128] proved feature representation learned on speech data could be used to classify sound events. Their results verify that cross-acoustic transfer learning performs significantly better than a baseline trained from scratch. TRILL [@Shor_2020] showed great results of pre-training deep learning models with an unsupervised task on a big dataset of speech samples. Its learned representations exceeded SOTA performance on a number of downstream tasks with datasets of limited size.
 
-Long talks will use time slots of approximately 30', where the presenter will be free to
-either present some recent research or an overview of a topic that may be of interest
-to the music demixing community. You are free to present some work that was already
-published recently on arxiv, but this work shouldn't have been presented to a public
-conference already.
+We take a similar approach that is heavily based on _Jukebox_ [@dhariwal2020jukebox]. It uses multiple VQ-VAEs to compress raw audio into discrete codes. They are trained self-supervised, on a large dataset of about 1.2 million songs, needing the compute power of 256 V100 to train in acceptable time. Our experiments show that _Jukebox's_ learned representations can be used for the task of source separation.
 
-The architecture of the paper for this category is classical and should be self contained.
-The length should be around 2 pages, excluding references, but we do accept longer papers.
-The point is: there should be enough information for the committee to decide whether it
-makes sense to give you the mic for half an hour !
+# Method
 
-## Ideas / Discussions
+## Architecture
 
-Submission from this category should include two sections:
+Our architecture utilizes _Jukebox's_ [@dhariwal2020jukebox] the standard variant of the publicly available pre-trained VQ-VAE model. _Jukebox's_ uses three separated VQ-VAEs. We use only the smallest one with the strongest compression. It employs dilated 1-D convolutions in multiple residual blocks to find a less complex sequence representation of music. An audio sequence $x_t$ gets mapped by an encoder $E_1$ to a latent space $e_t=E_1(x_t)$ of 64 dimensions so that it can be mapped to the closest prototype vector in a collection $C$ of vectors called _codebook_. These 2048 prototype vectors, denoted $c_{st}$, are learned in training and help to form a high-quality representation.
 
-- A _Motivations_ section would give some context and would explain why having participants
-  discussing this particular topic is relevant.
-- A _Questions_ section provides a list of the actual questionns / points that you want to
-  raise. There should be at least around 5 of them.
+The rate of compression for a sequence is called the hop length, for which a value of 8 is used. It depends on the stride values of the convolutional layers. We set the stride value to 2 as well as the down sampling to 3. All other values remain as defined in [@dhariwal2020jukebox]. After mapping to the codebook, a decoder $D$ aims to reconstruct the original sequence. In summary, equation (\autoref{eq:1})
 
-Pleas note that you tacitely agree to chair to discussion if you submit in this category.
+\begin{equation}
+\label{\autoref}
+y_t=D(argmin(\|E_1(x_t)- c)\|) \;\; \text{for} \;\; c \in C
+\end{equation}
 
-The expected length for submissions in this category is around one page, excluding references.
-It would be nice to have some illustration if applicable.
+describes a full forward pass through the VQ-VAE, where $ y_t $ is the prediction for an input sequence $x_t$ and $\|.\|$ is the euclidean norm. For further technical details on the used VQ-VAE architecture, refer to the paper of Dhariwal et al. [@dhariwal2020jukebox]. The model is fine-tuned on data for one stem, learning good representations for a single instrument. In addition, we train a second encoder $E_2$, identical to the one already mentioned, to project an input sequence of the mixture to the space already known by the codebook and decoder. For deployment, the encoder of the VQ-VAE is switched with the second one, effectively mapping from the full mixture to one stem.
+
+## Data
+
+Our models are trained on the MUSDB18-HQ [@musdb18-hq] dataset, also used in the music demixing challenge [@mitsufuji2021music]. It consists of 150 full-length songs, sampled at 44KHz, providing the full audio mixture and four stems, vocals, bass, drums and other for each sample, which can be regarded as ground truth in the context of source separation. We train on the full train set composed of 100 songs, testing is done on the remaining 50.
+
+## Training
+
+One model is trained per stem (see Fig.~\ref{fig:fig1}), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
+
+For stage two, the second encoder is trained on the mix to learn the same encoding as the already trained encoder in the VQ-VAE. So for each training sample ($x_mt$: the sequence of the mixed audio, $x_st$: the sequence of stem audio), we feed $x_st$, to the already trained encoder $E_1$, producing $e_{st}$. Separately, the full mixture $x_mt$ is passed through the new encoder $E_2$, yielding $e_{mt}$. Now, we can backpropagate through $E_2$ using MSE loss $||e_{st}-e_{mt}||^2$. To clarify, we should mention that the weights of $E_1$ are not updated in stage 2. For deployment, we use the VQ-VAE trained in stage 1, but swap in the encoder trained in stage 2. On a more technical note, in both training stages and deployment, the data is processed chunk wise, with a size of about 9 seconds. For a clear overview of the content of this chapter refer to Figure ~\ref{fig:fig1}.
+
+For all conducted experiments that will be defined in the next section, two Tesla GPUs with 16Gb each are used. The length of each input sequence is equal to 393216 data points as used by _Jukebox_. The batch size is equal to 4.
+
+To benchmark the conducted experiments, signal-to-distortion ratio (SDR) metric is used, which is a common metric in other SOTA papers[@DBLP:journals/corr/abs-1909-01174][@stoeter2019][@Hennequin2020][@sawata2021all][@stoller2018waveunet].
+'Total' SDR is the mean SDR for all stems.
 
 # Example of content fitting the template
 
