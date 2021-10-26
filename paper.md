@@ -1,36 +1,31 @@
 ---
-title: 'Music separation is all you need'
+title: "Transfer Learning with Jukebox for Music Source Separation"
 tags:
-  - separation
-  - u-net
+  - Audio signal processing
+  - Neural networks
+  - Transfer learning
+  - Jukebox
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
+  - name: Wadhah Zai El Amri^[corresponding author] # note this makes a footnote saying 'co-first author'
+    orcid: 0000-0002-0238-4437
+    affiliation: 1 # (Multiple affiliations must be quoted)
+  - name: Oliver Tautz # note this makes a footnote saying 'co-first author'
+    affiliation: 1
+  - name: Helge Ritter
+    affiliation: 1
+  - name: Andrew Melnik
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
-   index: 1
- - name: Institution Name
-   index: 2
- - name: Independent Researcher
-   index: 3
-date: 10 August 2021
+  - name: University of Bielefeld
+    index: 1
+date: 26 October 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
+arxiv-doi:
 ---
 
 # Abstract
 
-The abstract should be around 250 words long as usual, and should be provided
-for submissions of all categories: posters, long talks and discussions.
-* Please briefly describe the particular points your submission focuses on and/or the
-problems it aims to solve.
-* For all categories except discussions, please also briefly summarize the contributions.
-
+In this paper, we demonstrate a neural network architecture that uses representations of a publicly available pretrained 'Jukebox' model and transfer learning to solve the problem of audio source separation. Jukebox takes 3 days of training on 256 GPUs. In this work, we demonstrate how to adapt Jukebox's audio representations for the problem of extraction of an audio source from a single mixed audio channel. Results demonstrate competitive performance to the other state-of-the-art approaches. Our approach is fast to train. We provide an open-source code implementation of our architecture.
 
 # Paper structure depending on the category
 
@@ -56,16 +51,16 @@ makes sense to give you the mic for half an hour !
 ## Ideas / Discussions
 
 Submission from this category should include two sections:
-* A _Motivations_ section would give some context and would explain why having participants
+
+- A _Motivations_ section would give some context and would explain why having participants
   discussing this particular topic is relevant.
-* A _Questions_ section provides a list of the actual questionns / points that you want to
+- A _Questions_ section provides a list of the actual questionns / points that you want to
   raise. There should be at least around 5 of them.
 
 Pleas note that you tacitely agree to chair to discussion if you submit in this category.
 
 The expected length for submissions in this category is around one page, excluding references.
 It would be nice to have some illustration if applicable.
-
 
 # Example of content fitting the template
 
@@ -88,7 +83,7 @@ used in a number of scientific publications [@Pearson:2017] and has also been
 used in graduate courses on Galactic dynamics to, e.g., provide interactive
 visualizations of textbook material [@Binney:2008]. The combination of speed,
 design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
+scientific explorations of forthcoming data releases from the _Gaia_ mission
 [@gaia] by students and experts alike.
 
 ## Mathematics
@@ -97,14 +92,16 @@ Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
 
 Double dollars make self-standing equations:
 
-$$\Theta(x) = \left\{\begin{array}{l}
+$$
+\Theta(x) = \left\{\begin{array}{l}
 0\textrm{ if } x < 0\cr
 1\textrm{ else}
-\end{array}\right.$$
+\end{array}\right.
+$$
 
 You can also use plain \LaTeX for equations
 \begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
+\hat f(\omega) = \int\_{-\infty}^{\infty} f(x) e^{i\omega x} dx
 \end{equation}
 and refer to \autoref{eq:fourier} from text.
 
@@ -122,6 +119,7 @@ We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
 Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
+
 All submissions should include a reference section.
 
 ## How to cite
@@ -134,6 +132,7 @@ If you want to cite a software repository URL (e.g. something on GitHub without 
 citation) then you can do it with the example BibTeX entry below for @fidgit.
 
 For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
+
+- `@author:2001` -> "Author et al. (2001)"
 - `[@author:2001]` -> "(Author et al., 2001)"
 - `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
