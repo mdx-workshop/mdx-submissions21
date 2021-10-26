@@ -84,40 +84,38 @@ We present the results in the following figure \ref{fig:fig_1}, corresponding ea
 In Figure \ref{fig:fig_1} demonstrates decent SDR values for networks trained with a pretraining weights in comparison to others trained with random initialized weights from scratch. It is also to be deduced that it is even enough to train until early checkpoint values, such as 20K, in order to get fairly good SDR values. Then, the checkpoint 20K is reached after 16 hours for each of the two models on two Tesla GPUs.
 Table (1) gives a comparison of different approaches for audio signal separation. Our approach achieves here comparable results, when benchmarked with other state-of-the-art networks.
 
-## Table 1: SDR Values
-
+Table 1: SDR Values
+---
 Methods:
-
-- DEMUCS
-- Our Approach
-- Wave-U-Net
-- ScaledMixturePredictor
-  Drum:
-- 6.509
-- 4.925
-- 4.22
-- 0.578
-  Bass:
-- 6.470
-- 4.073
-- 3.21
-- 0.745
-  Other:
-- 4.018
-- 2.695
-- 2.25
-- 1.136
-  Vocal:
-- 6.496
-- 5.060
-- 3.25
-- 1.090
-  Total:
-- 5.873
-- 4.188
-- 3.23
-- 0.887
-
+  - DEMUCS
+  - Our Approach
+  - Wave-U-Net
+  - ScaledMixturePredictor
+Drum:
+  - 6.509
+  - 4.925
+  - 4.22
+  - 0.578
+Bass:
+  - 6.470
+  - 4.073
+  - 3.21
+  - 0.745
+Other:
+  - 4.018
+  - 2.695
+  - 2.25
+  - 1.136
+Vocal:
+  - 6.496
+  - 5.060
+  - 3.25
+  - 1.090
+Total:
+  - 5.873 
+  - 4.188
+  - 3.23
+  - 0.887
 ---
 
 # Conclusion
