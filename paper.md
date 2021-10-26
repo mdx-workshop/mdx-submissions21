@@ -26,15 +26,15 @@ affiliations:
  - name: Seokyeong university
    index: 4
 
-date: 10 August 2021
+date: 26 Octover 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
+arxiv-doi: 
 ---
 
 # Summary
 
-This paper presents KUIELAB-MDX-Net, a source separation model based on deep learning.
-KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge.
+Recently, many methods based on deep learning have been proposed for music source separation. Some state-of-the-art methods have shown that stacking many layers with many skip connections improve the SDR performance. Although a deep and complex architecture usually shows outstanding performance, it might be impractical because it consumes numerous computing resources and time for training and evaluation. This paper presents KUIELAB-MDX-Net, a source separation model. We empirically find a model with a good balance of the performance and the required resource.
+It took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021. This paper also summarizes experimental results on another benchmark, MusDB18.
 
 # Introduction
 
@@ -42,37 +42,9 @@ KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboar
 
 ## Frequency Transformation for Source Separation
 
-<!-- from lasaft-v2 -->
-A Frequency Transformation} (FT) block captures frequency patterns of the target source observed in the Time-Frequency (TF) spectrograms.
-Recently proposed methods have shown that employing FT blocks in a source separation model can significantly enhance the performance.
-
-For example, proposed an FT block called Time Distributed Fully connected layers (TDF).
-%It is a series of fully connected layers.
-A TDF is applied to each frame of a spectrogram-like internal feature map.
-It aims to analyse frequency-to-frequency dependencies that are helpful to capture distinguishable characteristics such as the timbre of the target source.
-By applying an FT block after each convolutional building block in a conventional U-Net structure, their model achieved outstanding performance of 7.98dB SDR on the singing voice separation task of the MUSDB18 benchmark.
 
 ### Visualizations
 
-<!-- from mapping or masking -->
-\caption{Weight Visualization in single-layered TIFs}
-\label{fig:vis}
-\end{figure}
-
-\subsubsection{Bottleneck Layers in TIFs}
-The second row in Table \ref{table:ablation} shows the SDR performance of TFC-TIF-U-Net architecture without bottleneck layers in TIFs. Its performance is slightly lower than that of the reference model. However, it is worthy to say we can reduce a large amount of the number of parameters for each TIFs: about $bf^{2}/2$ times smaller than a single-layered TIF, where $bf$ is a bottleneck factor.
-
-Despite its low SDR, single-layered TIFs provide us insight for a better understanding of how it enhances frequency correlation features. Inspired by \cite{phasen}, we also visualized the weight matrix after training, as shown in Figure \ref{fig:vis}. Figure \ref{fig:vis} (a),(b),(c) and (d) visualize the weight matrix of the first TIFs for each model. We can observe each matrix is optimized to enhance timbre features for its own instrument by capturing distinct frequency dependencies observed along the frequency axis. Also, we can observe that each TIF still performs well in multi-scales.
-
-## Latent Source Analysis
-
-<!-- from lasaft-v2 -->
-Humans are used to classifying a group of instruments as a single label, such as `drums'.
-However, a symbolically labelled source comprises sub-components with different sonic characteristics such as `kick', `snare', and `hats.'
-Recent methods introduced the concept called {latent sources} to take such sub-components into account.
-We can perform fine-grained sound analysis with this approach by relaxing the hard-coded labelling over instruments.
-For example, models can learn the characteristics of `kick drums', which is not human-labelled, from training data.
-It should be noted that a latent source is not manually defined but automatically trained to minimise the loss function.
 
 # KUIELAB-MDX-Net
 ![Figure 1](mdx_net.png)
@@ -124,13 +96,13 @@ Figure4 shows MUSDB benchmark performance of KUIELAB-MDX-Net. We compared it to 
 |-----------------|--------|-------|------|-------|
 | TFC-TDF-U-Net   | 7.98   | 6.11  | 5.94 | 5.02  |
 | X-UMX           | 6.61   | 6.47  | 5.43 | 4.64  |
-| Demucs_v2       | 6.84   | 6.86  | 7.01 | 4.42  |
+| Demucs-v2       | 6.84   | 6.86  | 7.01 | 4.42  |
 | D3Net           | 7.24   | 7.01  | 5.25 | 4.53  |
 | ResUNetDecouple+| **8.98** | 6.62  | 6.04 | 5.29  |
 |-----------------|--------|-------|------|-------|
 | KUIELAB-MDX-Net  | 8.88  | **7.09** | **7.38** | **6.29** |
 | KUIELAB-MDX-Net w/o Mixer| 8.91   | 6.86  | 7.30 | 6.18 |   
-| KUIELAB-MDX-Net + Demucs_v2 | 8.99   | 7.69  | 7.62 | 6.56 |
+| KUIELAB-MDX-Net + Demucs-v2 | 8.99   | 7.69  | 7.62 | 6.56 |
 
 
 # Acknowledgements
