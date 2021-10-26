@@ -1,5 +1,5 @@
 ---
-title: 'KUIELAB-MDX-Net'
+title: 'KUIELab-MDX-Net: Finding a Balance between Performance and Resources in Deep learning-based Music Source Separation'
 tags:
   - separation
   - u-net
@@ -8,23 +8,21 @@ authors:
     affiliation: 1
   - name: Woosung choi^[co-first author]
     orcid: 0000-0003-2638-2097
-    affiliation: 2 # (Multiple affiliations must be quoted)
+    affiliation: 1 
   - name: Jaehwa Chung
-    affiliation: 3
+    affiliation: 2
   - name: Daewon Lee
-    affiliation: 4
+    affiliation: 3
   - name: Soonyoung Jung^[corresponding author]
     affiliation: 1
 
 affiliations:
  - name: Korea University
    index: 1
- - name: Queen Mary University of London
-   index: 2
  - name: Korea National Open University
-   index: 3
+   index: 2
  - name: Seokyeong university
-   index: 4
+   index: 3
 
 date: 26 Octover 2021
 bibliography: paper.bib
