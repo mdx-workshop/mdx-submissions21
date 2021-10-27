@@ -33,7 +33,7 @@ Music source separation aims at decomposing a music mixture into several soundtr
 
 In the next section, we will introduce the detailed architecture of CWS-PResUNet as well as ByteMSS, the system we submitted for the MDX Challenge [@mitsufuji2021music]. 
 
-![Overview of the CWS-PResUNet and a comparison between using magnitude spectrogram $X$ and channel-wise subband spectrogram $X^{\prime}$ as the input feature.^[We use mono signal for simple illustration.] $Y$ and $Y^[\prime] are their output featuremaps. Subscripts denote the shape of tensor.$](graphs/main.png){ width=100% }
+![Overview of the CWS-PResUNet and a comparison between using magnitude spectrogram and channel-wise subband spectrogram as the input feature.^[We use mono signal for simple illustration.]](graphs/main.png){ width=100% }
 
 # Method
 
