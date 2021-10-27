@@ -18,7 +18,7 @@ bibliography: paper.bib
 
 Music source separation, or music demixing, is the task of decomposing a song into its constituent sources, which are typically isolated instruments (e.g., drums, bass, and vocals). The Music Demixing Challenge^[<https://www.aicrowd.com/challenges/music-demixing-challenge-ismir-2021>] [@mdx21] was created to inspire new demixing research. Open-Unmix (UMX) [@umx], and the improved variant CrossNet-Open-Unmix (X-UMX) [@xumx], were included in the challenge as the baselines. Both models use the Short-Time Fourier Transform (STFT) as the representation of music signals.
 
-The time-frequency uncertainty principle states that the STFT of a signal cannot be maximally precise in both time and frequency [@gabor1946]. The tradeoff of time-frequency resolution can significantly affect music demixing results [@tftradeoff1]. Our proposed adaptation of Open-Unmix replaced the STFT with the sliCQT [@slicq], a time-frequency transform with varying time-frequency resolution. The resulting model, xumx-sliCQ^[<https://github.com/sevagh/xumx-sliCQ>] [@xumxslicq], was 5x smaller than UMX, but achieved lower demixing scores.
+The time-frequency uncertainty principle states that the STFT of a signal cannot be maximally precise in both time and frequency [@gabor1946]. The tradeoff in time-frequency resolution can significantly affect music demixing results [@tftradeoff1]. Our proposed adaptation of Open-Unmix replaced the STFT with the sliCQT [@slicq], a time-frequency transform with varying time-frequency resolution. The resulting model, xumx-sliCQ^[<https://github.com/sevagh/xumx-sliCQ>] [@xumxslicq], was 5x smaller than UMX, but achieved lower demixing scores.
 
 # Background
 
