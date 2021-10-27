@@ -31,11 +31,11 @@ Music source separation (MSS) shows active progress with deep learning models in
 # Introductions and Related Works
 Music source separation aims at decomposing a music mixture into several soundtracks, such as `Vocals`, `Bass`, `Drums`, and `Other` tracks. It is closely related to topics like music transcription, remixing, and retrieval. Based on deep learning models, most of the early studies [@jansson2017singing;@takahashi2018mmdenselstm] perform separations in the frequency domain by estimating the ideal ratio masks (IRM) of the magnitude spectrogram and reusing the phase of the mixture. Later, time-domain models [@defossez2019demucs] start to demonstrate SoTA performance using direct waveform modeling, which does not involve transformations like short-time fourier transform (STFT). In this case, phase information can be implicitly estimated and models will not be restricted with the fixed time-frequency resolution. To enhance the MSS performance, @liu2020voice chooses to employ self-attension mechanism and Dense-UNet architecture. @choi2019investigating compares the performance of several types of UNet built with different intermediate blocks. To alleviate the computational cost, @kadandale2020multi designs a multi-task model to replace source-dedicated models. Also, [@liu2020channel] proposes to use the channel-wise subband feature to reduce resource consumptions and improve separation performance. Recently, [@kong2021decoupling] conducted experiments on the MSS system theoretical upper bound, which proves the limitation of IRMs and the importance of phase estimation. 
 
+In the next section, we will introduce the detail architecture of CWS-PResUNet as well as ByteMSS, the system we submitted for the MDX Challenge [@mitsufuji2021music]. 
+
 ![Overview of the CWS-PResUNet and a comparison between using magnitude and channel-wise subband spectrogram as the input feature.^[We use mono signal for simple illustration.]](graphs/main.png){ width=100% }
 
 # Method
-
-In this section, we will introduce the CWS-PResUNet we proposed and briefly ByteMSS, the system we submitted for the MDX Challenge [@mitsufuji2021music]. 
 
 CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. For a stereo mixture signal $x \in R^{2\times L}$, where $L$ stands for signal length, we first utilize pre-defined analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
 $$
