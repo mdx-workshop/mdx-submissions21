@@ -149,7 +149,7 @@
     \node (prev) [inout, anchor=north] at ($(conv.south) - (0, \yshift)$) {$\mathrm{Encoder}_{i-1}$ or input};
     \draw[->]  (prev.north) -- (conv.south);
 
-    \node (next) [inout, anchor=south] at ($(rewrite.north) + (\deltax, \yshift)$) {$\mathrm{Encoder}_{i+1}$ or LSTM};
+    \node (next) [inout, anchor=south] at ($(rewrite.north) + (\deltax, \yshift)$) {$\mathrm{Encoder}_{i+1}$};
     \draw[->]  ($(rewrite.north) + (\deltax, 0)$) -- (next.south);
 \end{tikzpicture}
 

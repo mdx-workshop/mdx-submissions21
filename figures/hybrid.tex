@@ -159,7 +159,7 @@
     % decoder T
     \node (d5t) [deconv, tbranch, minimum width=\base - 3 * \dec, inner ysep=2pt] at
         ($ (e5.north |- shared.north) + (0, \yshift) $)
-        {$\mathrm{ZDecoder}_5(C_{in}=768, C_{out}=386)$};
+        {$\mathrm{TDecoder}_5(C_{in}=768, C_{out}=386)$};
     \node [tt,anchor=west] at ($(d5t.north) + (0.1cm, \yshift/2)$) {T/1024 time steps};
     \node (d4t) [deconv, tbranch, minimum width=\base - 2 * \dec] at
         ($ (d5t.north) + (0, \yshift) $)
@@ -167,11 +167,11 @@
     \node [tt,anchor=west] at ($(d4t.north) + (0.1cm, \yshift/2)$) {T/256 time steps};
     \node (d2t) [deconv, tbranch, minimum width=\base - \dec] at
         ($ (d4t.north) + (0, \yshift) $)
-        {$\mathrm{ZDecoder}_2(C_{in}=96, C_{out}=48)$};
+        {$\mathrm{TDecoder}_2(C_{in}=96, C_{out}=48)$};
     \node [tt,anchor=west] at ($(d2t.north) + (0.1cm, \yshift/2)$) {T/4 time steps};
     \node (d1t) [deconv, tbranch, minimum width=\base] at
         ($ (d2t.north) + (0, \yshift) $)
-        {$\mathrm{ZDecoder}_2(C_{in}=48, C_{out}=4 \cdot 2 \cdot 2)$};
+        {$\mathrm{TDecoder}_1(C_{in}=48, C_{out}=4 \cdot 2 \cdot 2)$};
     \node [tt,anchor=west] at ($(d1t.north) + (0.1cm, \yshift/2)$) {T time steps.};
 
     \node (merge2) [circle,draw=black, inner sep=1pt,fill=black!5] at (istft -| d1t.north) {\huge $+$};
