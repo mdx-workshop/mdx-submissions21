@@ -10,9 +10,9 @@ authors:
     affiliation: 1 # (Multiple affiliations must be quoted)
   - name: Noah Schaffer^[co-first author] # note this makes a footnote saying 'co-first author'
     affiliation: 1
-  - name: Ethan Manilow^[corresponding author]
+  - name: Ethan Manilow
     affiliation: 1
-  - name: Bryan Pardo^[corresponding author]
+  - name: Bryan Pardo
     affiliation: 1
 affiliations:
  - name: Interactive Audio Lab, Northwestern University.
