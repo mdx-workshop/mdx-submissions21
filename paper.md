@@ -1,139 +1,29 @@
 ---
-title: 'Music separation is all you need'
+title: 'Monotimbral Ensemble Separation using Permutation Invariant Training'
 tags:
-  - separation
-  - u-net
+  - choral separation
+  - TasNet
 authors:
-  - name: Adrian M. Price-Whelan^[co-first author] # note this makes a footnote saying 'co-first author'
-    orcid: 0000-0003-0872-7098
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
+  - name: Saurjya Sarkar # note this makes a footnote saying 'co-first author'
+    affiliation: 1 # (Multiple affiliations must be quoted)
+  - name: Emmanouil Benetos # note this makes a footnote saying 'co-first author'
+    affiliation: 1
+  - name: Mark Sandler
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Centre for Digital Music, Queen Mary University of London, London, UK
    index: 1
- - name: Institution Name
-   index: 2
- - name: Independent Researcher
-   index: 3
-date: 10 August 2021
+date: 28 October 2021
 bibliography: paper.bib
 arxiv-doi: 10.21105/joss.01667
 ---
 
 # Abstract
 
-The abstract should be around 250 words long as usual, and should be provided
-for submissions of all categories: posters, long talks and discussions.
-* Please briefly describe the particular points your submission focuses on and/or the
-problems it aims to solve.
-* For all categories except discussions, please also briefly summarize the contributions.
+Majority of research in Music Source Separation is focussed around the "Music De-mixing" problem of separating vocals, drums and bass from mastered songs. We have seen that the quality of separation achievable is very directly related to the relative loudness of the target source in the input mixture. This makes separation of vocals, drums and bass feasible from pop songs as they are typically amongst the loudest components in a mastered pop song. Separating other sources from similar tracks can be challenging due to the lack of data, and the low input SNR for songs with the target instruments. In our work we focus on the specific task of separating similar sounding sources from unmastered mixtures. We focus on unmastered tracks so that the input SNR of our target monotimral sources is reasonable. While models trained on such mixtures may be ineffective in the typical music demixing paradigm, they have ample opportunities to be used as music production tools for recording ensembles in non-ideal conditions.
+
+We first present our work based on Vocal Harmony Separation, where we utilise a time-domain neural network architecture re-purposed from speech separation research and modify it to separate a capella mixtures at a high sampling rate. Polyphonic vocal recordings are an inherently challenging source separation task due to the melodic structure of the vocal parts and unique timbre of its constituents. We use four-part (soprano, alto, tenor and bass) a capella recordings of Bach Chorales and Barbershop Quartets for our experiments. Unlike current deep learning based choral separation models where the training objective is to separate constituent sources based on their class, we train our model using a permutation invariant objective. Using this we achieve state-of-the-art results for choral music separation. 
+
+We also present our ongoing work on separating other monotimbral ensembles like string sections. To study this problem, we introduce a novel multitrack dataset generated using the Spitfire BBC Symphony Orchestra Professional sample library and the RWC classical music dataset. Our dataset utilizes a more realistic data generation method than other synthesized multi-track datasets due to the ability of this plugin to incorporate various articulation methods dynamically based on the input symbolic music data and a round-robin sampling technique introducing uniqueness to each note articulation. The sample library also enables us to render the dataset with various microphone configurations on which the library was recorded in, allowing us to study various recording scenarios for the same performance in the same acoustic space. We explore the monotimbral separation task of separating any 2 string instruments (i.e. Violin, Viola, Cello, Bass) by training a DPTNet based model in a permutation invariant fashion. 
 
 
-# Paper structure depending on the category
-
-## Posters
-
-In case of a poster that presents a MDX submission, please atinclude a _method_ section,
-where you describe your system. It would be nice to have both explanations and at least
-one figure of the architecture / model / whatever you see fit.
-
-## Long talks
-
-Long talks will use time slots of approximately 30', where the presenter will be free to
-either present some recent research or an overview of a topic that may be of interest
-to the music demixing community. You are free to present some work that was already
-published recently on arxiv, but this work shouldn't have been presented to a public
-conference already.
-
-The architecture of the paper for this category is classical and should be self contained.
-The length should be around 2 pages, excluding references, but we do accept longer papers.
-The point is: there should be enough information for the committee to decide whether it
-makes sense to give you the mic for half an hour !
-
-## Ideas / Discussions
-
-Submission from this category should include two sections:
-* A _Motivations_ section would give some context and would explain why having participants
-  discussing this particular topic is relevant.
-* A _Questions_ section provides a list of the actual questionns / points that you want to
-  raise. There should be at least around 5 of them.
-
-Pleas note that you tacitely agree to chair to discussion if you submit in this category.
-
-The expected length for submissions in this category is around one page, excluding references.
-It would be nice to have some illustration if applicable.
-
-
-# Example of content fitting the template
-
-## Introduction
-
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
-
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
-
-## Mathematics
-
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
-
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
-
-## Figures
-
-Figures can be included like this:
-
-![Caption for example figure.](https://raw.githubusercontent.com/mdx-workshop/mdx-workshop.github.io/master/banner.jpg){ width=40% }
-
-and referenced from text using \autoref{fig:example}.
-
-## Acknowledgements
-
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
-
-# References
-All submissions should include a reference section.
-
-## How to cite
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
