@@ -38,7 +38,7 @@ Recent evaluation campaigns  [@sisec] have focused on this setting,
 relying on the standard MusDB benchmark [@musdb].
 In 2021, Sony organized the Music Demixing Challenge (MDX) [@mdx], an online competition
 where separation models are evaluated on a completely new and hidden test set composed of
-36 tracks.
+27 tracks.
 
 The challenge featured a number of baselines to start from, which could be divided
 into two categories: spectrogram or waveform based methods.
