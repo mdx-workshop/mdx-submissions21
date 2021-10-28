@@ -23,7 +23,7 @@ won the Music Demixing Challenge 2021 organized by Sony.
 This architecture also comes with additional improvements, such as compressed residual branches,
 local attention or singular value regularization.
 Overall, a 1.1 dB improvement of the Signal-To-Distortion (SDR) was observed across all sources
-as measured on the MusDB HQ dataset [@musdb],
+as measured on the MusDB HQ dataset [@musdbhq],
 an improvement confirmed by human subjective evaluation, with an overall quality
 rated at 2.83 out of 5 (2.36 for the non hybrid Demucs), and absence of contamination at 3.04 (against 2.37 for the non hybrid Demucs and 2.44
 for the second ranking model submitted at the competition).
@@ -54,16 +54,16 @@ first layers through convolutions, such as Demucs and Conv-TasNet [@convtasnet],
 at all on convolutional layers, like Dual-Path RNN [@dual_path].
 
 Theoretically, there should be no difference
-between spectrogram and waveform model, in particular when considering CaC (complex as channels),
+between spectrogram and waveform models, in particular when considering CaC (complex as channels),
 which is only a linear change of base for the input and output space.
 However, this would only hold true in the limit of having an infinite amount of training data.
-With a constraint dataset, such as the 100 songs of MusDB, inductive bias can play an important role.
-In particular, spetrogram methods varies by more than their input and output space.
-For instance, with a notion of frequency, it is possible to apply convolution along frequencies,
-while waveform methods must use layers that are fully connected with respect to its channels.
-The final loss being still far from zero, there will also be artifacts in the separated audio.
+With a constrained dataset, such as the 100 songs of MusDB, inductive bias can play an important role.
+In particular, spectrogram methods varies by more than their input and output space.
+For instance, with a notion of frequency, it is possible to apply convolutions along frequencies,
+while waveform methods must use layers that are fully connected with respect to their channels.
+The final test loss being far from zero, there will also be artifacts in the separated audio.
 Different representations will lead to different artifacts, some being more noticeable
-for the drums and bass (phase inconsitency for spectrogram methods will make the attack sound hollow),
+for the drums and bass (phase inconsitency for spectrogram methods will make the attack sounds hollow),
 while others are more noticeable for the vocals (vocals separated by Demucs suffer from crunchy static noise)
 
 In this work, we extend the Demucs architecture to perform hybrid waveform/spectrogram
@@ -81,7 +81,7 @@ data allowed.
 There exist a number of spectrogram based music source separation architectures.
 Open-Unmix [@umx] is based on fully connected layers and a bi-LSTM. It uses multi-channel Wiener filtering
 [@wiener] to reduce artifacts. While the original Open-Unmix is trained independently on each source,
-a multi-target version exist [@xumx], through a shared averaged representation layer.
+a multi-target version exists [@xumx], through a shared averaged representation layer.
 D3Net [@d3net] is another architecture, based on dilated convolutions connected with dense skip connections.
 It was before the competition the best performing spectrogram architecture, with an average SDR of 6.0 dB on MusDB.
 Unlike previous methods which are based on masking,
@@ -94,7 +94,7 @@ as well as [@waveunet_singing] and [@waveunet] with Wave-U-Net.
 However, those methods were lagging in term of quality,
 almost 2 dB behind their spectrogram based competitors.
 Demucs [@demucs] was built upon Wave-U-Net, using faster strided convolutions rather
-than explicit downsampling, allowing for much larger number of channels, but potentially introducing aliasing artifacts [@pons2021upsampling], and
+than explicit downsampling, allowing for a much larger number of channels, but potentially introducing aliasing artifacts [@pons2021upsampling], and
 extra Gated Linear Unit layers [@glu] and biLSTM.
 For the first time, waveform domain methods surpassed spectrogram ones when considering
 the overall SDR (6.3 dB on MusDB), although its performance is still inferior
@@ -103,8 +103,8 @@ Conv-Tasnet [@convtasnet], a model based on masking over a learnt time-frequency
 using dilated convolutions, was also adapted to music source separation by [@demucs],
 but suffered from more artifacts and lower SDR.
 
-To the best of our model, no other work has studied true end-to-end hybrid source separation,
-although other team in the MDX competition used model blending from different domains as a simpler post-training alternative.
+To the best of our knowledge, no other work has studied true end-to-end hybrid source separation,
+although other teams in the MDX competition used model blending from different domains as a simpler post-training alternative.
 
 
 # Architecture
@@ -141,18 +141,17 @@ It contains 5 layers, which are going to reduce the number of time steps by a fa
 Compared with the original architecture, all ReLU activations are replaced by
 Gaussian Error Linear Units (GELU) [@gelu].
 
-The spectral branch takes the spectrogram obtained from an STFT over 4096 time steps,
+The spectral branch takes the spectrogram obtained from a STFT over 4096 time steps,
 with a hop length of 1024. Notice that the number of time steps immediately matches
 that of the output of the encoder of the temporal branch. In order to reduce the frequency dimension,
-we apply the same convolution as in the temporal branch, but along the frequency dimension.
+we apply the same convolutions as in the temporal branch, but along the frequency dimension.
 Each layer reduces by a factor of 4 the number of frequencies, except for the 5th layer,
 which reduces by a factor of 8. After being processed by the spectral encoder,
 the signal has only one "frequency" left, and the same number of channels and sample rate
 as the output of the temporal branch.
-
-The temporal and spectral representations are summed before going through a shared encoder/decoder
+The temporal and spectral representations are then summed before going through a shared encoder/decoder
 layer which further reduces by 2 the number of time steps (using a kernel size of 4).
-Its output serve both as the input of the temporal and spectral decoder.
+Its output serves both as the input of the temporal and spectral decoder.
 Hybrid Demucs has a dual U-Net structure, with the temporal and spectral branches having
 their respective skip connections.
 
@@ -185,7 +184,7 @@ temporal ones.](figures/hybrid.pdf){width=80%, #fig:hyb}
 
 ### Frequency-wise convolutions
 
-In the spectral branch, we use frequency-wise convolution, dividing the number of frequency bins by 4 with every layer.
+In the spectral branch, we use frequency-wise convolutions, dividing the number of frequency bins by 4 with every layer.
 For simplicity we drop the highest bin, giving 2048
 frequency bins after the STFT. The input of the 5th layer has 8 frequency bins, which we reduce to 1 with
 a convolution with a kernel size of 8 and no padding.
@@ -196,7 +195,7 @@ To account for that, [@zemb] suggest injecting an embedding of the frequency bef
 the convolution. We use the same approach, with the addition that we smooth the initial
 embedding so that close frequencies have similar embeddings. We inject this embedding just before
 the second encoder layer.
-We also investigated using specific weights for different frequency bands. This however turned out more complex for limited gains.
+We also investigated using specific weights for different frequency bands. This however turned out more complex for a similar result.
 
 ### Spectrogram representation
 
@@ -205,9 +204,9 @@ as amplitude spectrograms. For this second option, we use Wiener filtering [@wie
 We use Open-Unmix differentiable implementation of this filtering [@umx], which uses an iterative
 estimation procedure. Using more iterations at evaluation time is usually optimal,
 but sadly doesn't work well with the hybrid approach, as changing the spectrogram output,
-without the waveform output being able to adapt, will drastically reduce the SDR,
+without the waveform output being able to adapt will drastically reduce the SDR,
 and using a high number of iterations at train time is prohibitively slow.
-In all cases, differentiably transform the spectrogram branch output to a waveform,
+In all cases, we differentiably transform the spectrogram branch output to a waveform,
 summed to the waveform branch output, and the final loss is applied in the waveform domain.
 
 
@@ -215,20 +214,20 @@ summed to the waveform branch output, and the final loss is applied in the wavef
 
 The original Demucs encoder layer is composed of a convolution with kernel size of 8 and stride of 4,
 followed by a ReLU, and of a convolution with kernel size of 1 followed by a GLU.
-Between those two convolutions, we introduce a compressed residual branch, composed
+Between those two convolutions, we introduce two compressed residual branches, composed
 of dilated convolutions, and for the innermost layers, a biLSTM with limited span and local attention.
-Remember that after the first convolution of layer 5, the temporal and spectral branches have the same
-shape. The 5-th layer of each branch actually only contains this convolution, with the compressed
+Remember that after the first convolution of the 5th layer, the temporal and spectral branches have the same
+shape. The 5th layer of each branch actually only contains this convolution, with the compressed
 residual branch and 1x1 convolution being shared.
 
 Inside a residual branch, all convolutions are with respect to the time dimension, and
 different frequency bins are processed separately.
 There are two compressed residual branch per encoder layer.
 Both are composed
-of a convolution with a kernel size of 3, stride of 1, dilation of 1 for the first branch and a dilation of 2 for the second, and 4 times less output dimensions than the input,
+of a convolution with a kernel size of 3, stride of 1, dilation of 1 for the first branch and 2 for the second, and 4 times less output dimensions than the input,
 followed by layer normalization [@layernorm] and a GELU activation.
 
-For the 5-th and 6-th encoder layers, long range context is processed through a local
+For the 5th and 6th encoder layers, long range context is processed through a local
 attention layer (see definition hereafter) as well as a biLSTM with 2 layers, inserted with a skip connection, and with a maximum span of 200 steps.
 In practice, the input is splitted into frames of 200 time steps, with a stride of 100
 steps. Each frame is processed concurrently, and for any
@@ -252,7 +251,8 @@ w_{i, j} = \mathrm{softmax}(Q_i^T K_j - \sum_{k=1}^4 k \beta_{i, k} |i -j|) $$
 where $Q_i$ are the queries and $K_j$ are the keys. The values $\beta_{i, k}$
 are obtained as the output of a linear layer, initialized so that they are initially very close to 0.
 Having multiple $\beta_{i, k}$ with different weights $k$ allows the network
-to efficiently reduce its receptive field without requiring $\beta_{i, k}$ to take large values. In practice, we use a sigmoid activation to derive the values $\beta_{i, k}$.
+to efficiently reduce its receptive field without requiring $\beta_{i, k}$ to take large values.
+In practice, we use a sigmoid activation to derive the values $\beta_{i, k}$.
 
 ![Representation of the compressed residual branches
 that are added to each encoder layer. For the 5th and 6th layer,
@@ -262,43 +262,47 @@ a BiLSTM and a local attention layer are added.](figures/residual.pdf){width=80%
 ## Stabilizing training
 
 We observed that Demucs training could be unstable, especially as we added more layers
-and increased the training set size with 50 extra songs.
+and increased the training set size with 150 extra songs.
 Loading the model just before its divergence point, we realized that the weights
 for the innermost encoder and decoder layers would get very large eigen values.
 
-A first solution is to use group normalization (with a 4 groups) just after
-the non residual convolutions for the layers 5 and 6 of the encoder and the decoder. Using normalization on all layers will deteriorate
-performance, but using it only on the innermost layer seems to stabilize training
+A first solution is to use group normalization (with 4 groups) just after
+the non residual convolutions for the layers 5 and 6 of the encoder and the decoder. Using normalization on all layers deteriorates
+performance, but using it only on the innermost layers seems to stabilize training
 without hurting performance. Interestingly, when the training is stable (in particular
 when trained only on MusDB), using normalization was at best neutral with respect
 to the separation score, but never improved it, and considerably slowed down
-training during the first half of the epochs.
+convergence during the first half of the epochs.
 When the training was unstable, using normalization would improve the overall performance
 as it allows the model to train for a larger number of epochs.
 
 A second solution we investigated was to use singular value regularization [@spectral].
 While previous work used the power method iterative procedure, we obtained better and faster
 approximations of the largest singular value using a low rank SVD method [@lowranksvd].
-This solution had the advantage of always improving generalization, even when
+This solution has the advantage of always improving generalization, even when
 the training was already stable. Sadly, it was not sufficient on its own to
 remove entirely instabilities, but only to reduce them. Another down side
 was the longer training time due to the extra low rank SVD evaluation.
 In the end, in order to both achieve the best performance and remove entirely
 training instabilities, the two solutions were combined.
 
+\newpage
+
 # Experimental Results
 
 ## Datasets
 
-The 2021 MDX challenge [@mdx] offered two tracks: Track A, where only MusDB HQ [@musdb]
+The 2021 MDX challenge [@mdx] offered two tracks: Track A, where only MusDB HQ [@musdbhq]
 could be used for training, and Track B, where any data could be used.
 MusDB HQ, released under mixed licensing [^1] is composed of 150 tracks, including 86 for the train set, 14 for the valid, and
 50 for the test set.
 For Track B, we additionally trained using 150 tracks for an internal dataset, and
 repurpose the test set of MusDB as training data, keeping only the original validation set
-for model selection. In order to compare with earlier work, we also provide a version
-of each model when trained without the test data from MusDB HQ.
+for model selection.
 Models are evaluated either through the MDX AI Crowd API[^2], or on the MusDB HQ test set.
+
+### Realist remix of tracks
+
 
 [^1]: https://github.com/sigsep/website/blob/master/content/datasets/assets/tracklist.csv
 
@@ -317,9 +321,9 @@ SDR = 10 \log_{10} \frac{\sum_{n} \lVert\mathbf{s}(n)\rVert^2 + \epsilon}{\sum_{
 where $s$ is the ground truth source, $\hat{s}$ the estimated source, and $n$
 the time index.
 In order to reliably compare to previous work, we will refer to this new SDR
-definition as `nSDR`, and to the old definition as `SDR`.
+definition as *nSDR*, and to the old definition as *SDR*.
 
-Note that when using `nSDR` on the MDX test set, the metric is defined as the average across all songs.
+Note that when using nSDR on the MDX test set, the metric is defined as the average across all songs.
 On the other hand, the evaluation on the MusDB test set follows the traditional median across the songs
 of the median over all 1 second segments of each song.
 
@@ -327,33 +331,35 @@ of the median over all 1 second segments of each song.
 
 The model submitted to the competitions were actually bags of 4 models.
 For Track A, we had to mix hybrid and non hybrid Demucs models, as the hybrid ones were
-having worse performance on the bass source. On Track B, we used only hybrid Demucs models,
+having worse performance on the bass source. On Track B, we used only hybrid models,
 as the extra training data allowed them to perform better for all sources.
 Note that a mix of Hybrid models using CaC or Wiener filtering were used, mostly because it was
 too costly to reevaluate all models for the competition. For details on the exact
-architecture and hyper-parameter used, we refer the reader to our repository [facebookresearch/demucs](https://github.com/facebookresearch/demucs).
+architecture and hyper-parameter used, we refer the reader to our Github repository [facebookresearch/demucs](https://github.com/facebookresearch/demucs).
 
 For the baselines, we report the numbers from the top participants at the MDX competition [@mdx].
 We focus particularly on the KUIELAB-MDX-Net model, which came in second. This model builds
-on [@lasaft] and
+on [@cac] and
 combines a pure spectrogram model with the prediction from the original Demucs [@demucs] model
 for the drums and bass sources.
 When comparing models on MusDB, we also report the numbers for some of the best performing methods
 outside of the MDX competition, namely D3Net [@d3net] and ResUNetDecouple+ [@kong2021decoupling],
 as well as the original Demucs model [@demucs]. Note that those models were evaluated
-on the MusDB (not HQ) which lacks the frequency content between 16 kHz and 22kHz.
+on MusDB (not HQ) which lacks the frequency content between 16 kHz and 22kHz.
 This can bias the metrics.
 
 
 ## Results on MDX
 
-We provide the results from the top participans at the MDX competition on Table \autoref{tbl:mdx_a}
-for the track A (trained on MusDB HQ only) and track B (any training data).
+We provide the results from the top participants at the MDX competition on Table \autoref{tbl:mdx_a}
+for the track A (trained on MusDB HQ only) and on Table \autoref{tbl:mdx_b} for track B (any training data).
 We also report for track A the metrics for the Demucs architecture improved with
 the residual branches, but without the spectrogram branch. The hybrid approach
 especially improves the nSDR on the `Other` and `Vocals` source.
 Despite this improvement, the Hybrid Demucs model is still performing worse than
-the KUIELAB-MDX-Net, which is purely in the spectral domain for the `Other` and `Vocals` sources.
+the KUIELAB-MDX-Net on those two sources.
+On Track B, we notice again that the Hybrid Demucs architecture is very strong on the `Drums` and `Bass`
+source, while lagging behind on the `Other` and `Vocals` source.
 
 
 | Method        | `All` | `Drums` | `Bass` | `Other` | `Vocals` |
@@ -373,10 +379,15 @@ Table: Results of Hybrid Demucs on the MDX test set, when trained only on MusDB 
 | KUIELAB-MDX-Net   | 7.37       | 7.55         | 7.50        | 5.53         | 8.89          |
 | AudioShake    | **8.33**       | 8.66         | 8.34        | **6.51**         | **9.79**          |
 
-Table: Results of Hybrid Demucs on the MDX test set, when trained with an extra 200 tracks (track B) using the nSDR metric. \label{tbl:mdx_b}
+Table: Results of Hybrid Demucs on the MDX test set, when trained with extra training (track B) using the nSDR metric. \label{tbl:mdx_b}
 
 ## Results on MusDB
 
+We show on Table \autoref{tbl:musdb} the SDR metrics  as measured on the MusDB dataset.
+Again, Hybrid Demucs achieves the best performance for the `Drums` and `Bass` source,
+while improving quite a lot over waveform only Demucs for the `Other` and `Vocals`.
+Interestingly, the best performance on the `Vocals` source is achieved by ResUNetDecouple+ [@kong2021decoupling],
+which uses a novel approach based on complex modulation of the input spectrogram.
 
 | Method           | Mode | `All`    | `Drums`  | `Bass`   | `Other`  | `Vocals` |
 |------------------|------|----------|----------|----------|----------|----------|
@@ -386,12 +397,16 @@ Table: Results of Hybrid Demucs on the MDX test set, when trained with an extra 
 | D3Net            | S    | 6.01     | 7.01     | 5.25     | 4.53     | 7.24     |
 | ResUNetDecouple+ | S    | 6.73     | 6.62     | 6.04     | 5.29 | **8.98** |
 
-Table: Comparison with methods that did not participate in the MDX competition, on the MusDB (HQ for Hybrid Demucs) test set, using the original SDR metric. \label{tbl:musdb}
+Table: Comparison on the MusDB (HQ for Hybrid Demucs) test set, using the original SDR metric.
+This includes methods that did not participate in the competition. "Mode" indicates if
+waveform (W) or spectrogram (S) domain is used. \label{tbl:musdb}
 
 
 ## Human evaluations
 
-We also performed Mean Opinion Score human evaluations. We re-use the same protocol as in [@demucs], i.e. we ask human subjects to evaluate a number of samples based on two criteria: the absence of artifacts, and the absence of bleeding. Both are evaluated on a scale from 1 to 5, with 5 being the best grade.
+We also performed Mean Opinion Score human evaluations. We re-use the same protocol as in [@demucs]:
+we asked human subjects to evaluate a number of samples based on two criteria: the absence of artifacts,
+and the absence of bleeding (contamination). Both are evaluated on a scale from 1 to 5, with 5 being the best grade.
 Each subject is tasked with evaluating 25 samples of 12 seconds, drawn randomly
 from the 50 test set tracks of MusDB. All subjects have a strong experience
 with music (amateur and professional musicians, sound engineers etc).
@@ -412,7 +427,7 @@ however reduces by a large amount bleeding across all sources.
 
 Table: Mean Opinion Score results when asking to rate the quality and absence
 of artifacts in the generated samples, from 1 to 5 (5 being the best grade).
-Standard deviation is around 0.15. \label{tbl:mos_quality}.
+Standard deviation is around 0.15. \label{tbl:mos_quality}
 
 
 
@@ -425,7 +440,7 @@ Standard deviation is around 0.15. \label{tbl:mos_quality}.
 
 Table: Mean Opinion Score results when asking to rate the absence of bleeding between
 the sources, from 1 to 5 (5 being the best grade).
-Standard deviation is around 0.15. \label{tbl:mos_bleed}.
+Standard deviation is around 0.15. \label{tbl:mos_bleed}
 
 # Conclusion
 
@@ -437,7 +452,8 @@ domain U-Net structure, with parallel temporal and spectrogram branches, that me
 core. Those changes allowed to achieve the first rank at the 2021 Sony Music DemiXing challenge,
 and translated into strong improvements of the overall quality and absence of bleeding between
 sources as measured by human evaluations.
-For all its gain, one limitation of our approach is the increased complexity of the U-Net encoder/decoder, requiring careful alignmement of the temporal and spectral signals through well shaped convolutions.
+For all its gain, one limitation of our approach is the increased complexity of the U-Net encoder/decoder,
+requiring careful alignmement of the temporal and spectral signals through well shaped convolutions.
 
 \newpage
 
