@@ -301,12 +301,30 @@ repurpose the test set of MusDB as training data, keeping only the original vali
 for model selection.
 Models are evaluated either through the MDX AI Crowd API[^2], or on the MusDB HQ test set.
 
-### Realist remix of tracks
-
-
 [^1]: https://github.com/sigsep/website/blob/master/content/datasets/assets/tracklist.csv
 
 [^2]: https://www.aicrowd.com/challenges/music-demixing-challenge-ismir-2021
+
+### Realistic remix of tracks
+
+We achieved further gains (between 0.1 and 0.2dB) by fine tuning the models on
+a specifically crafted dataset, and with longer training samples (30 seconds instead of 10).
+This dataset was built by combining stems from separate tracks, while respecting a number of conditions,
+in particular beat matching and pitch compatibility.
+Note that training from scratch on this dataset led to worse performance, likely because the model could rely
+too much on melodic structure, while random remixing forces the model to separate without this information.
+
+We use `librosa` [@librosa] for both beat tracking and tempo estimation, as well as
+chromagram estimation.
+Beat tracking is applied only on the drum source, while chromagram estimation is applied on the bass line.
+We aggregate the chromagram over time to a single chroma distribution
+and find the optimal pitch shift between two stems to maximize overlap (as measured by the L1 distance).
+We assume that the optimal shift for the bass line is the same for the vocals and accompaniments.
+Similarly, we align the tempo and first beat. In order to limit artifacts, we only allow two stems to blend
+if they require less than 3 semi-tones of shift and 15% of tempo change.
+
+
+
 
 ## Metrics
 
@@ -322,9 +340,8 @@ where $s$ is the ground truth source, $\hat{s}$ the estimated source, and $n$
 the time index.
 In order to reliably compare to previous work, we will refer to this new SDR
 definition as *nSDR*, and to the old definition as *SDR*.
-
 Note that when using nSDR on the MDX test set, the metric is defined as the average across all songs.
-On the other hand, the evaluation on the MusDB test set follows the traditional median across the songs
+The evaluation on the MusDB test set follows the traditional median across the songs
 of the median over all 1 second segments of each song.
 
 ## Models
@@ -389,19 +406,6 @@ while improving quite a lot over waveform only Demucs for the `Other` and `Vocal
 Interestingly, the best performance on the `Vocals` source is achieved by ResUNetDecouple+ [@kong2021decoupling],
 which uses a novel approach based on complex modulation of the input spectrogram.
 
-| Method           | Mode | `All`    | `Drums`  | `Bass`   | `Other`  | `Vocals` |
-|------------------|------|----------|----------|----------|----------|----------|
-| Hybrid Demucs    | S+W  | 7.33 | **8.04** | **8.12** | 5.19     | 7.97     |
-| Original Demucs  | W    | 6.28     | 6.86     | 7.01     | 4.42     | 6.84     |
-| KUIELAB-MDX-Net  | S+W    | **7.41**     | 7.09     | 7.38     | **6.29**     | 8.88     |
-| D3Net            | S    | 6.01     | 7.01     | 5.25     | 4.53     | 7.24     |
-| ResUNetDecouple+ | S    | 6.73     | 6.62     | 6.04     | 5.29 | **8.98** |
-
-Table: Comparison on the MusDB (HQ for Hybrid Demucs) test set, using the original SDR metric.
-This includes methods that did not participate in the competition. "Mode" indicates if
-waveform (W) or spectrogram (S) domain is used. \label{tbl:musdb}
-
-
 ## Human evaluations
 
 We also performed Mean Opinion Score human evaluations. We re-use the same protocol as in [@demucs]:
@@ -416,6 +420,21 @@ We observe strong improvements over the original Demucs, although we observe som
 on the bass source when considering quality. The model KUIELAb-MDX-Net that came in second
 at the MDX competition performs the best on vocals. The Hybrid Demucs architecture
 however reduces by a large amount bleeding across all sources.
+
+
+| Method           | Mode | `All`    | `Drums`  | `Bass`   | `Other`  | `Vocals` |
+|------------------|------|----------|----------|----------|----------|----------|
+| Hybrid Demucs    | S+W  | 7.33 | **8.04** | **8.12** | 5.19     | 7.97     |
+| Original Demucs  | W    | 6.28     | 6.86     | 7.01     | 4.42     | 6.84     |
+| KUIELAB-MDX-Net  | S+W    | **7.41**     | 7.09     | 7.38     | **6.29**     | 8.88     |
+| D3Net            | S    | 6.01     | 7.01     | 5.25     | 4.53     | 7.24     |
+| ResUNetDecouple+ | S    | 6.73     | 6.62     | 6.04     | 5.29 | **8.98** |
+
+Table: Comparison on the MusDB (HQ for Hybrid Demucs) test set, using the original SDR metric.
+This includes methods that did not participate in the competition. "Mode" indicates if
+waveform (W) or spectrogram (S) domain is used. \label{tbl:musdb}
+
+
 
 
 | Method          | `All`    | `Drums`  | `Bass`   | `Other`  | `Vocals` |
