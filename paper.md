@@ -41,7 +41,7 @@ CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integr
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [\text{DS}_4({x_{2\times 1 \times L}}*{h}^{(j)}_{1\times 64})]_{j=1,2,3,4},
 $$
-where $DS_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the STFT of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times \frac{F}{4}}$. 
+where $\text{DS}_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. Then we calculate the STFT of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times \frac{F}{4}}$. 
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
@@ -53,7 +53,7 @@ in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2}
 $$
 \hat{s}_{2\times L} = \sum_{j=1}^{4}(\text{US}_4(\hat{s}^{\prime}_{2\times 4\times \frac{L}{4}})*g^{(j)}_{4\times 64}),
 $$
-where $g^{(j)}, j=1,2,3,4$ are the pre-defined synthesis filters and $US_4(\cdot)$ is the zero-insertion upsampling function.
+where $g^{(j)}, j=1,2,3,4$ are the pre-defined synthesis filters and $\text{US}_4(\cdot)$ is the zero-insertion upsampling function.
 
 As is illustrated in Figure 1b, the CWS feature can make the CNN feature-maps smaller and save computational resources. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels. Our model for `vocals` is optimized by calculating L1 loss between $\hat{s}$ and its target source $s$. Despite we also use a model dedicated to separating the `other` track, we notice estimating and optimizing four sources together can result in a 0.2 SDR [@vincent2006performance] gain on `other`. So, we calculate both L1 loss and energy-conservation loss across four sources to optimize the model for `other`. Our CWS-PResUNet models for `bass` and `drums` reported in the next section employ the same setup as the model for `other`.
 
@@ -72,7 +72,7 @@ The subband analysis and synthesis operations usually cannot achieve perfect rec
 |       SDR       | 102.3 | 93.7 | 79.9 | -->
 
 
-![](graphs/table1.png){ width=100% }
+![](graphs/table1.png){ width=95% }
 
 Table 2 lists the results of the baselines and our proposed systems. Our CWS-PResUNets achieve an SDR of 8.92 and 5.84 on `vocals` and `other` sources, respectively, outperforming the baseline X-UMX [@x-umx-sawata2021all], D3Net [@takahashi2020d3net], and Demucs systems by a large margin. Demucs performs better than CWS-PResUNet on `bass` and `drums` tracks. We assume that is because time-domain models can learn better representations than time-frequency features so are more suitable for separating percussive and band-limited sources. The average performance of our ByteMSS system is 6.97, marking a SoTA performance on MSS. Considering the high performance of the `vocals` model, we also attempt to separate three instrumental sources from `mixture` minus `vocals`. In this case, the average score remains 6.97, in which the `drums` score increase to 6.72 but the other three sources drop slightly. In the future, we will address the integration of time and frequency models for the compensations in both domains.
 
