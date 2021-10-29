@@ -37,7 +37,7 @@ In the next section, we will introduce the detailed architecture of CWS-PResUNet
 
 # Method
 
-CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. For a stereo mixture signal $x \in R^{2\times L}$, where $L$ stands for signal length, we first utilize pre-defined analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
+CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. For a stereo mixture signal $x \in \mathbb{R}^{2\times L}$, where $L$ stands for signal length, we first utilize pre-defined analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [DS_4({x_{2\times 1 \times L}}*{h}^{(j)}_{1\times 64})]_{j=1,2,3,4},
 $$
