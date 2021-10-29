@@ -22,7 +22,7 @@ both. The proposed hybrid version of the Demucs architecture [@demucs]
 won the Music Demixing Challenge 2021 organized by Sony.
 This architecture also comes with additional improvements, such as compressed residual branches,
 local attention or singular value regularization.
-Overall, a 1.1 dB improvement of the Signal-To-Distortion (SDR) was observed across all sources
+Overall, a 1.4 dB improvement of the Signal-To-Distortion (SDR) was observed across all sources
 as measured on the MusDB HQ dataset [@musdbhq],
 an improvement confirmed by human subjective evaluation, with an overall quality
 rated at 2.83 out of 5 (2.36 for the non hybrid Demucs), and absence of contamination at 3.04 (against 2.37 for the non hybrid Demucs and 2.44
@@ -402,9 +402,10 @@ Table: Results of Hybrid Demucs on the MDX test set, when trained with extra tra
 
 We show on Table \autoref{tbl:musdb} the SDR metrics  as measured on the MusDB dataset.
 Again, Hybrid Demucs achieves the best performance for the `Drums` and `Bass` source,
-while improving quite a lot over waveform only Demucs for the `Other` and `Vocals`.
-Interestingly, the best performance on the `Vocals` source is achieved by ResUNetDecouple+ [@kong2021decoupling],
-which uses a novel approach based on complex modulation of the input spectrogram.
+while improving quite a lot over waveform only Demucs for the `Other` and `Vocals`, but
+not enough to surpasse KUIELAB-MDX-Net, which is purely spectrogram based for those two sources.
+Interestingly, the best performance on the `Vocals` source is also achieved by ResUNetDecouple+ [@kong2021decoupling],
+which uses a novel complex modulation of the input spectrogram.
 
 ## Human evaluations
 
@@ -424,15 +425,15 @@ however reduces by a large amount bleeding across all sources.
 
 | Method           | Mode | `All`    | `Drums`  | `Bass`   | `Other`  | `Vocals` |
 |------------------|------|----------|----------|----------|----------|----------|
-| Hybrid Demucs    | S+W  | 7.33 | **8.04** | **8.12** | 5.19     | 7.97     |
+| Hybrid Demucs*    | S+W  | **7.68** | **8.24** | **8.76** | 5.59     | 8.13     |
 | Original Demucs  | W    | 6.28     | 6.86     | 7.01     | 4.42     | 6.84     |
-| KUIELAB-MDX-Net  | S+W    | **7.41**     | 7.09     | 7.38     | **6.29**     | 8.88     |
+| KUIELAB-MDX-Net*  | S+W    | 7.47     | 7.20     | 7.83     | **5.90**     | **8.97**     |
 | D3Net            | S    | 6.01     | 7.01     | 5.25     | 4.53     | 7.24     |
 | ResUNetDecouple+ | S    | 6.73     | 6.62     | 6.04     | 5.29 | **8.98** |
 
 Table: Comparison on the MusDB (HQ for Hybrid Demucs) test set, using the original SDR metric.
 This includes methods that did not participate in the competition. "Mode" indicates if
-waveform (W) or spectrogram (S) domain is used. \label{tbl:musdb}
+waveform (W) or spectrogram (S) domain is used. Model with a "\*" were evaluated on MusDB HQ. \label{tbl:musdb}
 
 
 
@@ -465,7 +466,7 @@ Standard deviation is around 0.15. \label{tbl:mos_bleed}
 
 We introduced a number of architectural changes to the Demucs architecture that greatly
 improved the quality of source separation for music. On the MusDB HQ benchark,
-the gain is around 1.1 dB. Those changes include compressed residual branches
+the gain is around 1.4 dB. Those changes include compressed residual branches
 with local attention and chunked biLSTM, and most importantly, a novel hybrid spectrogram/temporal
 domain U-Net structure, with parallel temporal and spectrogram branches, that merge into a common
 core. Those changes allowed to achieve the first rank at the 2021 Sony Music DemiXing challenge,
