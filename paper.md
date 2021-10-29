@@ -72,7 +72,7 @@ The subband analysis and synthesis operations usually cannot achieve perfect rec
 |       SDR       | 102.3 | 93.7 | 79.9 | -->
 
 
-![](graphs/table1.png){ width=95% }
+![](graphs/table1.png){ width=100% }
 
 Table 2 lists the results of the baselines and our proposed systems. Our CWS-PResUNets achieve an SDR of 8.92 and 5.84 on `vocals` and `other` sources, respectively, outperforming the baseline X-UMX [@x-umx-sawata2021all], D3Net [@takahashi2020d3net], and Demucs systems by a large margin. Demucs performs better than CWS-PResUNet on `bass` and `drums` tracks. We assume that is because time-domain models can learn better representations than time-frequency features so are more suitable for separating percussive and band-limited sources. The average performance of our ByteMSS system is 6.97, marking a SoTA performance on MSS. Considering the high performance of the `vocals` model, we also attempt to separate three instrumental sources from `mixture` minus `vocals`. In this case, the average score remains 6.97, in which the `drums` score increase to 6.72 but the other three sources drop slightly. In the future, we will address the integration of time and frequency models for the compensations in both domains.
 
