@@ -161,7 +161,27 @@ It's performance is posted as comparison of the MDX challnge.
 Even though the advanced LightSAFT has fewest parameters in comparison group, it shows the best performance. 
 It seems to no conditioning mechanism, which convert the latent space, in encoder inducing stationary training.
 
-<Table....>
+<table>
+<tr><td>
+
+|model| # of parameters | vocals | drums | bass | other | Avg |
+|--|--|--|--|--|--|--|
+|LaSAFT|4.5M|-|-|-|-|-|
+|LightSAFT|3.8M|6.685|5.272|5.498|4.121|5.394|
+|Advanced <br>LightSAFT|2M|7.275|5.935|5.823|4.557|5.897|
+
+</td><td>
+
+| model | type | vocals | drums | bass | other | Avg |
+|--|--|--|--|--|--|--|
+|Demucs48-HQ| Single | 6.496 | 6.509 | 6.470 | 4.018 | 5.873 |
+|XUMX| multi-head | 6.341 | 5.615 | 5.807 | 3.722 | 5.372 |
+|UMX| Single | 5.042 | 5.357 | 5.504 | 3.309 | 5.042 |
+|LightSAFT|conditioned|6.685|5.272|5.498|4.121|5.394|
+|Advanced <br>LightSAFT|conditioned|7.275|5.935|5.823|4.557|5.897|
+  
+<tr><th>Table 1. A comparison with original LaSAFT </th><th>Table 2. A comparison with other source separation models</th></tr>
+</td></tr> </table>
 
 Normally, the conditioned source separation models which can separate all kinds sources show plausible performance compared to the single source separation model since the conditioned model learn generalized weights rather than source specific weights to separate various sources. 
 In spite of performance degradation, the conditioned source separation model is more attractive because of its applicability and efficiency. 
