@@ -162,16 +162,12 @@ On the other hand, the LightSAFT, which is posted as a comparison of the MDX cha
 Even though the advanced LightSAFT has the fewest parameters in the comparison group, it shows the best performance. 
 It seems to have no conditioning mechanism, which converts the latent space in encoder inducing stationary training.
 
-<table>
-<tr><td>
-
 |model| # of parameters | vocals | drums | bass | other | Avg |
 |--|--|--|--|--|--|--|
 |LaSAFT [@choi:2020]|4.5M|-|-|-|-|-|
 |LightSAFT|3.8M|6.685|5.272|5.498|4.121|5.394|
 |Advanced <br>LightSAFT|2M|7.275|5.935|5.823|4.557|5.897|
-
-</td><td>
+<th>Table 1. A comparison with original LaSAFT </th>
 
 | model | type | vocals | drums | bass | other | Avg |
 |--|--|--|--|--|--|--|
@@ -180,9 +176,7 @@ It seems to have no conditioning mechanism, which converts the latent space in e
 |UMX [@stoter:2019]| Single | 5.042 | 5.357 | 5.504 | 3.309 | 5.042 |
 |LightSAFT|conditioned|6.685|5.272|5.498|4.121|5.394|
 |Advanced <br>LightSAFT|conditioned|7.275|5.935|5.823|4.557|5.897|
-
-<tr><th>Table 1. A comparison with original LaSAFT </th><th>Table 2. A comparison with other source separation models</th></tr>
-</td></tr> </table>
+<th>Table 2. A comparison with other source separation models</th>
 
 Usually, the conditioned source separation models, which can separate all kinds of sources, show inferior 
 performance than the single source separation model; the conditioned model can not focus on the specific task 
