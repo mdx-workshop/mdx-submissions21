@@ -161,7 +161,7 @@ In \autoref{fig:tSNE}, each color means different sources and the dots are the d
 It can be examined that the latent vectors from the same sources tend to be clustered even though there is no constraint about the classification.
 It indicates that our method has learned source-aware representations.
 
-![tSNE and bass generation result](figs/figure3.png){ width=40% }
+![tSNE and bass generation result](figs/Figure3.png){ width=40% }
 
 To better understand that the vector quantization method affects to model's performance, we train a VAE and an Auto-Encoder with the same training framework and almost the same structure to produce representations of the same size.
 As a result, they reconstruct only the noise sound instead of the mixtures with their representation vectors.
