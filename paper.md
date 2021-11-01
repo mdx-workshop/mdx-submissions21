@@ -8,7 +8,7 @@ authors:
     affiliation: 1
   - name: Yeong-Seok Jeong^[co-first author]
     affiliation: 1
-  - name: Woosung choi
+  - name: Woosung Choi
     orcid: 0000-0003-2638-2097
     affiliation: 2 # (Multiple affiliations must be quoted)
   - name: Jaehwa Chung
@@ -191,5 +191,7 @@ In addition, the characteristics of the model generating decomposed audio repres
 We plan to design a decoder that can generate high-quality audio. This can be applied to real-world audio in future work. This methodology can generate a decomposed representation of the various sounds of the real world. As a result, it can be implemented to various tasks such as audio generation and audio event detection, and localization.
 
 # Acknowledgements
+This research was supported by Basic Science Research Program through the National Research Foundation of Korea(NRF) funded by the Ministry of Education(NRF-2021R1A6A3A03046770).
+This work was also supported by the National Research Foundation of Korea(NRF) grant funded by the Korea government(MSIT)(No. NRF-2020R1A2C1012624, NRF-2021R1A2C2011452).
 
 # References
