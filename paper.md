@@ -23,7 +23,7 @@ affiliations:
    index: 2
  - name: Korea National Open University
    index: 3
- - name: Seokyeong university
+ - name: Seokyeong University
    index: 4
 
 date: 26 Octover 2021
