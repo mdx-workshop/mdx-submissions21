@@ -28,7 +28,7 @@ arxiv-doi: 10.21105/joss.01667
 Music source separation is the task of isolating individual components, or sources, in a musical mixture, e.g., isolating a singer from a full band. In general, the output of source separation systems, including recent state-of-the-art methods, exhibits two common issues: unwanted noise not present in the original source (“artifacts”), and missing content from the original source. These two issues greatly affect the perceptual quality of the output.  We propose to use an additional post-processing step applied to the output of source separation systems, designed to reduce artifacts and restore missing content to the initial source estimates. Taking inspiration from recent advances in speech processing, we use a Generative Adversarial Network (GAN) as a post-processor. We call our system the Make it Sound Good (MSG) post-processor. Illustrative results on the widely-used MUSDB18 dataset show that MSG is able to reduce the presence of artifacts and restore missing frequencies from an upstream source separation system. 
 
 ## Figures
-![MSG Post-Processor](https://raw.githubusercontent.com/boazcogan/mdx-submissions21/Cogan-Schaffer-Manilow-Pardo/MSG%20Figure.jpg){ width=40% }
+![MSG Post-Processor](https://raw.githubusercontent.com/boazcogan/mdx-submissions21/Cogan-Schaffer-Manilow-Pardo/MSG%20Figure.jpg){ width=75% }
 
 # References
 
