@@ -28,3 +28,7 @@ Music source separation is the task of isolating individual components, or sourc
 
 ## Figures
 ![MSG Figure](https://raw.githubusercontent.com/boazcogan/mdx-submissions21/Cogan-Schaffer-Manilow-Pardo/MSG%20Figure.jpg){ width=40% }
+
+# References
+
+
