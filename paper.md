@@ -81,7 +81,7 @@ $$ \mathcal{M}(S,C) = \sum_{i}^{n} c_i \cdot s_i$$
 In following section, we describe the method to learn decomposed latent representations.
 Figure 1 describes the flow of the proposed model.
 
-![architecture](figs/Figure2.png){width=60%}
+![architecture](figs/Figure2.png){width=100%}
 
 ## Latent Quantization
 We quantize latent vectors by adopting the vector quantization method proposed in [@oord2017neural].
@@ -156,12 +156,12 @@ We trained models using the Adam optimizer [@kingma2014adam] and set the learnin
 ## Results
 To validate our method, we visualize the result of decomposed representations using t-SNE [@van2008visualizing].
 After training with the MUSDB18 training dataset, we obtained decomposed representations of single-source tracks in the MUSDB18 test dataset.
-Then we apply t-SNE to the set of representations as shown in \autoref{fig:tSNE}.
-In \autoref{fig:tSNE}, each color means different sources and the dots are the decomposed representations.
+Then we apply t-SNE to the set of representations as shown in Figure 2.
+In Figure 2, each color means different sources and the dots are the decomposed representations.
 It can be examined that the latent vectors from the same sources tend to be clustered even though there is no constraint about the classification.
 It indicates that our method has learned source-aware representations.
 
-![tSNE and bass generation result](figs/Figure3.png){ width=60% }
+![tSNE and bass generation result](figs/Figure3.png){width=100%}
 
 To better understand that the vector quantization method affects to model's performance, we train a VAE and an Auto-Encoder with the same training framework and almost the same structure to produce representations of the same size.
 As a result, they reconstruct only the noise sound instead of the mixtures with their representation vectors.
