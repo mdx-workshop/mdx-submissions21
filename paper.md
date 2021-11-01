@@ -120,7 +120,7 @@ The redundancy of the separating process disturbs utilising the model in the res
 Therefore, we focus on this point and explore the methods for lightening the model's parameters and maintaining the performance.
 
 ![Figure 1. Comparison the original LaSAFT block and proposed LightSAFT block.
-The $\mathbb{x}$ is the input intermediate feature and the $\mathbb{v_i}$ is generated latent source.](./img/comparison_of_blocks.png){: width:"40%"}
+The $\mathbb{x}$ is the input intermediate feature and the $\mathbb{v_i}$ is generated latent source.](./img/comparison_of_blocks.png)
 
 Figure 1 shows the difference between the original LaSAFT block and the proposed LightSAFT block in the latent source separating process.
 The blocks receive the intermediate feature x and generate the latent source V.
