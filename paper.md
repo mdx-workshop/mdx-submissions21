@@ -19,6 +19,7 @@ affiliations:
    index: 1
 date: 12 November 2021
 bibliography: paper.bib
+nocite: '@*'
 arxiv-doi: 10.21105/joss.01667
 ---
 
