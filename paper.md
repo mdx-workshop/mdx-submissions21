@@ -39,8 +39,8 @@ KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboar
 # Introduction
 
 Recently, many methods have been proposed for music source separation.
-Notably, deep learning approaches [@densenet:2017, @mmdenselstm:2018, @liu:2019, @choi:2020, @d3net:2021, @defossez:2021] have become mainstream because of their excellent performance.
-Some state-of-the-art methods [@densenet:2017, @mmdenselstm:2018, @choi:2020, @d3net:2021] have shown that stacking many layers with many skip connections improve the SDR performance.
+Notably, deep learning approaches [@densenet:2017; @mmdenselstm:2018; @liu:2019; @choi:2020; @d3net:2021, @defossez:2021] have become mainstream because of their excellent performance.
+Some state-of-the-art methods [@densenet:2017; @mmdenselstm:2018; @choi:2020; @d3net:2021] have shown that stacking many layers with many skip connections improve the SDR performance.
 
 Although a deep and complex architecture usually shows outstanding performance, it consumes numerous computing resources and time for training and evaluation.
 Such disadvantages make them not affordable in a restricted environment where limited resources are provided.
@@ -51,7 +51,7 @@ We empirically found a good balance of performance and required resources to des
 For example, we replaced channel-wise concatenation operations with simple element-wise multiplications for each skip connection between encoder and decoder (i.e., for each U-connection in U-Net).
 In our prior experiments, it reduced parameters with neglectable performance degradation.
 
-Also, we removed the other skip connections, especially, skip connections used in dense blocks [@densenet:2017, @mmdenselstm:2018, @choi:2020, @d3net:2021].
+Also, we removed the other skip connections, especially, skip connections used in dense blocks [@densenet:2017; @mmdenselstm:2018; @choi:2020; @d3net:2021].
 We observed that stacked convolutional networks without dense connections followed by Time-Distributed Fully connected layers (TDF) [@choi:2020] could perform comparably to dense blocks without TDFs.
 TDF, proposed in [@choi:2020], is a sequence of linear layers. It is applied to a given input in the frequency domain to capture frequency-to-frequency dependencies of the target source.
 Since a single TDF block has the whole receptive field in terms of frequency, injecting TDF blocks into a conventional U-Net [@unet:2015] improves the SDR performance on singing voice separation even with a shallower structure.
@@ -65,7 +65,7 @@ This paper also summarizes experimental results on another benchmark, MusDB18.
 
 ## Frequency Transformation for Source Separation
 
-Some source separation methods [@phasen:2020, @choi:2020, @choi:phd] have adopted Frequency Transformation (FT) to capture frequency-to-frequency dependencies of the target source.
+Some source separation methods [@phasen:2020; @choi:2020; @choi:phd] have adopted Frequency Transformation (FT) to capture frequency-to-frequency dependencies of the target source.
 Both designed their FT blocks with fully connected layers, also known as linear layers. For example, [@choi:2020] proposed Time-Distributed Fully connected layers (TDF) to capture frequency patterns observed in spectrograms of singing voice.
 A TDF block is a sequence of two linear layers. It is applied to a given input in the frequency domain.
 The first layer downsamples the features to $\mathbb{R}^{\lceil F/bn \rceil}$, where we denote the number of frequency bins in a given spectrogram feature by $F$ and the bottleneck factor that controls the degree of downsampling by $bn$.
