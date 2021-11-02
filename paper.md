@@ -1,5 +1,5 @@
 ---
-title: 'Learning source-aware representations of music on a discrete latent space'
+title: 'Learning source-aware representations of music in a discrete latent space'
 tags:
   - separation
   - vq-vae
@@ -30,28 +30,25 @@ arxiv-doi:
 
 # Abstract
 
-Since music comprises distinctive individual sources (e.g., vocal, instrumental sounds), there is an infinite latent vector to represent music.
-Recent year the neural network based method can generate the music representation into a vector easily but it is not readable to human perception to analyze and manipulate.
-To address this issue, we propose a novel method to learn a source aware latent representation of music through Vector-Quantized Variational Auto-Encoder(VQ-VAE).
-We train our VQ-VAE to encode an input mixture into a tensor of integers in a discrete latent space.
-We designed the discrete latent space to have a decomposed structure which allows us to manipulate the encoded latent vector adaptive to human perception.
+In recent years, neural network based methods have been able to convert music representations into a single vector, but they are inadequate for humans to analyze or manipulate.
+To address this issue, we propose a novel method to learn source-aware latent representations of music through Vector-Quantized Variational Auto-Encoder(VQ-VAE).
+We train our VQ-VAE to encode an input mixture into a tensor of integers in a discrete latent space, and design them to have a decomposed structure which allows humans to manipulate the latent vector in a source-aware manner.
 We claim that it can be adopted for various applications.
 To verify this idea, we show that we can generate bass lines by estimating the sequential distribution of our model.
 
 # Introduction
-Music is a protean art, combining distinctive individual sources (e.g., vocal, instrumental sounds) in such a way to produce a creative single audio signal.
 Humans have a unique auditory cortex, allowing proficiency at hearing sounds, and sensitiveness in frequencies.
-For this reason, humans can differentiate individual sources by capturing the unique acoustic characteristics (e.g., timbre and tessitura) of them, even though what they hear is a mixture of sources.
-Moreover, experts or highly skilled composers are able to produce sheet music for different instruments.
-Meanwhile, trained orchestras or band can reproduce the original music by playing the transcribed scores.
-However, if the unskilled transcriber who writes the sheet music lacks the ability to distinguish between different music sources, no matter how good the performers are, they cannot recreate the original music.
-This procedure resembles the encoder-decoder concept, widely used in the machine learning field; a transcriber is an encoder, and an orchestra/band is a decoder.
-Motivated by this analogy, this paper proposes a method that aims to learn source-aware decomposed audio representations for the given music.
+For this reason, humans can differentiate individual sources in an audio signal by capturing acoustic characteristics unique to each source (e.g., timbre and tessitura).
+Moreover, experts or highly skilled composers are able to produce sheet music for different instruments, just by listening to the mixed audio signal.
+Meanwhile, trained orchestras or bands can reproduce the original music by playing the transcribed scores.
+However, if an unskilled transcriber lacks the ability to distinguish different music sources, no matter how good the performers are, they cannot recreate the original music.
+This procedure resembles the encoder-decoder concept, widely used in the machine learning field; the transcriber is an encoder, and the orchestra/band is a decoder.
+Motivated by this analogy, this paper proposes a method that aims to learn source-aware decomposed audio representations for a given music signal.
 To the best of our knowledge, numerous methods have been proposed for audio representation, yet no existing works have learned decomposed music representations.
 
 # Related work
 
-For Automatic Speech Recognition, [@baevski2020wav2vec,@sadhu2021wav2vec] are proposed using Transformer [@vaswani2017attention]-based models to predict quantized latent vectors.
+For Automatic Speech Recognition, [@baevski2020wav2vec,@sadhu2021wav2vec] used Transformer [@vaswani2017attention]-based models to predict quantized latent vectors.
 From this approach, they trained their models to understand linguistic information in human utterance.
 [@ericsson2020adversarial,@mun2020sound] learn voice style representations for human voice information.
 They applied learned representations for speech separation and its enhancement.
@@ -142,14 +139,12 @@ We apply it to both $\mathcal{L}_{select}$ and $\mathcal{L}_{compl}$.
 
 # Experiment
 ## Dataset
-We use the MUSDB18 dataset [@rafii2017musdb18]. It contains 150 tracks and divided into 86 tracks for training, 14 tracks for validation, and 50 tracks for the test set.
-In MUSDB18, each track has 44100 sampling rate and has mixtures constitute with four stereo sources(vocal, bass drum, and other instruments).
+We use the MUSDB18 dataset [@rafii2017musdb18]. It contains a total of 150 tracks. We divided the training set into 86 tracks for training, 14 tracks for validation.
+In MUSDB18, each track has a sampling rate of 44100 and each mixture has four stereo sources(vocal, bass drum, and other instruments).
 
 ## Training Setting
-We trained models to predict the raw audio, following the selective source condition, from the raw input audio.
-The input mixture audio is formed with the random selected sources and this leads to two positive effects.
-It is data augmentation and the model that can learn each source's existence in a mixture of audio.
-Target selective source is randomly selected from the input mixture's sources.
+Given an input audio, we trained models to predict the target audio, following the selective source condition.
+The input mixture audio is a summation of randomly selected sources from different tracks, and the target sources are randomly selected from the input mixture's sources.
 When computing the STFT loss, We set the number of FFTs to 2048, and hop length to 512.
 We trained models using the Adam optimizer [@kingma2014adam] and set the learning rate to 0.0001.
 
