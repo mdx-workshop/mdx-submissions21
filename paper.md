@@ -138,7 +138,7 @@ To validate that our block is reasonable for the MDX challenge, which did not al
 
 To develop a lightweight LaSAFT-Net, we replace each LaSAFT block with our LightSAFT block.
 We call the revised separation model LightSAFT-Net for the rest of this paper.
-The LightSAFT-Net shows plausible performance with fewer parameters in the MDX challenge.  
+The LightSAFT-Net shows sufficient performance with fewer parameters in the MDX challenge.  
 
 We further replace each LightSAFT block with a TFC-TDF block in the encoder, to reduce the number of parameters.
 A TFC-TDF block has fewer parameters than the LightSAFT block because it does not have to generate $|S_L|$ latent source.
