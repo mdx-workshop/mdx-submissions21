@@ -143,14 +143,14 @@ The LightSAFT-Net shows sufficient performance with fewer parameters in the MDX 
 We further replace each LightSAFT block with a TFC-TDF block in the encoder, to reduce the number of parameters.
 A TFC-TDF block has fewer parameters than the LightSAFT block because it does not have to generate $|S_L|$ latent source.
 We call this advanced one LightSAFT-Net+.
-Although LightSAFT+ has fewer parameters, it performs better than the existing models posted as the MDX challenge comparison.
+Although LightSAFT-Net+ has fewer parameters, it performs better than the LightSAFT-Net posted as the MDX challenge comparison.
 
 # Experiments
 ## Model Configuration
 To fairly compare the number of parameters and performance, we follow the configurations of @choi:2020.
 The $|S_L|$ is 16 and $d_k$ is 24.
-Those are the same as the original LaSAFT's configuration ($ Table 1).
-It is less than half of the number of the original LaSAFT's parameters.
+Those are the same as the original LaSAFT-Net's configuration ($ Table 1).
+It is less than half of the number of the LaSAFT-Net's parameters.
 We trained our proposed model by minimizing the mean squared error between the target's short-Time Fourier Transformation (STFT)
 and the model's output.   
 For data augmentation, we generated the mixtures by mixing the different track's sources.  
@@ -159,30 +159,30 @@ For data augmentation, we generated the mixtures by mixing the different track's
 
 | model      | # of parameters | vocals | drums | bass  | other | Avg   |
 | ---------- | --------------- | ------ | ----- | ----- | ----- | ----- |
-| LaSAFT     | 4.5M            | -      | -     | -     | -     | -     |
-| LightSAFT  | 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
-| LightSAFT+ | 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
+| LaSAFT-Net     | 4.5M            | -      | -     | -     | -     | -     |
+| LightSAFT-Net  | 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
+| LightSAFT-Net+ | 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
 
-<tr>**Table 1**. A comparison with original LaSAFT</tr>
+<tr>**Table 1**. A comparison with LaSAFT-Net</tr>
 
 | model                             | type        | vocals | drums | bass  | other | Avg   |
 | --------------------------------- | ----------- | ------ | ----- | ----- | ----- | ----- |
 | Demucs48-HQ<br/> [@defossez:2019] | Single      | 6.496  | 6.509 | 6.470 | 4.018 | 5.873 |
 | XUMX<br/> [@sawata:2021]          | multi-head  | 6.341  | 5.807 | 5.615 | 3.722 | 5.372 |
 | UMX<br/> [@stoter:2019]           | Single      | 5.999  | 5.504 | 5.357 | 3.309 | 5.042 |
-| LightSAFT                         | conditioned | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
-| LightSAFT+                        | conditioned | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
+| LightSAFT-Net                         | conditioned | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
+| LightSAFT-Net+                        | conditioned | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
 
 <tr>**Table 2**. A comparison with other source separation models</tr>
 
 We compare the performance between the original model and the proposed models in the same condition.  
 Table 1 shows the results of the model's SDR [@vincent:2006] score in the MDX challenge and the number of each model's parameters.
-In same condition, the original LaSAFT's parameters are 4.5M, while the LightSAFT has 3.8M parameters sufficient compression for the MDX challenge.  
-The LightSAFT+, which contains the TFC-TDF blocks in the encoder, has only 2M parameters.
-The original LaSAFT, which cannot separate the songs in a limited time, was not reasonable for this challenge.  
-On the other hand, the LightSAFT, which is posted as a comparison of the MDX challenge,
+In same condition, the original LaSAFT-Net's parameters are 4.5M, while the LightSAFT-Net has 3.8M parameters sufficient compression for the MDX challenge.  
+The LightSAFT-Net+, which contains the TFC-TDF blocks in the encoder, has only 2M parameters.
+The LaSAFT-Net, which cannot separate the songs in a limited time, was not reasonable for this challenge.  
+On the other hand, the LightSAFT-Net, which is posted as a comparison of the MDX challenge,
  can separate the music source in a limited time and achieve comparable performance.
-Even though the LightSAFT+ has the fewest parameters in the comparison group, it shows the best performance.
+Even though the LightSAFT-Net+ has the fewest parameters in the comparison group, it shows the best performance.
 It seems to have no conditioning mechanism, which converts the latent space in encoder inducing stationary training.
 
 Usually, the conditioned source separation models, which can separate all kinds of sources, show inferior
@@ -191,13 +191,13 @@ since it have to learn generalized weights for conducting all tasks in limited m
 Despite performance degradation, the conditioned source separation model is more attractive because of its applicability and efficiency.
 Table 2 shows whether the model is conditioned or not and its performance.
 We take other models' performance at the MDX Leaderboard A, which do not allow additional datasets, for precise comparison.  
-The LightSAFT+shows competitive performance despite the conditioned source separation model.
+The LightSAFT-Net+ shows competitive performance despite the conditioned source separation model.
 Even the model shows a better performance than Demucs-HQ, another baseline of the MDX challenge.  
 
 # Conclusion
 We explore the method to reduce the number of the model's parameters and maintain the performance.
 We show that our method is reasonable for source separation tasks in the performance and the applicability, which can be used in a restricted environment like the MDX challenge.  
-The LightSAFT+shows the competitive performance even though it is a conditioned source separation model.
+The LightSAFT-Net+ shows the competitive performance even though it is a conditioned source separation model.
 For future work, we will study the method for improving our model performance, like TFC-TDF in the encoder.  
 
 # Acknowledgment
