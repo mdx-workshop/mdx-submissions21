@@ -27,7 +27,7 @@ large, pretrained music models for audio-to-audio tasks–like source separation
 and style transfer; all without any retraining. Inspired by the popular
 VQGAN+CLIP combination for making generative visual art, I accomplish audio
 tasks by pairing OpenAI's Jukebox with a pretrained music tagger in a system.
-called TagBox. I will showcase some fun and interesting results, contextualiz
+called TagBox. I will showcase some fun and interesting results, contextualize
 this method within the rest of the literature, and discuss my excitement about
 the vast potential that lays relatively untapped in these large pretrained
 models.
@@ -38,7 +38,8 @@ getting trained models into the hands of end-users. This work lets model
 creators a way to sidestep DAW-specific development work and enables them to
 upload pretrained PyTorch models to HuggingFace, where they will automatically
 be discoverable and runnable within Audacity's UI by end-users. In this talk,
-I will provide a high level overview of this software framework. We hope 
+I will provide a high level overview of this software framework. We hope this
+work will reduce the gap between model builders and end-users.
 
 
 
@@ -83,17 +84,3 @@ model creators to put their work into the hands of end-users, without extra
 development. We hope this work will reduce the gap between model creators
 and artists.
 
-
-## How to cite
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
