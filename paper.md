@@ -94,7 +94,7 @@ $$ q_i =\begin{cases}
    [e_1, e_2, ... e_m] \otimes y_i &\quad \text{if train step} \\
    e^*                   &\quad \text{if inference step}
 \end{cases}$$
-where $q_i$ is the quantized representation of the $i$-th source, $e$ are the discrete latents in the codebook, $z$ is the output of encoder, and $e^*=e_\operatorname{argmax}(y_i)$.
+where $q_i$ is the quantized representation of the $i$-th source, $e$ are the discrete latents in the codebook, $z$ is the output of encoder, and $e^*=e_{\operatorname{argmax}(y_i)}$.
 
 ## Multi-latent Quantization
 One limitation of the latent quantization approach is the restricted expressive power compared to continuous latent space approaches.
