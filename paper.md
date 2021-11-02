@@ -1,5 +1,5 @@
 ---
-title: 'KUIELab-MDX-Net: Finding a Balance between Performance and Resources in Deep learning-based Music Source Separation'
+title: 'KUIELab-MDX-Net: A Two-Stream Neural Network for Music Demixing'
 tags:
   - separation
   - u-net
@@ -33,7 +33,8 @@ arxiv-doi:
 
 # Summary
 
-Recently, many methods based on deep learning have been proposed for music source separation. Some state-of-the-art methods have shown that stacking many layers with many skip connections improve the SDR performance. Although a deep and complex architecture usually shows outstanding performance, it consumes numerous computing resources and time for training and evaluation. This paper presents a source separation model named KUIELab-MDX-Net. We empirically find a model with a good balance of performance and required resources. KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021. This paper also summarizes experimental results on another benchmark, MusDB18.
+Recently, many methods based on deep learning have been proposed for music source separation. Some state-of-the-art methods have shown that stacking many layers with many skip connections improve the SDR performance. This paper presents a two-stream neural network named KUIELab-MDX-Net for music demixing. We empirically find a model with a good balance of performance and required resources. The proposed model has a time-frequency branch and a time-domain branch, where each branch separates stems, respectively. It blends results from two streams to generate the final estimation.
+KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021. This paper also summarizes experimental results on another benchmark, MusDB18.
 
 # Introduction
 
@@ -56,6 +57,7 @@ TDF, proposed in [@choi:2020], is a sequence of linear layers. It is applied to 
 Since a single TDF block has the whole receptive field in terms of frequency, injecting TDF blocks into a conventional U-Net [@unet:2015] improves the SDR performance on singing voice separation even with a shallower structure.
 
 By introducing such tricks, we found a computationally efficient and effective model designs architecture.
+As a result, the proposed model has a time-frequency branch and a time-domain branch, where each branch separates stems, respectively. It blends results from two streams to generate the final estimation.
 KUIELab-MDX-Net took second place on leaderboard A and third place on leaderboard B in the Music Demixing Challenge at ISMIR 2021.
 This paper also summarizes experimental results on another benchmark, MusDB18.
 
