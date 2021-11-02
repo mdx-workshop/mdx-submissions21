@@ -1,5 +1,5 @@
 ---
-title: 'LightSAFT: Light weight Latent Source Aware Source Frequency Transform for Source Separation'
+title: 'LightSAFT: Lightweight Latent Source Aware Source Frequency Transform for Source Separation'
 tags:
   - separation
   - u-net
@@ -15,7 +15,7 @@ authors:
     affiliation: 3
   - name: Soonyoung Jung^[corresponding author]
     affiliation: 1
-    
+
 
 affiliations:
  - name: Korea University
@@ -32,12 +32,12 @@ arxiv-doi: 10.21105/joss.01667
 # Abstract
 
 Conditioned source separations have attracted significant attention because of their flexibility, applicability and extensionality.
-Their performance was usually inferior to the existing approaches such as the single source separation model.
-However, a recently proposed method called LaSAFT-Net has shown that conditioned models can show comparable performance against existing single source separation models.
-This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline,
-it provided a plausible SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
+Their performance was usually inferior to the existing approaches, such as the single source separation model.
+However, a recently proposed method called LaSAFT-Net has shown that conditioned models can show comparable performance against existing single-source separation models.
+This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a plausible SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
 This paper also enhances the existing Lightsaft-Net by replacing the  Lightsaft blocks in the encoder with TFC-TDF blocks.
-Our enhanced Lightsaft-Net outperforms another baseline, demucs48-HQ.
+Our enhanced Lightsaft-Net outperforms the previous one with fewer parameters.
+
 
 # Introduction
 
@@ -54,91 +54,94 @@ A LaSAFT block aims to capture the latent source's frequency patterns depending 
 Assuming that each latent source contains independent information depending on its viewpoint, it employs the attention mechanism to model the relevance between latent sources and the target symbol.
 With this approach, LaSAFT-Net showed comparable performance to single-source separation models on the MusDB18 [@rafii:2017] benchmark even if conditioned models are usually inferior to single-source separation models.
 
-However, it requires numerous parameters to analyze latent sources.
+However, it consumes numerous parameters to analyze latent sources.
 It prevents the model's applicability to a real-world environment, where resources are restricted, such as Music Demix Challenge (MDX) [@mitsufuji:2021] at ISMIR 2021.
-To this end, we explore a light-weight version of LaSAFT-Net to make it affordable in a real-world environment by decreasing parameters and simplifying the structure.
-
-We focus on the methods for reducing parameters.
-The LaSAFT-Net redundantly spends its parameters to separate each latent source.
-Our model LightSAFT-Net reduce the unnecessary parameter via removing weights that repetitively separate latent source.
-Furthermore, we find performance enhancing method that replacing LaSAFT block in the encoder with the Time-Frequency Convolution
-(TFC) and Time Distributed Fully-connected networks (TDF) [@choi:2019] is more adaptive for this task.
+To this end, we explore a lightweight version of LaSAFT-Net to make it affordable in a real-world environment by decreasing parameters and simplifying the structure.
 
 In this paper, we explore the method for the light version of LaSAFT-Net.
-Our approach already presents the performance as a comparison at MDX in ISMIR.  
-This paper's contributions are as follows:
+The existing LaSAFT-Net uses numerous parameters to separate each latent source.
+We focus on reducing parameters by introducing shared components in latent source analysis.
+Furthermore, we found that replacing each LaSAFT block in the encoder with a simple block can improve quality with fewer parameters. We use the Time-Frequency Convolution followed by a Time Distributed Fully-connected networks (TFC-TDF) [@choi:2019] instead of each LaSAFT block.
 
-- The LightSAFT-Net, which is available applying in restricted environment, shows plausible performance in MDX.
+This paper's contributions are summarized as follows:
 
-- The enhanced version of LightSAFT shows the better performance than demucs48-HQ which is single source separation model.
+- We propose LightSAFT-Net, which is affordable in a restricted environment and shows plausible performance in MDX challenge.
+
+- We propose an enhanced version of LightSAFT, which shows a better performance than the existing version.
 
 
 # Related work
-## TFC-TDF block
-The TFC comprises densely connected convolutional blocks, which contains convolutional neural network layer (CNN),
-Batch Norm (BN) and ReLU [@choi:2019].
-It extracts high-level features from the localized features of the time-frequency dimension.
 
-Some studies [@yin:2020, @choi:2020, @choi:2021] apply Frequency Transformation (FT) which transform the feature
-in frequency-to-frequency domain.
-@choi:2019 defines the TDF block, which linear-transforms each time-distributed frequency feature like convolution filter.
-This block support that the model can capture the target sound's frequency patterns from the mixture audio.
-@choi:2019 defines the TDF block, which linear-transforms each time-distributed frequency feature like convolution filter. 
-This block support that the model can capture the target source's frequency patterns from the mixture audio.
-We apply the TFC-TDF blocks in the encoder of the original LaSAFT-Net to catch the conditioned source's patterns in the received mixture.
+## TFC-TDF block
+
+A TFC-TDF [@choi:2019] block consists of a Time-Frequency Convolution (TFC) block and a Time Distributed Fully connected layer (TDF) block.
+A TFC comprises densely connected convolutional blocks containing convolutional neural network layers, Batch Normalization (BN) and ReLU.
+It extracts high-level features from the localized features of the time-frequency dimension.
+A TDF was proposed for Frequency Transformation (FT) [@yin:2020, @choi:2020, @choi:2021], which aims to capture frequency-to-frequency dependencies of the target source.
+@choi:2019 showed that replacing fully convolutional intermediate blocks with TFC-TDF blocks improves separation quality.
+We apply TFC-TDF blocks in the encoder of the original LaSAFT-Net to catch the conditioned source's patterns in an input mixture.
 
 ## Latent Source
-The music source separation task is separating arbitrary target instruments set which are defined by human's definition.
-In some cases, some instruments are grouped even though they have different characteristics.
-For example, the bass drum and Hi-hat are grouped together as drums set though have different frequency patterns.
-Separating arbitrary instruments set, which do not share the common features, is difficult from the model perspective.
-While the model generates the latent sources, the latent sources can contain
-the high-level features that can be the target instrument's frequency patterns.
-Therefore, some studies adopt latent sources [@choi:2020] to relax the problems caused by arbitrary grouped instruments' set.
-They mix the latent sources depending on the conditions for target source.
-In this paper, we adopt the latent sources, which model can softly select rely on its frequency patterns.  
+
+Music source separation aims to separate arbitrary target instruments set defined by human's definition.
+However, some musical sub-components can be grouped as a single instrument even if they have different sonic characteristics.
+For example, bass-drum and Hi-hat are included in `drums set' though they have different timbre.
+Arbitrary instruments set, which do not share the common acoustic features, might make a model hinder separating it from a mixture.
+It is even more challenging for conditioned source separation models, which modulate internal features according to a given conditioning symbol.
+
+Some existing studies adopted latent source analysis [@choi:2020] to relax the problems caused by arbitrary grouped instruments' sets.
+They assume that a model can learn a latent source that can deal with a more detailed aspect of sound from a given training dataset.
+For example, a LaSAFT block aims to analyze frequency patterns of latent sources. It aggregates the analyzed patterns by computing an attention matrix between latent sources and a given input conditioning symbol (e.g., one-hot encoding vector that specifies which source a user wants to separate).
+
+
 
 
 # Light-weight latent Source Attentive Frequency Transformation Network
 
 ## Latent Source Attentive Separation mechanism
-The LaSAFT-Net combines the latent source features via the attention mechanism.
-The query vector($Q \in \mathbb{R}^{1 \times d_{k}}$) is conditioned source's embedding vector which has $d_{k}$ dimensions.
-The key vectors($K \in \mathbb{R}^{|S_L| \times d_{k}}$) are each latent source's representative value.
-The $i^{th}$ key vector($K^{th} \in \mathbb{R}^{d_{k}}$) indicates what information the $i^{th}$ latent source contain.
-The query vector and key vector conduct dot product and softmax after scaled by $\sqrt{d_k}$
-to take the attention scores which determine each latent source's ratio.
+
+We present how the original LaSAFT block processes an input feature as follows.
+A LaSAFT block analyzes frequency patterns of latent sources using TDF blocks and aggregates the analyzed patterns by computing an attention matrix between latent sources and a given input conditioning symbol.
+An attention score measures how important the relationship between latent sources and the target is for separation.
+To compute an attention matrix, it first generates a query vector($Q \in \mathbb{R}^{1 \times d_{k}}$), which has $d_{k}$ dimensions, using an embedding layer.
+Key vectors($K \in \mathbb{R}^{|S_L| \times d_{k}}$) are representative vectors of latent sources, which are learnable parameters.
+To compute the attention scores, we apply a dot product of the query and key and take softmax after scaled by $\sqrt{d_k}$.
+
 The multiple TDF blocks generate latent source features $V \in \mathbb{R}^{T \times d_{k} \times |S_L|}$, where the $T$ is the number of frames.
-The attention mechanisms which mix the latent sources is as follows:
+The attention mechanism which mixes the latent sources' features is as follows:
 $$Attention(Q,K,V')=softmax(QK^{T}/\sqrt{d_{k}})V'$$
 
-##  Light-weight latent Source Attentive Frequency Transformation Block
-The TDF block in the original LaSAFT contains two fully connected layers (Figure 1.(a)).
-The first fully connected layers are separate the latent sources from mixture sources.
-After aggregating the generated latent sources, the second layers separate the latent source again.
-The redundancy of the separating process disturbs utilising the model in the restricted environment.
+##  Lightweight latent Source Attentive Frequency Transformation Block
+
+The TDF of the original LaSAFT block contains two phases (Figure 1.(a)).
+In the first phase, fully connected layers extract latent sources' features from mixture sources.
+In the second phase, other linear layers are applied to generate the final output.
+Even if each fully connected layers downsample the internal space, this architecture still consumes many parameters.
+It seems that it contains too many connections between two phases because a connection exists for each pair of different latent sources.
+Although such connections might be helpful for separation enabling active communication between sub-modules, it might disturb utilizing the model in the real-time environment.
 Therefore, we focus on this point and explore the methods for lightening the model's parameters and maintaining the performance.
 
 ![Figure 1. Comparison the original LaSAFT block and proposed LightSAFT block.
-The $\mathbb{x}$ is the input intermediate feature and the $\mathbb{v_i}$ is generated latent source.](./img/comparison_of_blocks.png)
+The $\mathbb{x}$ is the input intermediate feature and the $\mathbb{v}_i$ is generated latent source.](./img/comparison_of_blocks.png)
 
 Figure 1 shows the difference between the original LaSAFT block and the proposed LightSAFT block in the latent source separating process.
 The blocks receive the intermediate feature x and generate the latent source V.
 Each FC block comprises a fully connected layer (FC), Batch Norm, and activation function in each block.
-We assume that the redundant separating process in the original block is not efficient and not necessary.
-Therefore, we change the second multiple FC block to one FC block shared for every latent source.
-The LightSAFT block has only one separating process in comparison with the original block.
+We eliminate inter-source connections between two phases and use a shared linear layer in the phase 2.
+The LightSAFT block has only one separating process in comparison with the original block, simply assuming that the redundant separating process in the original block is not necessary.
 From this approach, we improve the network's applicability and efficiency.
-To validate that our block is reasonable for the MDX challenge, we check the performance in its environment.
+To validate that our block is reasonable for the MDX challenge, we evaluated the performance in its environment.
 
 ## Advanced LightSAFT
 
-The LightSAFT mechanism shows plausible results and decreases the number of parameters in the MDX challenge.  
-To more lighten the number of parameters, we change the LightSAFT blocks in the encoder to TFC-TDF blocks.
-The TFC-TDF block has fewer parameters than the LightSAFT block because it does not have to generate $|S_L|$ latent source,
-and the convolution filter has only a few parameters.    
-Even though the advanced LightSAFT-net (LightSAFT+) which contains TFC-TDF blocks have fewer parameters, they show the bettor performance in the MDX challenge.
+To develop a lightweight LaSAFT-Net, we replace each LaSAFT block with our LightSAFT block.
+We call the revised separation model LightSAFT-Net for the rest of this paper.
+The LightSAFT-Net shows plausible performance with fewer parameters in the MDX challenge.  
 
+We further replace each LightSAFT block with a TFC-TDF block in the encoder, to more lighten the number of parameters.
+A TFC-TDF block has fewer parameters than the LightSAFT block because it does not have to generate $|S_L|$ latent source.
+We call this advanced one LightSAFT-Net+.
+Although LightSAFT+ has fewer parameters, it performs better than the existing models in the MDX challenge.
 
 # Experiments
 ## Model Configuration
@@ -170,24 +173,24 @@ For data augmentation, we generated the mixtures by mixing the different track's
 
 <tr>**Table 2**. A comparison with other source separation models</tr>
 
-We compare the performance between the original model and the proposed models in the same condition.  Table 1 shows the results of the model's SDR [@vincent:2006] score in the MDX challenge and the number of each model's parameters. 
+We compare the performance between the original model and the proposed models in the same condition.  Table 1 shows the results of the model's SDR [@vincent:2006] score in the MDX challenge and the number of each model's parameters.
 In same condition, the original LaSAFT's parameters are 4.5M, while the LightSAFT has 3.8M parameters sufficient compression for the MDX challenge.  
 The LightSAFT+, which contains the TFC-TDF blocks in the encoder, has only 2M parameters.
 The original LaSAFT, which cannot separate the songs in a limited time, was not reasonable for this challenge.  
-On the other hand, the LightSAFT, which is posted as a comparison of the MDX challenge, 
+On the other hand, the LightSAFT, which is posted as a comparison of the MDX challenge,
  can separate the music source in a limited time and achieve comparable performance.
-Even though the LightSAFT+ has the fewest parameters in the comparison group, it shows the best performance. 
+Even though the LightSAFT+ has the fewest parameters in the comparison group, it shows the best performance.
 It seems to have no conditioning mechanism, which converts the latent space in encoder inducing stationary training.
 
 
 
-Usually, the conditioned source separation models, which can separate all kinds of sources, show inferior 
-performance than the single source separation model; the conditioned model can not focus on the specific task 
-since it have to learn generalized weights for conducting all tasks in limited model complexity. 
-Despite performance degradation, the conditioned source separation model is more attractive because of its applicability and efficiency. 
-Table 2 shows whether the model is conditioned or not and its performance. 
-The LightSAFT+shows competitive performance despite the conditioned source separation model. 
-Even the model shows a better performance than Demucs-HQ, a single-source separation model and another comparison of the MDX challenge.  
+Usually, the conditioned source separation models, which can separate all kinds of sources, show inferior
+performance than the single source separation model; the conditioned model can not focus on the specific task
+since it have to learn generalized weights for conducting all tasks in limited model complexity.
+Despite performance degradation, the conditioned source separation model is more attractive because of its applicability and efficiency.
+Table 2 shows whether the model is conditioned or not and its performance.
+The LightSAFT+shows competitive performance despite the conditioned source separation model.
+Even the model shows a better performance than Demucs-HQ, another baseline of the MDX challenge.  
 
 # Conclusion
 We explore the method to reduce the number of the model's parameters and maintain the performance.
