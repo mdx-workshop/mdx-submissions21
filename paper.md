@@ -42,8 +42,8 @@ Our enhanced Lightsaft-Net outperforms the previous one with fewer parameters.
 # Introduction
 
 Recently, many methods based on machine learning have been conducted for music source separation.
-They can be distinguished depending upon strategies for separation as follows.: single source separation[@jansson:2017, @choi:2019, @defossez:2019], multi-head source
-separation[@sawata:2021], conditioned source separation[@cunet:2019, @choi:2021, @samuel:2020, @olga:2021], recursive separation[@recursive:2019], and hierarchical separation [@ethan:2020].
+They can be distinguished depending upon strategies for separation as follows.: single source separation [@jansson:2017, @choi:2019, @defossez:2019], multi-head source
+separation [@sawata:2021], conditioned source separation [@cunet:2019, @choi:2021, @samuel:2020, @olga:2021], recursive separation [@recursive:2019], and hierarchical separation [@ethan:2020].
 The conditioned source separation method, which does not have shared bottleneck components, is one of the most attractive approaches.
 Although it has to separate with more complex mechanisms than the multi-head separation method, it is still promising because of its flexibility, applicability and extensionality.
 For example, one can easily extend it to sample-based source separation [@lee:2019, @lin:2020].
