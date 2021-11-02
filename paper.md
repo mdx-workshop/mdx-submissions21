@@ -111,7 +111,7 @@ As shown in Figure 3, high frequencies above the target source's expected freque
 This way, we can increase *n_fft* while using the same input spectrogram size (which we needed to constrain for the separation time limit), and using a larger *n_fft* usually leads to better SDR. It is also why we did not use a multi-target model (a single model that is trained to estimate all four sources), where we could not use source-specific frequency cutting.
 
 ## Mixer
-Although training one separation model for each source can benefit from source-specific preprocessing and model configurations, these models lack the knowledge that they are separating using the same mixture. We thought an additional network that * could* exploit this knowledge (which we call the Mixer) could further enhance the *independently* estimated sources.
+Although training one separation model for each source can benefit from source-specific preprocessing and model configurations, these models lack the knowledge that they are separating using the same mixture. We thought an additional network that *could* exploit this knowledge (which we call the Mixer) could further enhance the *independently* estimated sources.
 For example, estimated 'vocals' often have drum snare noises left. The Mixer can learn to remove sounds from 'vocals' that are also present in the estimated 'drums' or vice versa.
 
 We only tried very shallow models (such as a single convolution layer) for the Mixer during the MDX Challenge due to the time limit. We look forward to trying more complex models in the future since even a single $1 \times 1$ convolution layer was enough to make some improvement on total SDR (Section "Performance on the MUSDB Benchmark").
