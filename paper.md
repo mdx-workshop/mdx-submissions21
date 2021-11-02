@@ -34,7 +34,7 @@ arxiv-doi: 10.21105/joss.01667
 Conditioned source separations have attracted significant attention because of their flexibility, applicability and extensionality.
 Their performance was usually inferior to the existing approaches, such as the single source separation model.
 However, a recently proposed method called LaSAFT-Net has shown that conditioned models can show comparable performance against existing single-source separation models.
-This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a plausible SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
+This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a sufficient SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
 This paper also enhances the existing Lightsaft-Net by replacing the  Lightsaft blocks in the encoder with TFC-TDF blocks.
 Our enhanced Lightsaft-Net outperforms the previous one with fewer parameters.
 
@@ -44,7 +44,8 @@ Our enhanced Lightsaft-Net outperforms the previous one with fewer parameters.
 Recently, many methods based on machine learning have been conducted for music source separation.
 They can be distinguished depending upon strategies for separation as follows.: single source separation [@jansson:2017, @choi:2019, @defossez:2019], multi-head source
 separation [@sawata:2021], conditioned source separation [@cunet:2019, @choi:2021, @samuel:2020, @olga:2021], recursive separation [@recursive:2019], and hierarchical separation [@ethan:2020].
-The conditioned source separation method, which does not have shared bottleneck components, is one of the most attractive approaches.
+The conditioned source separation method can separate all sources from the mixture source depending on its condition which determines the target.
+It is the one of the most attractive.
 Although it has to separate with more complex mechanisms than the multi-head separation method, it is still promising because of its flexibility, applicability and extensionality.
 For example, one can easily extend it to sample-based source separation [@lee:2019, @lin:2020].
 
@@ -56,16 +57,17 @@ With this approach, LaSAFT-Net showed comparable performance to single-source se
 
 However, it consumes numerous parameters to analyze latent sources.
 It prevents the model's applicability to a real-world environment, where resources are restricted, such as Music Demix Challenge (MDX) [@mitsufuji:2021] at ISMIR 2021.
-To this end, we explore a lightweight version of LaSAFT-Net to make it affordable in a real-world environment by decreasing parameters and simplifying the structure.
+To this end, we explore a lightweight version of LaSAFT-Net to make it affordable in a real-world environment by decreasing the number of parameters and simplifying the structure.
 
 In this paper, we explore the method for the light version of LaSAFT-Net.
 The existing LaSAFT-Net uses numerous parameters to separate each latent source.
 We focus on reducing parameters by introducing shared components in latent source analysis.
-Furthermore, we found that replacing each LaSAFT block in the encoder with a simple block can improve quality with fewer parameters. We use the Time-Frequency Convolution followed by a Time Distributed Fully-connected networks (TFC-TDF) [@choi:2019] instead of each LaSAFT block.
+Furthermore, we found that replacing each LaSAFT block in the encoder with a simple block can improve quality with fewer parameters. 
+We use the Time-Frequency Convolution followed by a Time Distributed Fully-connected networks (TFC-TDF) [@choi:2019] instead of each LaSAFT block.
 
 This paper's contributions are summarized as follows:
 
-- We propose LightSAFT-Net, which is affordable in a restricted environment and shows plausible performance in MDX challenge.
+- We propose LightSAFT-Net, which is affordable in a restricted environment and shows sufficient performance in MDX challenge.
 
 - We propose an enhanced version of LightSAFT, which shows a better performance than the existing version.
 
@@ -118,7 +120,7 @@ In the first phase, fully connected layers extract latent sources' features from
 In the second phase, other linear layers are applied to generate the final output.
 Even if each fully connected layers downsample the internal space, this architecture still consumes many parameters.
 It seems that it contains too many connections between two phases because a connection exists for each pair of different latent sources.
-Although such connections might be helpful for separation enabling active communication between sub-modules, it might disturb utilizing the model in the real-time environment.
+Although such connections might be helpful for separation enabling active communication between sub-modules, it may be computationally difficult to use this model in real-time environment.
 Therefore, we focus on this point and explore the methods for lightening the model's parameters and maintaining the performance.
 
 ![Figure 1. Comparison the original LaSAFT block and proposed LightSAFT block.
@@ -127,10 +129,10 @@ The $\mathbb{x}$ is the input intermediate feature and the $\mathbb{v}_i$ is gen
 Figure 1 shows the difference between the original LaSAFT block and the proposed LightSAFT block in the latent source separating process.
 The blocks receive the intermediate feature x and generate the latent source V.
 Each FC block comprises a fully connected layer (FC), Batch Norm, and activation function in each block.
-We eliminate inter-source connections between two phases and use a shared linear layer in the phase 2.
+We eliminate inter-source connections between two phases and use a shared linear layer in the in phase 2.
 The LightSAFT block has only one separating process in comparison with the original block, simply assuming that the redundant separating process in the original block is not necessary.
 From this approach, we improve the network's applicability and efficiency.
-To validate that our block is reasonable for the MDX challenge, we evaluated the performance in its environment.
+To validate that our block is reasonable for the MDX challenge, which did not allow GPU computing to infer, we evaluated the performance in its environment.
 
 ## Advanced LightSAFT
 
@@ -138,10 +140,10 @@ To develop a lightweight LaSAFT-Net, we replace each LaSAFT block with our Light
 We call the revised separation model LightSAFT-Net for the rest of this paper.
 The LightSAFT-Net shows plausible performance with fewer parameters in the MDX challenge.  
 
-We further replace each LightSAFT block with a TFC-TDF block in the encoder, to more lighten the number of parameters.
+We further replace each LightSAFT block with a TFC-TDF block in the encoder, to reduce the number of parameters.
 A TFC-TDF block has fewer parameters than the LightSAFT block because it does not have to generate $|S_L|$ latent source.
 We call this advanced one LightSAFT-Net+.
-Although LightSAFT+ has fewer parameters, it performs better than the existing models in the MDX challenge.
+Although LightSAFT+ has fewer parameters, it performs better than the existing models posted as the MDX challenge comparison.
 
 # Experiments
 ## Model Configuration
@@ -166,14 +168,15 @@ For data augmentation, we generated the mixtures by mixing the different track's
 | model                             | type        | vocals | drums | bass  | other | Avg   |
 | --------------------------------- | ----------- | ------ | ----- | ----- | ----- | ----- |
 | Demucs48-HQ<br/> [@defossez:2019] | Single      | 6.496  | 6.509 | 6.470 | 4.018 | 5.873 |
-| XUMX<br/> [@sawata:2021]          | multi-head  | 6.341  | 5.615 | 5.807 | 3.722 | 5.372 |
-| UMX<br/> [@stoter:2019]           | Single      | 5.042  | 5.357 | 5.504 | 3.309 | 5.042 |
+| XUMX<br/> [@sawata:2021]          | multi-head  | 6.341  | 5.807 | 5.615 | 3.722 | 5.372 |
+| UMX<br/> [@stoter:2019]           | Single      | 5.999  | 5.504 | 5.357 | 3.309 | 5.042 |
 | LightSAFT                         | conditioned | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
 | LightSAFT+                        | conditioned | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
 
 <tr>**Table 2**. A comparison with other source separation models</tr>
 
-We compare the performance between the original model and the proposed models in the same condition.  Table 1 shows the results of the model's SDR [@vincent:2006] score in the MDX challenge and the number of each model's parameters.
+We compare the performance between the original model and the proposed models in the same condition.  
+Table 1 shows the results of the model's SDR [@vincent:2006] score in the MDX challenge and the number of each model's parameters.
 In same condition, the original LaSAFT's parameters are 4.5M, while the LightSAFT has 3.8M parameters sufficient compression for the MDX challenge.  
 The LightSAFT+, which contains the TFC-TDF blocks in the encoder, has only 2M parameters.
 The original LaSAFT, which cannot separate the songs in a limited time, was not reasonable for this challenge.  
@@ -182,13 +185,12 @@ On the other hand, the LightSAFT, which is posted as a comparison of the MDX cha
 Even though the LightSAFT+ has the fewest parameters in the comparison group, it shows the best performance.
 It seems to have no conditioning mechanism, which converts the latent space in encoder inducing stationary training.
 
-
-
 Usually, the conditioned source separation models, which can separate all kinds of sources, show inferior
 performance than the single source separation model; the conditioned model can not focus on the specific task
 since it have to learn generalized weights for conducting all tasks in limited model complexity.
 Despite performance degradation, the conditioned source separation model is more attractive because of its applicability and efficiency.
 Table 2 shows whether the model is conditioned or not and its performance.
+We take other models' performance at the MDX Leaderboard A, which do not allow additional datasets, for precise comparison.  
 The LightSAFT+shows competitive performance despite the conditioned source separation model.
 Even the model shows a better performance than Demucs-HQ, another baseline of the MDX challenge.  
 
