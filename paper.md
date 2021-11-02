@@ -86,26 +86,24 @@ In this original VQ-VAE [@oord2017neural], straight-through estimation was used,
 $$ y_{i,j} = \frac{\exp((z_{i,j} + g_j) / \tau ) }{\sum_{k}^{m}\exp((z_{i,k} + g_k)/\tau) }$$
 while $\tau$ is a non-negative temperature, $g$ are categorical distribution from $n= -log(-log(u))$, and $u$ are uniform samples from uniform distribution $\mathcal{U}(0,1)$.
 
-During training, Gumbel softmax estimation stochastically maps the representation of the encoder output to discrete latent in the codebook.
-For this reason, features in the encoder are selected stochastically rather than deterministically in the codebook.
+During training, Gumbel softmax estimation stochastically maps the representation of the encoder output to the discrete latents. In other words, $q_i$ is a weighted sum of all discrete latents.
 This way it is easier to compute the gradients and can simply implement the reparameterization trick that approximates the categorical distributions. 
-However, during the inference, we deterministically choose one discrete latent in the codebook.
+However, during inference we deterministically choose one discrete latent in the codebook.
 
 $$ q_i =\begin{cases}
-   \[e_1, e_2, ... e_m\] \otimes y_i &\quad \text{if train step} \\
+   [e_1, e_2, ... e_m] \otimes y_i &\quad \text{if train step} \\
    e^*                   &\quad \text{if inference step}
 \end{cases}$$
 where $q_i$ is the quantized representation of the $i$-th source, $e$ are the discrete latents in the codebook, $z$ is the output of encoder, and $e^*=e_\operatorname{argmax}(y_i)$.
 
 ## Multi-latent Quantization
 One limitation of the latent quantization approach is the restricted expressive power compared to continuous latent space approaches.
-To increase the expressive power, we could have increased the number of elements in a codebook.
-However, this method could raise memory issues.
-Instead, we use multiple codebooks and construct each $q_s$ with a combination of quantized vectors $e^{(h)}$ ([h \in \[1,H\]]), where h is the codebook index.
+To increase the number of source representations, we could have simply increased the number of elements in a codebook.
+Instead, we use a more memory-efficient way to increase expressive power. We use multiple codebooks and construct each $q_i$ with a combination of quantized vectors $(e^*){(h)} (h \in [1,H])$, where h is the codebook index.
 
 $$ q_i=[(e^*)^{(1)}, ..., (e^*)^{(H)}]$$ 
 
-In this approach, the expressive power of the source representations $q_i$ increase exponentially with the number of codebooks, whereas the number of elements in a codebook is linear with the expressive power.
+Through this approach, the number of available source representations increases exponentially with the total number of codebooks.
 
 ## Task definition
 ### Selective source reconstruction
