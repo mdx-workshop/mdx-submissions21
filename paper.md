@@ -201,7 +201,7 @@ Even the model shows a better performance than Demucs-HQ, another baseline of th
 We explore the method to reduce the number of the model's parameters and maintain the performance.
 We show that our method is reasonable for source separation tasks in the performance and the applicability, which can be used in a restricted environment like the MDX challenge.  
 The LightSAFT-Net+ shows the competitive performance even though it is a conditioned source separation model.
-For future work, we will study the method for improving our model performance, like TFC-TDF in the encoder.  
+For future work, we will study the method to extend it to other tasks, like TFC-TDF in the encoder.  
 
 # Acknowledgment
 This research was supported by Basic Science Research Program through the National Research Foundation of Korea(NRF) funded by the Ministry of Education(NRF-2021R1A6A3A03046770).
