@@ -34,22 +34,23 @@ arxiv-doi: 10.21105/joss.01667
 Conditioned source separations have attracted significant attention because of their flexibility, applicability and extensionality.
 Their performance was usually inferior to the existing approaches, such as the single source separation model.
 However, a recently proposed method called LaSAFT-Net has shown that conditioned models can show comparable performance against existing single-source separation models.
-This paper presents Lightsaft-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a sufficient SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
-This paper also enhances the existing Lightsaft-Net by replacing the  Lightsaft blocks in the encoder with TFC-TDF blocks.
-Our enhanced Lightsaft-Net outperforms the previous one with fewer parameters.
+This paper presents LightSAFT-Net, a lightweight version of LaSAFT-Net. As a baseline, it provided a sufficient SDR performance for comparison during the Music Demixing Challenge at ISMIR 2021.
+This paper also enhances the existing LightSAFT-Net by replacing the  LightSAFT blocks in the encoder with TFC-TDF blocks.
+Our enhanced LightSAFT-Net outperforms the previous one with fewer parameters.
 
 
 # Introduction
 
 Recently, many methods based on machine learning have been conducted for music source separation.
-They can be distinguished depending upon strategies for separation as follows.: single source separation [@jansson:2017, @choi:2019, @defossez:2019], multi-head source
-separation [@sawata:2021], conditioned source separation [@cunet:2019, @choi:2021, @samuel:2020, @olga:2021], recursive separation [@recursive:2019], and hierarchical separation [@ethan:2020].
-The conditioned source separation method can separate all sources from the mixture source depending on its condition which determines the target.
-It is the one of the most attractive.
-Although it has to separate with more complex mechanisms than the multi-head separation method, it is still promising because of its flexibility, applicability and extensionality.
-For example, one can easily extend it to sample-based source separation [@lee:2019, @lin:2020].
+They can be distinguished depending upon strategies for separation as follows.: single source separation [@takahashi:2017; @jansson:2017; @choi:2019], multi-head source
+separation [@sawata:2021; @kadandale:2020; @manilow:2020; @defossez:2019; @doire:2019], one-hot conditioned separation [@cunet:2019; @choi:2020; @samuel:2020; @olga:2021], 
+Query-by-Example (QBE) separation [@lin:2021; @lee:2019], recursive separation [@wichern:2019; @recursive:2019], embedding space separation [@seetharaman:2019, @luo:2017] and hierarchical separation [@ethan:2020].
+The conditioned source separation method separate the target source based on its condition and mixture source.
+The training dataset and how to give the conditions during training determine the input condition's form (e.g., one-hot conditions, QBE, etc.).
+The conditioned source separation method is still promising because of its flexibility, applicability, and extensionality, despite the fact that it requires more complex mechanisms than the multi-head separation method.
+For example, it is simple to extend it to text-conditioned audio manipulation [@choi:2021].
 
-LaSAFT-Net [@choi:2021] is one of the representative conditioned source separation models.
+LaSAFT-Net [@choi:2020] is one of the representative conditioned source separation models.
 It applies the Latent Source aware Frequency Transformation (LaSAFT) blocks.
 A LaSAFT block aims to capture the latent source's frequency patterns depending upon a given symbol that specifies which target source we want to separate.
 Assuming that each latent source contains independent information depending on its viewpoint, it employs the attention mechanism to model the relevance between latent sources and the target symbol.
@@ -79,21 +80,22 @@ This paper's contributions are summarized as follows:
 A TFC-TDF [@choi:2019] block consists of a Time-Frequency Convolution (TFC) block and a Time Distributed Fully connected layer (TDF) block.
 A TFC comprises densely connected convolutional blocks containing convolutional neural network layers, Batch Normalization (BN) and ReLU.
 It extracts high-level features from the localized features of the time-frequency dimension.
-A TDF was proposed for Frequency Transformation (FT) [@yin:2020, @choi:2020, @choi:2021], which aims to capture frequency-to-frequency dependencies of the target source.
+A TDF was proposed for Frequency Transformation (FT) [@yin:2020; @choi:2020; @choi:2021], which aims to capture frequency-to-frequency dependencies of the target source.
 @choi:2019 showed that replacing fully convolutional intermediate blocks with TFC-TDF blocks improves separation quality.
 We apply TFC-TDF blocks in the encoder of the original LaSAFT-Net to catch the conditioned source's patterns in an input mixture.
 
 ## Latent Source
 
-Music source separation aims to separate arbitrary target instruments set defined by human's definition.
+Music source separation aims to separate hard-labeled target instruments set defined by human's definition.
 However, some musical sub-components can be grouped as a single instrument even if they have different sonic characteristics.
 For example, bass-drum and Hi-hat are included in `drums set' though they have different timbre.
 Arbitrary instruments set, which do not share the common acoustic features, might make a model hinder separating it from a mixture.
 It is even more challenging for conditioned source separation models, which modulate internal features according to a given conditioning symbol.
 
-Some existing studies adopted latent source analysis [@choi:2020] to relax the problems caused by arbitrary grouped instruments' sets.
+Some existing studies adopted latent source analysis [@choi:2020; @wisdom:2020; @choi:2021] to relax the problems caused by arbitrary grouped instruments' sets.
 They assume that a model can learn a latent source that can deal with a more detailed aspect of sound from a given training dataset.
-For example, a LaSAFT block aims to analyze frequency patterns of latent sources. It aggregates the analyzed patterns by computing an attention matrix between latent sources and a given input conditioning symbol (e.g., one-hot encoding vector that specifies which source a user wants to separate).
+For example, a LaSAFT block aims to analyze frequency patterns of latent sources. It aggregates the analyzed patterns by computing an attention matrix 
+between latent sources and a given input conditioning symbol (e.g., one-hot encoding vector that specifies which source a user wants to separate).
 
 
 
@@ -111,7 +113,7 @@ To compute the attention scores, we apply a dot product of the query and key and
 
 The multiple TDF blocks generate latent source features $V \in \mathbb{R}^{T \times d_{k} \times |S_L|}$, where the $T$ is the number of frames.
 The attention mechanism which mixes the latent sources' features is as follows:
-$$Attention(Q,K,V')=softmax(QK^{T}/\sqrt{d_{k}})V'$$
+$$Attention(Q,K,V)=softmax(QK^{T}/\sqrt{d_{k}})V$$
 
 ##  Lightweight latent Source Attentive Frequency Transformation Block
 
