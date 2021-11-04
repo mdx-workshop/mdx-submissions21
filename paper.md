@@ -45,10 +45,10 @@ Recently, many methods based on machine learning have been conducted for music s
 They can be distinguished depending upon strategies for separation as follows.: single source separation [@takahashi:2017; @jansson:2017; @choi:2019], multi-head source
 separation [@sawata:2021; @kadandale:2020; @manilow:2020; @defossez:2019; @doire:2019], one-hot conditioned separation [@cunet:2019; @choi:2020; @samuel:2020; @olga:2021], 
 Query-by-Example (QBE) separation [@lin:2021; @lee:2019], recursive separation [@wichern:2019; @recursive:2019], embedding space separation [@seetharaman:2019, @luo:2017] and hierarchical separation [@ethan:2020].
-The conditioned source separation method separate the target source based on its condition and mixture source.
-The training dataset and how to give the conditions during training determine the input condition's form (e.g., one-hot conditions, QBE, etc.).
-The conditioned source separation method is still promising because of its flexibility, applicability, and extensionality, despite the fact that it requires more complex mechanisms than the multi-head separation method.
-For example, it is simple to extend it to text-conditioned audio manipulation [@choi:2021].
+The conditioned source separation method separates target source from a given mixture depending on its conditioning input, which can be various forms (e.g., one-hot conditions, QBE, etc.).
+Although it has to separate with more complex mechanisms than the multi-head separation method, it is still promising because of its flexibility, applicability and extensionality.
+For example, it's easy to extend another domain such as text-conditioned audio manipulation [@choi:2021].
+In this paper, we focus on the one-hot conditioned source separation method since it has extensionality. 
 
 LaSAFT-Net [@choi:2020] is one of the representative conditioned source separation models.
 It applies the Latent Source aware Frequency Transformation (LaSAFT) blocks.
@@ -77,7 +77,7 @@ This paper's contributions are summarized as follows:
 
 ## TFC-TDF block
 
-A TFC-TDF [@choi:2019] block consists of a Time-Frequency Convolution (TFC) block and a Time Distributed Fully connected layer (TDF) block.
+A TFC-TDF [@choi:2019] block consists of a Time-Frequency Convolution (TFC) [@takahashi:2017] block and a Time Distributed Fully connected layer (TDF) block.
 A TFC comprises densely connected convolutional blocks containing convolutional neural network layers, Batch Normalization (BN) and ReLU.
 It extracts high-level features from the localized features of the time-frequency dimension.
 A TDF was proposed for Frequency Transformation (FT) [@yin:2020; @choi:2020; @choi:2021], which aims to capture frequency-to-frequency dependencies of the target source.
@@ -86,16 +86,17 @@ We apply TFC-TDF blocks in the encoder of the original LaSAFT-Net to catch the c
 
 ## Latent Source
 
-Music source separation aims to separate hard-labeled target instruments set defined by human's definition.
+Music source separation aims to separate symbolic-labeled target instruments sets defined by the training dataset.
 However, some musical sub-components can be grouped as a single instrument even if they have different sonic characteristics.
 For example, bass-drum and Hi-hat are included in `drums set' though they have different timbre.
 Arbitrary instruments set, which do not share the common acoustic features, might make a model hinder separating it from a mixture.
 It is even more challenging for conditioned source separation models, which modulate internal features according to a given conditioning symbol.
 
-Some existing studies adopted latent source analysis [@choi:2020; @wisdom:2020; @choi:2021] to relax the problems caused by arbitrary grouped instruments' sets.
+Some existing studies adopted latent source analysis [@choi:2020; @wisdom:2020; @choi:2021] to relax the problems caused by symbolically grouped instruments' sets.
 They assume that a model can learn a latent source that can deal with a more detailed aspect of sound from a given training dataset.
 For example, a LaSAFT block aims to analyze frequency patterns of latent sources. It aggregates the analyzed patterns by computing an attention matrix 
 between latent sources and a given input conditioning symbol (e.g., one-hot encoding vector that specifies which source a user wants to separate).
+In this paper, we apply the concepts of latent source to consider sub-components of grouped instrument's set.
 
 
 
@@ -159,13 +160,13 @@ For data augmentation, we generated the mixtures by mixing the different track's
 
 ## Results
 
-| model      | # of parameters | vocals | drums | bass  | other | Avg   |
-| ---------- | --------------- | ------ | ----- | ----- | ----- | ----- |
-| LaSAFT-Net     | 4.5M            | -      | -     | -     | -     | -     |
-| LightSAFT-Net  | 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
-| LightSAFT-Net+ | 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
+| model      | Runnable? | # of parameters | vocals | drums | bass  | other | Avg   |
+| ---------- | -------- | --------------- | ------ | ----- | ----- | ----- | ----- |
+| LaSAFT-Net     |yes| 4.5M            | -      | -     | -     | -     | -     |
+| LightSAFT-Net  |no| 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
+| LightSAFT-Net+ |no| 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
 
-<tr>**Table 1**. A comparison with LaSAFT-Net</tr>
+<tr>**Table 1**. A comparison with LaSAFT-Net. The *Runnable?* means that the model is runnable in MDX condition.</tr>
 
 | model                             | type        | vocals | drums | bass  | other | Avg   |
 | --------------------------------- | ----------- | ------ | ----- | ----- | ----- | ----- |
