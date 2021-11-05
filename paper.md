@@ -175,8 +175,8 @@ and convolution layers in the temporal encoders.
 ![Hybrid Demucs architecture. The input waveform is processed
 both through a temporal encoder, and first through the STFT followed by
 a spectral encoder. The two representations are summed when their dimensions align.
-The opposite happens in the decoder. The output spectrogram go through the ISTFT
-and are summed with the waveform outputs, giving the final model output.
+The decoder is built symmetrically. The output spectrogram go through the ISTFT
+and is summed with the waveform outputs, giving the final model output.
 The $\mathrm{Z}$ prefix is used for spectral layers, and $\mathrm{T}$ prefix for the
 temporal ones.](figures/hybrid.pdf){width=80%, #fig:hyb}
 
