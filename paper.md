@@ -26,6 +26,6 @@ We first present our work on Vocal Harmony Separation, which is the task of sepa
 
 We also present our ongoing work on separating other monotimbral ensembles like string sections. To study this problem, we introduce a novel multitrack dataset generated using the Spitfire BBC Symphony Orchestra Professional sample library and the RWC classical music dataset [@goto2002rwc]. Our dataset utilizes a more realistic data generation method than other synthesized multi-track datasets due to the ability of this plugin to incorporate various articulation methods dynamically based on the input symbolic music data and a round-robin sampling technique introducing uniqueness to each note articulation. The sample library also enables us to render the dataset with various microphone configurations on which the library was recorded in, allowing us to study various recording scenarios for the same performance in the same acoustic space. We explore the monotimbral separation task of separating any 2 string instruments (i.e. Violin, Viola, Cello, Bass) by training a DPTNet [@chen2020dual] based model in a permutation invariant fashion. 
 
-#References
+# References
 
 
