@@ -25,7 +25,7 @@ arxiv-doi:
 
 # Abstract
 
-In this paper, we demonstrate a neural network architecture that uses representations of a publicly available pretrained _Jukebox_ model and transfer learning to solve the problem of audio source separation. Jukebox takes 3 days of training on 256 GPUs. In this work, we demonstrate how to adapt Jukebox's audio representations for the problem of extraction of an audio source from a single mixed audio channel. Results demonstrate competitive performance to the other state-of-the-art approaches. Our approach is fast to train. We provide an open-source code implementation of our architecture.
+In this paper, we demonstrate a neural network architecture that uses representations of a publicly available pretrained _Jukebox_ model and transfer learning to solve the problem of audio source separation. Jukebox takes 3 days of training on 256 GPUs. In this work, we demonstrate how to adapt Jukebox's audio representations for the problem of extracting an audio source from a single mixed audio channel. Results demonstrate an inspiring idea to tackle this challenge. Our approach is fast to train. We provide an open-source code implementation of our architecture.
 
 # Introduction
 
@@ -58,7 +58,7 @@ Our models are trained on the MUSDB18-HQ [@musdb18-hq] dataset, also used in the
 
 ## Training
 
-![Visualization of the proposed transfer learning model architecture.\label{fig:Figure}](Figures/architecture.jpg){ width=100% }
+![Visualization of the proposed transfer learning model architecture.\label{fig:Figure}](Figures/architecture_updated.jpg){ width=100% }
 
 One model is trained per stem (see Fig. 1), furthermore, each is trained in two stages. In stage one, we train the adapted VQ-VAE (our Model 1) to produce good latent representations of a single stem specifically. _Jukebox's_ provided weights are fine-tuned with a self-supervised learning task on the data for one stem with the same three losses, $L = L_{recons} + L_{codebook} + \beta L_{commit}$ used by [@dhariwal2020jukebox] so that the auto-encoder learns how to compress a single stem and reconstruct it.
 
