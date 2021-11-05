@@ -4,4 +4,4 @@ all:  hybrid.pdf residual.pdf
 	pdflatex --interaction=nonstopmode $^
 
 clean:
-	rm *.log *.pdf *.aux
+	rm *.log *.aux

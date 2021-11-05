@@ -31,6 +31,28 @@
 \bibliographystyle{plainnat}
 \setcitestyle{authoryear,open={(},close={)}}
 
+\usepackage{pgfplots}
+\usepackage{pgf}
+\usepackage{tikzscale}
+\usepackage{tikz}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{arrows,calc,positioning,shapes.geometric,math}
+
+\usepackage{amsmath, amssymb, amsthm}
+\DeclareMathOperator{\Conv}{Conv1d}
+\DeclareMathOperator{\Convtwo}{Conv2d}
+\DeclareMathOperator{\Convtr}{ConvTr1d}
+\DeclareMathOperator{\ReLU}{Relu}
+\DeclareMathOperator{\GELU}{GELU}
+\DeclareMathOperator{\GLU}{GLU}
+\DeclareMathOperator{\SDR}{SDR}
+\DeclareMathOperator{\LSTM}{BiLSTM}
+\DeclareMathOperator{\LN}{LN}
+\def\pscale{1}
+\def\trapangle{75}
+\newdimen\blockh
+\blockh=1.2em
+
 % --- Splitting \texttt --------------------------------------------------
 
 \let\textttOrig=\texttt
@@ -498,7 +520,9 @@ the STFT, and convolution layers in the temporal encoders.
 \begin{figure}
 \hypertarget{fig:hyb}{%
 \centering
-\includegraphics{figures/hybrid.pdf}
+\resizebox{\textwidth}{!}{
+  \input{figures/hybrid_core}
+}
 \caption{Hybrid Demucs architecture. The input waveform is processed
 both through a temporal encoder, and first through the STFT followed by
 a spectral encoder. The two representations are summed when their
@@ -605,7 +629,9 @@ activation to derive the values \(\beta_{i, k}\).
 \begin{figure}
 \hypertarget{fig:residual}{%
 \centering
-\includegraphics{figures/residual.pdf}
+\resizebox{\textwidth}{!}{
+  \input{figures/residual_core}
+}
 \caption{Representation of the compressed residual branches that are
 added to each encoder layer. For the 5th and 6th layer, a BiLSTM and a
 local attention layer are added.}\label{fig:residual}

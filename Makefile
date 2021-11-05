@@ -11,7 +11,7 @@ figures:
 	$(MAKE) -C figures all
 
 clean:
-	rm *.log *.pdf *.aux *.blg *.out *.bbl
+	rm *.log *.aux *.blg *.out
 
 clean_all: clean
 	$(MAKE) -C figures clean
