@@ -141,7 +141,7 @@ The overall training procedure can be summarized into two steps:
 
 ## Performance on the MUSDB18 Benchmark
 
-We compare our models with current state-of-the-art models on the MUSDB18 benchmark using the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR). We report the median SDR over all 50 songs in the MUSDB18 test set. Only models for Leaderboard A were evaluated since our submissions for Leaderboard B uses the MUSDB test set as part of the training set.
+We compare our models with current state-of-the-art models on the MUSDB18 benchmark using the SiSEC2018 version of the SDR metric (BSS Eval v4 framewise multi-channel SDR). We report the median SDR over all 50 songs in the MUSDB18 test set. Only models for Leaderboard A were evaluated since our submissions for Leaderboard B uses the MUSDB18 test set as part of the training data.
 
 We summarize the MUSDB18 benchmark performance of KUIELab-MDX-Net. We compare it to recent state-of-the-art models: TFC-TDF-U-Net v1 [@choi:2020], X-UMX [@sawata2021all], Demucs [@defossez:2021], D3Net [@d3net:2021], ResUNetDecouple+ [@kong:2021]. We also include our baselines to validate our architectural design. Even though our models were downsized for the MDX Challenge, we can see that it gives superior performance over the state-of-the-art models and achieves the best SDR for every instrument except 'bass.'
 Also, it is notable that TFC-TDF-U-Net v2 with Mixer (i.e., v2 + Mixer) outperforms the existing methods except for 'vocals' even without blending with Demucs.
