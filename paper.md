@@ -39,7 +39,9 @@ In the next section, we will introduce the detailed architecture of CWS-PResUNet
 
 CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. We modeling separation process on the subband spectrograms and phases. The analysis and synthesis filters in subband operations are designed together by optimizing reconstruction error using the open source toolbox^[https://www.mathworks.com/matlabcentral/fileexchange/40128-filter-bank-design].
 
-For a stereo mixture signal $x \in \mathbb{R}^{2\times L}$, where $L$ stands for signal length, we first utilize a set of analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
+As is illustrated in Figure 1b, the CWS feature have lower frequency dimension and more channels comparing with full band spectrogram. To adapt the conventional full band CNN based model with CWS feature, it just needs to modify the input and final output channel with internal CNN blocks unchanged. In this way, the internal featuremap of the model become smaller, leading to a direct reduction in computational cost. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels.
+
+The detailed computation procedure of our CWS-PResUNet model is described as follows. For a stereo mixture signal $x \in \mathbb{R}^{2\times L}$, where $L$ stands for signal length, we first utilize a set of analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [\text{DS}_4({x_{2\times 1 \times L}}*{h}^{(j)}_{1\times 64})]_{j=1,2,3,4},
 $$
@@ -57,7 +59,7 @@ $$
 $$
 where $g^{(j)}, j=1,2,3,4$ are the pre-defined synthesis filters and $\text{US}_4(\cdot)$ is the zero-insertion upsampling function. 
 
-As is illustrated in Figure 1b, the CWS feature have lower frequency dimension and more channels comparing with full band spectrogram. To adapt the conventional full band CNN based model with CWS feature, it just needs to modify the input and final output channel with internal CNN blocks unchanged. In this way, the internal featuremap of the model will become smaller, leading to a direct reduction in computational cost. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels. Our model for `vocals` is optimized by calculating L1 loss between $\hat{s}$ and its target source $s$. Although we also use a model dedicated to separating the `other` track, we notice estimating and optimizing four sources together in one model can result in a 0.2 SDR [@vincent2006performance] gain on `other`. In this case, we not only use L1 loss on the waveform, but also employ energy-conservation loss, which calculate the L1 loss between mixture and the sum of four source estimations. Our CWS-PResUNet models for `bass` and `drums` reported in the next section employ the same setup as the model for `other`.
+Our model for `vocals` is optimized by calculating L1 loss between $\hat{s}$ and its target source $s$. Although we also use a model dedicated to separating the `other` track, we notice estimating and optimizing four sources together in one model can result in a 0.2 SDR [@vincent2006performance] gain on `other`. In this case, we not only use L1 loss on the waveform, but also employ energy-conservation loss, which calculate the L1 loss between mixture and the sum of four source estimations. Our CWS-PResUNet models for `bass` and `drums` reported in the next section employ the same setup as the model for `other`.
 
 <!-- Moreover, because bounded mask and mixture phase can limit the theoretical upper bound of the MSS system [@kong2021decoupling], we estimate unbounded mask and phase variations in each subband to compute the unbounded cIRM.  -->
 
