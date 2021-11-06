@@ -81,7 +81,7 @@ It adopted a Time-Frequency Convolutions followed by a TDF (TFC-TDF) block as a 
 By replacing fully connected 2-D convolutional building blocks, conventionally used in U-Net [@unet:2015] with TFC-TDF blocks, it showed a promising performance on singing voice separation tasks of the MUSDB18 [@musdb:2017] dataset.
 Also, injecting TDF blocks can enhance separation quality for the other tasks of MUSDB18, as shown in [@choi:phd].
 
-[@choi:phd] presented how adding TDF blocks improves separation quality by visualizing trained weight matrixes of single-layered TDF blocks (we additionally trained U-Nets with single-layered TDF blocks for weight visualization).
+[@choi:phd] presented how adding TDF blocks improves separation quality by visualizing trained weight matrixes of single-layered TDF blocks (they additionally trained U-Nets with single-layered TDF blocks for weight visualization).
 As shown in Figure 1, each matrix is trained to analyze timbre features uniquely observed in its instrument by capturing harmonic patterns (i.e., $y=\frac{\alpha}{\beta}x$). It is also observable that the TDF blocks still performs well on each scale.
 
 ![Weight matrixes visualization of single-layered TDF blocks](visualization.png)
