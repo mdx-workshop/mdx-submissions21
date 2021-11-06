@@ -168,7 +168,7 @@ Then, we measure Source-to-Distortion Ratio (SDR) @[vincent2006performance], fol
 
 Compared to Demucs proposed in [@defossez:2019], the SDR scores of our model are low.
 We argue that low SDR scores are caused by the absence of U-skip connections (i.e., skip-connections between encoder and decoder used in U-Net [@unet]).
-Many state-of-the-art models [@deffossez:2019, @choi2020lasaft] have adopted U-skip connections. However, ours does not employ them because ours focused on the feasibility of training of decomposed and quantized latent vectors rather than the source separation itself.
+Many state-of-the-art models [@defossez:2019, @choi2020lasaft] have adopted U-skip connections. However, ours does not employ them because ours focused on the feasibility of training of decomposed and quantized latent vectors rather than the source separation itself.
 Due to the absence of skip-connection, the decoder might struggle to generate high-quality audio.
 Also, the vector quantization might generate blurrier contents as discussed in [@oord2017neural], which might degrade the SDR scores.
 However, even though our method has generated a low SDR score, it has a considerable potential to be applied to other tasks, as discussed in the Conclusion section.
