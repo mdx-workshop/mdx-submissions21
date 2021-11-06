@@ -158,7 +158,7 @@ Also, it is notable that TFC-TDF-U-Net v2 with Mixer (i.e., v2 + Mixer) outperfo
 | v2 + Demucs     | 8.80   | 7.14  | **8.11** | 5.90 |
 | KUIELab-MDX-Net | **9.00**   | **7.33**  | 7.86 | **5.95** |
 
-We also compare three winning models' performance [@mdx:2021] on the MusDB18 benchmark as follows. It should be noted that we only reported SDRs evaluated on MUSDB18 [@MUSDB18], not MusDB-HQ [@MUSDB18HQ].
+We also compare three winning models' performance [@mdx:2021] on the MUSDB18 benchmark as follows. It should be noted that we only reported SDRs evaluated on MUSDB18 [@MUSDB18], not MUSDB-HQ [@MUSDB18HQ].
 
 |                 | vocals | drums | bass | other |
 |-----------------|--------|-------|------|-------|
