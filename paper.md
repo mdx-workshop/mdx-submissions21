@@ -37,15 +37,15 @@ In the next section, we will introduce the detailed architecture of CWS-PResUNet
 
 # Method
 
-CWS-PResUNet is a ResUNet [@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. We modeling separation process on the subband spectrograms and phases. The analysis and synthesis filters in subband operations are designed together by optimizing reconstruction error using the open-source toolbox^[https://www.mathworks.com/matlabcentral/fileexchange/40128-filter-bank-design].
+CWS-PResUNet is a ResUNet [@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. We modeling separation on the subband spectrogram and phase domains. The analysis and synthesis filters in subband operations are designed by optimizing reconstruction error using the open-source toolbox^[https://www.mathworks.com/matlabcentral/fileexchange/40128-filter-bank-design].
 
-As is illustrated in Figure 1b, the CWS feature has a lower frequency dimension and more channels compared with the full band spectrogram. To adapt the conventional full band CNN-based model with the CWS feature, it just needs to modify the input and final output channel with internal CNN blocks unchanged. In this way, the internal feature map of the model becomes smaller, leading to a direct reduction in computational cost. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels.
+As is illustrated in Figure 1b, the CWS feature has a lower frequency dimension and more channels compared with the full band spectrogram. To adapt the conventional full band CNN-based model to the CWS input feature, it just needs to modify the input and final output channel with internal CNN blocks unchanged. In this way, the internal feature map of the model becomes smaller, leading to a direct reduction in computational cost. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels.
 
 The detailed computation procedure of our CWS-PResUNet model is described as follows. For a stereo mixture signal $x \in \mathbb{R}^{2\times L}$, where $L$ stands for signal length, we first utilize a set of analysis filters ${h}^{(j)},j=1,2,3,4$ to perform subband decompositions:
 $$
 x^{\prime}_{8\times \frac{L}{4}} = [\text{DS}_4({x_{2\times 1 \times L}}*{h}^{(j)}_{1\times 64})]_{j=1,2,3,4},
 $$
-where $\text{DS}_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. The analysis filters we used are uniform filter banks with a length of 64. Then we calculate the STFT of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times \frac{F}{4}}$. 
+where $\text{DS}_{4}(\cdot)$, $*$, and $[\cdot]$ denote the downsampling by 4, convolution, and stacking operators, respectively. The analysis filters we used are uniform filter banks with a filter length of 64. Then we calculate the STFT of the downsampled subband signals $x^{\prime}$ to obtain their magnitude spectrograms $|X^{\prime}|_{8\times T \times \frac{F}{4}}$, which is the input of Phase-aware ResUNet.
 
 ![The architecture of Phase-aware ResUNet](graphs/arc.png){ width=100% }
 
@@ -53,7 +53,7 @@ As is shown in Figure 2, the phase-aware ResUNet is a symmetric architecture con
 $$
 \hat{S}^{\prime} = \text{relu}(|X^{\prime}|\odot \text{sigmoid}(\hat{M})+\hat{Q})\exp^{j(\angle X^{\prime} +\angle \hat{\theta})},
 $$
-in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$ and $sin\angle \hat{\theta}=\hat{P}_{i}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We pass the mask estimation $\hat{M}$ through a sigmoid function to obtain a mask with values between 0 and 1. Then by estimating $\hat{Q}$ and $\hat{\theta}$, models can avoid estimating mask with only bounded values and using mixture phase to calculate the unbounded cIRM. We use relu activation to ensure the positve magnitude value. Finally, after the inverse STFT, we perform subband reconstructions to obtain the source estimation $\hat{s}$:
+in which $cos\angle \hat{\theta}=\hat{P}_{r}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$ and $sin\angle \hat{\theta}=\hat{P}_{i}/(\sqrt{\hat{P}_{r}^2+\hat{P}_{i}^2})$. We pass the mask estimation $\hat{M}$ through a sigmoid function to obtain a mask with values between 0 and 1. Then by estimating $\hat{Q}$ and $\hat{\theta}$, models can avoid using mixture phase and estimating mask with only bounded values to calculate the unbounded cIRM. We use relu activation to ensure the positve magnitude value. Finally, after the inverse STFT, we perform subband reconstructions to obtain the source estimation $\hat{s}$:
 $$ 
 \hat{s}_{2\times L} = \sum_{j=1}^{4}(\text{US}_4(\hat{s}^{\prime}_{2\times 4\times \frac{L}{4}})*g^{(j)}_{4\times 64}),
 $$
