@@ -11,7 +11,6 @@ affiliations:
    index: 1
 date: 28 October 2021
 bibliography: paper.bib
-arxiv-doi: 10.21105/joss.01667
 ---
 
 # Abstract
