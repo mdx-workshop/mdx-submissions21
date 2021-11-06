@@ -37,7 +37,7 @@ In the next section, we will introduce the detailed architecture of CWS-PResUNet
 
 # Method
 
-CWS-PResUNet is a ResUNet [@zhang2018road;@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. We modeling separation process on the subband spectrograms and phases. The analysis and synthesis filters in subband operations are designed together by optimizing reconstruction error using the open-source toolbox^[https://www.mathworks.com/matlabcentral/fileexchange/40128-filter-bank-design].
+CWS-PResUNet is a ResUNet [@liu2021voicefixer] based model integrating the CWS feature [@liu2020channel] and the cIRM estimation strategies described in @kong2021decoupling. The overall pipeline is summarized in Figure 1a. We modeling separation process on the subband spectrograms and phases. The analysis and synthesis filters in subband operations are designed together by optimizing reconstruction error using the open-source toolbox^[https://www.mathworks.com/matlabcentral/fileexchange/40128-filter-bank-design].
 
 As is illustrated in Figure 1b, the CWS feature has a lower frequency dimension and more channels compared with the full band spectrogram. To adapt the conventional full band CNN-based model with the CWS feature, it just needs to modify the input and final output channel with internal CNN blocks unchanged. In this way, the internal feature map of the model becomes smaller, leading to a direct reduction in computational cost. Also, models become more efficient by enlarging receptive fields and diverging subband information into different channels.
 
