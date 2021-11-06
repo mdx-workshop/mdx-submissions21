@@ -174,7 +174,7 @@ Compared to DEMUCS proposed in [@defossez:2019], the SDR score of our model is q
 We argue that the reason of low SDR score is caused by the absence of skip-connection.
 Since the proposed method focused on the feasibility of training the decomposed and quantized latent vector, the skip connection was not included in our models.
 Due to the absence of skip-connection, the decoder struggled to generate high-quality audio.
-
+However, even though our method has generated a low SDR score, it has potential to be applied to other tasks, discussed in the Conclusion section.
 
 # Conclusion
 This paper explores learning decomposed representations for musical signals.
