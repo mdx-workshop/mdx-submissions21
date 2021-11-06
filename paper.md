@@ -45,7 +45,7 @@ However, if an unskilled transcriber lacks the ability to distinguish different 
 This procedure resembles the encoder-decoder concept, widely used in the machine learning field;
 the transcriber is an encoder [@hung2020transcription; @kim2019adversarial], and the orchestra/band is a decoder[@ren2020popmag; @klejsa2019high].
 Motivated by this analogy, this paper proposes a method that aims to learn source-aware decomposed audio representations for a given music signal.
-Instead of predicting high-level representations such as scores or MIDI, our model is trained to predict discrete representations proposed in [@oord2017neural].
+Instead of training to predict high-level representations such as scores or MIDI, our method is focused in training to predict discrete representations proposed in [@oord2017neural].
 To the best of our knowledge, numerous methods have been proposed for audio representation, yet no existing works have learned decomposed music representations in discrete space.
 
 # Related work
@@ -101,9 +101,8 @@ where $q_i$ is the quantized representation of the $i$-th source, $e$ are the di
 One limitation of the latent quantization approach is the restricted expressive power compared to continuous latent space approaches.
 To increase the number of source representations, we could have simply increased the number of elements in a codebook.
 Instead, we use a more memory-efficient way to increase expressive power.
-
 We use multiple codebooks and extract each quantized vector $q_i^{(h)}$ from the $h^{th}$ codebook.
-By concatenating these quantized vectors $q_i^{(h)}, we construct $i^{th}$ quantized vector.
+By concatenating these quantized vectors $q_i^{(h)}, we construct quantized vector $q_i$.
 
 $$ q_i=[(q_i)^{(1)}, ..., (q_i)^{(H)}], (h \in [1,H])$$ 
 
@@ -115,7 +114,7 @@ When the input mixture $\mathcal{M}(S)$ is given, we want to obtain decomposed a
 We assume that each decomposed representation vector $q_{i}$ can fully represent each $s_i$.
 
 If we select some representations from $[q_1, ..., q_n]$, they also have to represent $s_i$ that are chosen.
-For example, if we select $q_1$, $q_2$ and $q_4$, those are the representation of $\mathcal{M}(\{s_1, s_2, s_4\})$.
+For example, if we select $q_1$, $q_2$ and $q_4$, these are the representation of $\mathcal{M}(\{s_1, s_2, s_4\})$.
 We apply this \textit{seletive source reconstruction task} to our model, where we aim to minimize the \textit{selective reconstruction loss}.
 The selective source reconstruction loss can be formulated, as follows:
 
@@ -156,7 +155,7 @@ It indicates that our method has learned source-aware representations.
 ![tSNE visualization of quantized vectors in multi-codebook(left) and bass generation result(right)](figs/Figure3.png){width=60%}
 
 To better understand that the vector quantization method affects the model's performance, we train a VAE and an Auto-Encoder that are not using quantization method.
-Those models are trained using the same training framework and nearly identical structure to compare their respective outcomes.
+These models are trained using the same training framework and nearly identical structure to compare their respective outcomes.
 As a result, they reconstruct only the noise sound instead of the mixtures with their representation vectors.
 We also conduct an experiment using methods without the STFT and complement loss, introduced in Section "Proposed Methods" to compare the effects of them.
 To this end, we first separate sources from mixtures in the  MUSDB18 test dataset using each model.
