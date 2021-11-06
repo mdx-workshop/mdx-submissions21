@@ -30,7 +30,7 @@ arxiv-doi:
 
 # Abstract
 
-In recent years, neural network based methods have been able to convert music representations into a single vector, but they are inadequate for humans to analyze or manipulate.
+In recent years, neural network based methods were proposed that can generate vector representations from music, but they are not human readable and hardly analyzable or editable by a human.
 To address this issue, we propose a novel method to learn source-aware latent representations of music through Vector-Quantized Variational Auto-Encoder(VQ-VAE).
 We train our VQ-VAE to encode an input mixture into a tensor of integers in a discrete latent space, and design them to have a decomposed structure which allows humans to manipulate the latent vector in a source-aware manner.
 We claim that it can be adopted for various applications.
@@ -42,17 +42,18 @@ For this reason, humans can differentiate individual sources in an audio signal 
 Moreover, experts or highly skilled composers are able to produce sheet music for different instruments, just by listening to the mixed audio signal.
 Meanwhile, trained orchestras or bands can reproduce the original music by playing the transcribed scores.
 However, if an unskilled transcriber lacks the ability to distinguish different music sources, no matter how good the performers are, they cannot recreate the original music.
-This procedure resembles the encoder-decoder concept, widely used in the machine learning field; the transcriber is an encoder, and the orchestra/band is a decoder.
+This procedure resembles the encoder-decoder concept, widely used in the machine learning field;
+the transcriber is an encoder [@hung2020transcription; @kim2019adversarial], and the orchestra/band is a decoder[@ren2020popmag; @klejsa2019high].
 Motivated by this analogy, this paper proposes a method that aims to learn source-aware decomposed audio representations for a given music signal.
-To the best of our knowledge, numerous methods have been proposed for audio representation, yet no existing works have learned decomposed music representations.
+Instead of predicting high-level representations such as scores or MIDI, our model is trained to predict discrete representations proposed in [@oord2017neural].
+To the best of our knowledge, numerous methods have been proposed for audio representation, yet no existing works have learned decomposed music representations in discrete space.
 
 # Related work
-
-For Automatic Speech Recognition, [@baevski2020wav2vec,@sadhu2021wav2vec] used Transformer [@vaswani2017attention]-based models to predict quantized latent vectors.
+For Automatic Speech Recognition, [@baevski2020wav2vec; @sadhu2021wav2vec] used Transformer [@vaswani2017attention]-based models to predict quantized latent vectors.
 From this approach, they trained their models to understand linguistic information in human utterance.
-[@ericsson2020adversarial,@mun2020sound] learn voice style representations from human voice information.
+[@ericsson2020adversarial; @mun2020sound] learn voice style representations from human voice information.
 They applied learned representations for speech separation and its enhancement.
-Several studies have applied contrastive learning, used in representation learning@[niizumi2021byol, @wang2021multi] for computer vision.
+Several studies have applied contrastive learning, used in representation learning@[niizumi2021byol; @wang2021multi] for computer vision.
 
 However, the goal of this paper is different from the above audio representation researches.
 We aim to learn decomposed representations through instruments' categories.
@@ -60,11 +61,11 @@ In this work, we train a model through source separation to learn decomposed rep
 In section "Experiment" , we show that we can easily manipulate latent representations for various applications such as source separation and music synthesis.
 Source Separation tasks have been studied both in music source separation and on speech enhancement tasks.
 Within the generating perspective, they can be categorized into two groups.
-The first group attempts to generate masks that is multiplied with the input audio to acquire the target source [@chien2017variational, @jansson2017orcid].
-The second group aims to directly estimate a raw audio or spectrogram [@kameoka2019supervised, @9053513, @choi2020lasaft].
-We adopt the latter method to obtain more various applicable tasks.
+The first group attempts to generate masks that is multiplied with the input audio to acquire the target source [@chien2017variational; @jansson2017orcid].
+The second group aims to directly estimate a raw audio or spectrogram [@kameoka2019supervised; @9053513; @choi2020lasaft].
+
 This method can generate audio samples directly when we have a prior distribution of representation.
-Many studies have proposed methods based on Variational Auto-Encoder (VAE)[@kameoka2019supervised] or U-Net [@choi2020lasaft, @9053513, @yuan2019skip] for source separation.
+Many studies have proposed methods based on Variational Auto-Encoder (VAE)[@kameoka2019supervised] or U-Net [@choi2020lasaft; @9053513; @yuan2019skip] for source separation.
 The U-Net-based models usually show high performance in the source separation task.
 However, some studies have pointed out the fundamental limitation of U-Nets; the skip connections used in U-Nets may lead to weakening the expressive power of encoded representations [@yuan2019skip].
 Therefore, we choose a VAE-based model to extract meaningful representation from the input audio.
@@ -99,9 +100,12 @@ where $q_i$ is the quantized representation of the $i$-th source, $e$ are the di
 ## Multi-latent Quantization
 One limitation of the latent quantization approach is the restricted expressive power compared to continuous latent space approaches.
 To increase the number of source representations, we could have simply increased the number of elements in a codebook.
-Instead, we use a more memory-efficient way to increase expressive power. We use multiple codebooks and construct each $q_i$ with a combination of quantized vectors $(e^*){(h)} (h \in [1,H])$, where h is the codebook index.
+Instead, we use a more memory-efficient way to increase expressive power.
 
-$$ q_i=[(e^*)^{(1)}, ..., (e^*)^{(H)}]$$ 
+We use multiple codebooks and extract each quantized vector $q_i^{(h)}$ from the $h^{th}$ codebook.
+By concatenating these quantized vectors $q_i^{(h)}, we construct $i^{th}$ quantized vector.
+
+$$ q_i=[(q_i)^{(1)}, ..., (q_i)^{(H)}], (h \in [1,H])$$ 
 
 Through this approach, the number of available source representations increases exponentially with the total number of codebooks.
 
@@ -151,21 +155,27 @@ It indicates that our method has learned source-aware representations.
 
 ![tSNE visualization of quantized vectors in multi-codebook(left) and bass generation result(right)](figs/Figure3.png){width=60%}
 
-To better understand that the vector quantization method affects to model's performance, we train a VAE and an Auto-Encoder with the same training framework and almost the same structure to produce representations of the same size.
+To better understand that the vector quantization method affects the model's performance, we train a VAE and an Auto-Encoder that are not using quantization method.
+Those models are trained using the same training framework and nearly identical structure to compare their respective outcomes.
 As a result, they reconstruct only the noise sound instead of the mixtures with their representation vectors.
 We also conduct an experiment using methods without the STFT and complement loss, introduced in Section "Proposed Methods" to compare the effects of them.
 To this end, we first separate sources from mixtures in the  MUSDB18 test dataset using each model.
-Then, we measure Source-to-Distortion Ratio (SDR) @[vincent2006performance], following Musdb18 benchmark to evaluate each models.
+Then, we measure Source-to-Distortion Ratio (SDR) @[vincent2006performance], following MUSDB18 benchmark to evaluate each models.
 
 <table>
-
-|            | vocals |  bass  | drums | other | Avg   |
-|:----------:|:------:|:------:|:-----:|:-----:|-------|
-|  proposed  |  1.270 |  1.761 | 1.403 | 0.812 | 1.311 |
-|  w/o STFT  |  1.546 |  1.026 | 1.480 | 1.069 | 1.280 |
-| w/o comple |  0.996 | -0.031 | 1.458 | 0.576 | 0.749 |
-
+|                             | vocals |  bass  | drums | other | Avg   |
+|:---------------------------:|:------:|:------:|:-----:|:-----:|-------|
+|  proposed                   |  1.270 |  1.761 | 1.403 | 0.812 | 1.311 |
+|  w/o STFT                   |  1.546 |  1.026 | 1.480 | 1.069 | 1.280 |
+| w/o comple                  |  0.996 | -0.031 | 1.458 | 0.576 | 0.749 |
+|  DEMUCS @[defossez:2019]    |  6.84  |  7.01  | 6.86  | 4.42  | 6.28  |
 </table>
+
+Compared to DEMUCS proposed in [@defossez:2019], the SDR score of our model is quite low.
+We argue that the reason of low SDR score is caused by the absence of skip-connection.
+Since the proposed method focused on the feasibility of training the decomposed and quantized latent vector, the skip connection was not included in our models.
+Due to the absence of skip-connection, the decoder struggled to generate high-quality audio.
+
 
 # Conclusion
 This paper explores learning decomposed representations for musical signals.
@@ -176,7 +186,8 @@ The bass generation task shows that the decoder can generate bass lines via new 
 We consider that our model can be used in other music processing tasks.
 For example, our model, which represents discrete representations of input audio, can be adopted in music compression tasks.
 In addition, the characteristics of the model generating decomposed audio representation for each source is appropriate for the music sheet transcription task.
-We plan to design a decoder that can generate high-quality audio. This can be applied to real-world audio in future work. This methodology can generate a decomposed representation of the various sounds of the real world. As a result, it can be implemented to various tasks such as audio generation and audio event detection, and localization.
+We plan to design a decoder that can generate high-quality audio. 
+This can be applied to real-world audio in future work. This methodology can generate a decomposed representation of the various sounds of the real world. As a result, it can be implemented to various tasks such as audio generation and audio event detection, and localization.
 
 # Acknowledgements
 This research was supported by Basic Science Research Program through the National Research Foundation of Korea(NRF) funded by the Ministry of Education(NRF-2021R1A6A3A03046770).
