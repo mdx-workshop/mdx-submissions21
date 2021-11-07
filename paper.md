@@ -14,7 +14,9 @@ bibliography: paper.bib
 arxiv-doi:
 ---
 
-Recently on Twitter, an ISMIR participant polled others in the community about what they thought was the biggest application of source separation in the music industry. Remixing and sampling? Karaoke? Transcription?
+# Abstract
+
+Recently on Twitter, an [ISMIR participant polled others in the community](https://twitter.com/csteinmetz1/status/1446384582576779282) about what they thought was the biggest application of source separation in the music industry. Remixing and sampling? Karaoke? Transcription?
 
 Within the ISMIR community, we often focus our conversations around music source separation from a research and academic perspective. But how does our technology interact with the business world, and how can we think about using our knowledge to help the music industry?
 
