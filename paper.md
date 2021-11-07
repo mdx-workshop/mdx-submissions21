@@ -31,3 +31,9 @@ The goal is to provide the audience with more insight into what it’s like to a
 - As a music recording studio, detail the process of how music separation is currently used to create remixes and enhanced versions of existing music?
 - As a record label, how have you interacted with source separation? What are the opportunities? Any dangers? What areas in music AI and more specifically sound separation do you wish researchers would tackle?
 - What are the next steps for music separation in the industry? Will universal music separation be possible and how would that impact the music industry?
+- Source separation allows to recover separated stems. Is this perceived as a dangerous technology by catalogue owners ? What is the appropriate way to present the technology in this context ?
+- There has been many attempts at developing "active listening" offers where users would interact with the music content, but none has received wide acceptance so far. Do you think there is a future for a wide audience use case of source separation ? Which one ?
+- An obvious application of source separation is for music creation purposes where amateur musicians could modify or mix stems from existing songs. Is the music industry equipped (legally/psychologically) for this move ?
+- Audio engineering is often perceived as the art of producing a mixture from stems. Source separation may be perceived as a way to deconstruct mixtures, to generate new ones on the fly. Is this considered a dangerous technology from a sound engineering perspective ? What would be here again the correct way to present the technology to professionals ?
+- Going even further than universal separation, let's assume that music demixing works fine. What would be the next holy grail ? What should we, as audio researchers, focus on to create impact for you ?
+
