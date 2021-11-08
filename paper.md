@@ -3,6 +3,8 @@ title: 'Hybrid Spectrogram and Waveform Source Separation'
 tags:
   - separation
   - u-net
+  - end-to-end
+  - audio representations
 authors:
   - name: Alexandre Défossez
     affiliation: 1
@@ -11,6 +13,7 @@ affiliations:
    index: 1
 date: 8 October 2021
 bibliography: paper.bib
+arxiv-url: https://arxiv.org/abs/2111.03600
 ---
 
 # Abstract
