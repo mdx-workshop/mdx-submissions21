@@ -1,0 +1,129 @@
+% tikzpic.tex
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+\usepackage{pgfplots}
+\usepackage{pgf}
+\usepackage{tikzscale}
+\usepackage{tikz}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{arrows,calc,positioning,shapes.geometric,math}
+
+\usepackage{amsmath, amssymb, amsthm}
+\DeclareMathOperator{\Conv}{Conv1d}
+\DeclareMathOperator{\Convtwo}{Conv2d}
+\DeclareMathOperator{\Convtr}{ConvTr1d}
+\DeclareMathOperator{\ReLU}{Relu}
+\DeclareMathOperator{\GLU}{GLU}
+\DeclareMathOperator{\SDR}{SDR}
+
+\begin{document}
+
+\def\pscale{1}
+\begin{tikzpicture}[
+    every node/.style={scale=\pscale},
+    conv/.style={shape=trapezium,
+        trapezium angle=70, draw, inner xsep=0pt, inner ysep=0pt,
+        draw=black!90,fill=gray!5},
+    deconv/.style={shape=trapezium,
+        trapezium angle=-70, draw, inner xsep=0pt, inner ysep=0pt,
+        draw=black!90,fill=gray!5},
+    linear/.style={draw, inner xsep=1pt, inner ysep=1pt,
+        draw=black!90,fill=green!5},
+    rnn/.style={rounded corners=1pt,rectangle,draw=black!90,
+        fill=blue!5,minimum width=0.6cm, minimum height=0.6cm},
+    skip/.style={line width=0.2mm, ->},
+]
+    \def\yshift{0.3em}
+    \def\base{9cm}
+    \def\dec{0.55cm}
+
+    \node (base) at (0, 0) {};
+    \def\sourcea{0.25 * 2 * (0.5 * x - floor(0.5 * x))}
+    \def\sourceb{0.25 * exp(-(x + 10)/10) * cos(deg(4 * x))}
+    \def\sourcec{0.25 * cos(deg(0.3 * x)) * cos(deg(2 * x + 0.9 * cos(deg(4 * x)))}
+    \def\sourced{0.25 * cos(deg(5 * x) * (
+        1 + 0.1 * cos(deg(1 * x)))
+     )}
+    \begin{axis}[
+        anchor=north,
+        at=(base),
+        scale=0.6,
+        domain=-10:10,
+        axis y line=none,
+        axis x line=none,
+        samples=200,
+        color=black,
+        height=2.5cm,
+        width=\base + 3cm]
+          \addplot[mark=none] {
+              (
+                \sourcea + \sourceb + \sourcec + \sourced
+               )
+         };
+    \end{axis}
+    \node (e1) [conv, minimum width=\base - \dec, anchor=south] at (0, 0)
+        {$\mathrm{Encoder}_1(C_{in}=2, C_{out}=64)$};
+    \node (e2) [conv, minimum width=\base - 2*\dec, anchor=south] at
+        ($(e1.north) + (0, \yshift)$)
+        {$\mathrm{Encoder}_2(C_{in}=100, C_{out}=128)$};
+    \node (edots) [conv, minimum width=\base - 3*\dec, anchor=south] at
+        ($(e2.north) + (0, \yshift)$)
+        {$\ldots$};
+    \node (e6) [conv, minimum width=\base - 4*\dec, anchor=south] at
+        ($(edots.north) + (0, \yshift)$)
+        {$\mathrm{Encoder}_6(C_{in}=1600, C_{out}=2048)$};
+
+    \node (ls0) [rnn] at ($(e6.north) + (-0.35 * \base + 2 * \dec,0.4cm)$) {L};
+    \foreach \k/\text in {1/S,2/T,3/M} {
+        \tikzmath{
+            int \prev;
+            \prev=\k - 1;
+        }
+        \node (ls\k) [rnn,anchor=west] at ($(ls\prev.east) + (0.4cm, 0)$) {\text};
+        \draw [<->] (ls\prev) -- (ls\k);
+    }
+    \node (ls3) [anchor=west] at ($(ls3.east) + (0.1cm, 0)$) [align=left] {hidden size=2048\\2 bidirectional layers};
+
+    \node (linear) [linear, minimum width=\base - 5*\dec, anchor=south]
+        at ($(e6.north) + (0, 0.8cm)$) {$\mathrm{Linear}(C_{in}=4096, C_{out}=2048)$};
+    \node (d6) [deconv, minimum width=\base - 4*\dec, anchor=south] at
+        ($(linear.north) + (0, \yshift)$) {$\mathrm{Decoder}_6(C_{in}=2048, C_{out}=1024)$};
+    \node (ddots) [deconv, minimum width=\base - 3*\dec, anchor=south] at
+        ($(d6.north) + (0, \yshift)$) {$\ldots$};
+    \node (d2) [deconv, minimum width=\base - 2*\dec, anchor=south] at
+        ($(ddots.north) + (0, \yshift)$) {$\mathrm{Decoder}_2(C_{in}=128, C_{out}=64)$};
+    \node (d1) [deconv, minimum width=\base - \dec, anchor=south] at
+        ($(d2.north) + (0, \yshift)$) {$\mathrm{Decoder}_1(C_{in}=64, C_{out}=4 * 2)$};
+
+    % \draw [->, bend left]  (e1.west) -- (d1.west);
+    \path[skip] (e1.west) edge[bend left=45] node [right] {} (d1.west);
+    \path[skip] (e2.west) edge[bend left=45] node [right] {} (d2.west);
+    \path[skip] (edots.west) edge[bend left=45] node [right] {} (ddots.west);
+    \path[skip] (e6.west) edge[bend left=45] node [right] {} (d6.west);
+    \newcommand\myoutput[3]{
+        \begin{axis}[
+            anchor=south,
+            scale=0.6,
+            at=#1,
+            domain=-20:20,
+            axis y line=none,
+            axis x line=none,
+            samples=200,
+            height=2.5cm,
+            color=#2,
+            width=\base + 3cm]
+            \addplot[mark=none] {
+                #3
+            };
+        \end{axis}
+    }
+    \node (o1) at (d1.north) {};
+    \node (o2) at ($(o1.north) + (0, 4mm)$) {};
+    \node (o3) at ($(o2.north) + (0, 4mm)$) {};
+    \node (o4) at ($(o3.north) + (0, 4mm)$) {};
+    \myoutput{(o1)}{violet}{\sourcea}
+    \myoutput{(o2)}{olive}{\sourceb}
+    \myoutput{(o3)}{red}{\sourcec}
+    \myoutput{(o4)}{blue}{\sourced}
+  \end{tikzpicture}
+
+\end{document}
