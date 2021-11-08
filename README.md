@@ -1,5 +1,5 @@
 # MDX Workshop Submissions
-⏰ _Abstract Deadline:_ October 22th 2021 (Anywhere on Earth)
+⏰ _Abstract Deadline:_ ~~October 22th 2021~~ __Deadline Extension: October 28th 2021 (Anywhere on Earth)__
 
 The MDX21 workshop is a satellite event at [ISMIR 2021](https://ismir2021.ismir.net/). We will feature invited talks as well as presentations and posters from submitted extended abstracts. The contents of the extended abstracts can be descriptions of your submission to the MDX21 challenge as well as other topics around audio source separation that you would like to share with the community.
 
