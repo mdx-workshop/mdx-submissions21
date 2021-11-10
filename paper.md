@@ -162,9 +162,9 @@ For data augmentation, we generated the mixtures by mixing the different track's
 
 | model      | Runnable? | # of parameters | vocals | drums | bass  | other | Avg   |
 | ---------- | -------- | --------------- | ------ | ----- | ----- | ----- | ----- |
-| LaSAFT-Net     |yes| 4.5M            | -      | -     | -     | -     | -     |
-| LightSAFT-Net  |no| 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
-| LightSAFT-Net+ |no| 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
+| LaSAFT-Net     |no| 4.5M            | -      | -     | -     | -     | -     |
+| LightSAFT-Net  |yes| 3.8M            | 6.685  | 5.272 | 5.498 | 4.121 | 5.394 |
+| LightSAFT-Net+ |yes| 2M              | 7.275  | 5.935 | 5.823 | 4.557 | 5.897 |
 
 <tr>**Table 1**. A comparison with LaSAFT-Net. The *Runnable?* means that the model is runnable in MDX condition.</tr>
 
