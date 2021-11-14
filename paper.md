@@ -89,3 +89,5 @@ Table (1) gives a comparison of different approaches for audio signal separation
 # Conclusion
 
 Transfer learning is used in modern architectures for image processing, neural language processing, etc. In this work we demonstrate how to use transfer learning for the problem of audio signal processing and in particular in demixing audio signal from a single mixed audio channel into four different stems: drums, bass, vocals and rest. We show that it is possible to succeed in such tasks with a small-sized dataset and this is achieved, when using pretrained weights from _Jukebox_ [@dhariwal2020jukebox] network.
+
+# References
