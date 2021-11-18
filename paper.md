@@ -1,5 +1,5 @@
 ---
-title: 'LightSAFT: Lightweight Latent Source Aware Source Frequency Transform for Source Separation'
+title: 'LightSAFT: Lightweight Latent Source Aware Frequency Transform for Source Separation'
 tags:
   - separation
   - u-net
