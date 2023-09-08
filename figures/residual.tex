@@ -1,0 +1,157 @@
+% tikzpic.tex
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+\usepackage{pgfplots}
+\usepackage{pgf}
+\usepackage{tikzscale}
+\usepackage{tikz}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{arrows,calc,positioning,shapes.geometric,math}
+
+\usepackage{amsmath, amssymb, amsthm}
+\DeclareMathOperator{\Conv}{Conv1d}
+\DeclareMathOperator{\Convtwo}{Conv2d}
+\DeclareMathOperator{\Convtr}{ConvTr1d}
+\DeclareMathOperator{\ReLU}{Relu}
+\DeclareMathOperator{\GELU}{GELU}
+\DeclareMathOperator{\GLU}{GLU}
+\DeclareMathOperator{\SDR}{SDR}
+\DeclareMathOperator{\LSTM}{BiLSTM}
+\DeclareMathOperator{\LN}{LN}
+
+\begin{document}
+
+\def\pscale{1}
+\def\trapangle{75}
+\newdimen\blockh
+\blockh=1.2em
+\begin{tikzpicture}[
+    every node/.style={scale=\pscale},
+    conv/.style={shape=trapezium,
+        trapezium angle=\trapangle, draw, inner xsep=0pt, inner ysep=0pt,
+        draw=black!90,fill=gray!5},
+    rewrite/.style={shape=rectangle,
+        draw, inner xsep=8pt, inner ysep=3pt,
+        draw=black!90,fill=gray!5},
+    resi/.style={shape=rectangle,
+        draw, inner xsep=2pt, inner ysep=2pt, minimum width=8cm,
+        draw=black!90,fill=green!5, anchor=south},
+    inout/.style={rounded corners=1pt,rectangle,draw=black!90,
+        fill=violet!5,minimum width=0.6cm, minimum height=0.6cm},
+    skip/.style={line width=0.2mm, ->},
+]
+    \newcommand\curp{\the\tikz@lastxsaved,\the\tikz@lastysaved}
+    \newdimen\yshift
+    \newdimen\base
+    \newdimen\dec
+    \tikzmath{
+      \yshift=0.8em;
+      \base=15cm;
+      \dec = 2 * \blockh / tan(\trapangle);
+    }
+    \def\deltax{3cm}
+
+    \node (base) at (0, 0) {};
+    \node (conv) [conv, minimum width=\base, anchor=south] at
+      (base.north) {$\GELU(\Conv(C_{in}, C_{out}, K=8, S=4))$};
+
+    \node (resi1) [resi] at ($(conv.north) + (\deltax, \yshift)$)
+    {$\GELU(\LN(\Conv(C_{out}, C_{out} / 4, K=3, D=1)))$};
+
+
+    \node (lstm) [resi, yshift=\yshift, dashed] at (resi1.north)
+    {$\LSTM(\mathrm{layers}=2, \mathrm{span}=200)$};
+
+    \node (attn) [resi, yshift=\yshift, dashed] at (lstm.north)
+    {$\mathrm{LocalAttention}(\mathrm{heads}=4)$};
+
+    \node [anchor=north west] at (attn.north east) {$\Bigg\}$ if $i \in \{5, 6\}$};
+
+    \node (resi2_pre) [resi, yshift=\yshift] at (attn.north)
+    {$\GLU(\LN(\Conv(C_{out} / 4, 2 \cdot C_{out}, K=1)))$};
+    \node (resi2) [resi, yshift=\yshift] at (resi2_pre.north)
+    {$\mathrm{LayerScale}(\mathrm{init}=1\mathrm{e}{-}3)$};
+
+
+
+    \draw [->] (conv.north -| resi1.south) -- (resi1.south);
+    \draw [->] (resi1.north)  to node (smid){} (lstm.south);
+    \draw[->] (lstm.north) to node (nmid){} (attn.south);
+    \draw[-] (smid.center) -- (smid -| lstm.west) -- ++ (-0.2cm, 0)
+    node (tmp) {}
+        -- (nmid -| tmp) -- (nmid.center);
+
+
+    \draw [->] (lstm.north)  to node (smid){} (attn.south);
+    \draw [->] (attn.north)  to node (nmid){} (resi2_pre.south);
+    \draw [->] (resi2_pre.north)  -- (resi2.south);
+    \draw[-] (smid.center) -- (smid -| lstm.west) -- ++ (-0.2cm, 0)
+    node (tmp) {}
+        -- (nmid -| tmp) -- (nmid.center);
+
+    \node (a) at ($(conv.north) + (-\deltax, 0)$) {};
+    \node (b) at ($(resi2.north) + (0, 0.5 * \yshift)$) {};
+    \draw [-] (resi2.north) -- (b.center) -- (b-|a);
+
+    % second residual
+
+
+    \node (resi1) [resi] at ($(b.north) + (0, \yshift)$)
+    {$\GELU(\LN(\Conv(C_{out}, C_{out} / 4, K=3, D=2)))$};
+
+    \node (tmp) at ($ (b-|a) + (0, 0.5*\yshift) $) {};
+    \draw [->] (tmp.center) -- (tmp -| resi1.south) -- (resi1.south);
+
+    \node (lstm) [resi, yshift=\yshift, dashed] at (resi1.north)
+    {$\LSTM(\mathrm{layers}=2, \mathrm{span}=200)$};
+
+    \node (attn) [resi, yshift=\yshift, dashed] at (lstm.north)
+    {$\mathrm{LocalAttention}(\mathrm{heads}=4)$};
+
+    \node [anchor=north west] at (attn.north east) {$\Bigg\}$ if $i \in \{5, 6\}$};
+
+
+    \node (resi2_pre) [resi, yshift=\yshift] at (attn.north)
+    {$\GLU(\LN(\Conv(C_{out} / 4, 2 \cdot C_{out}, K=1)))$};
+    \node (resi2) [resi, yshift=\yshift] at (resi2_pre.north)
+    {$\mathrm{LayerScale}(\mathrm{init}=1\mathrm{e}{-}3)$};
+
+
+    % \draw [->] (conv.north -| resi1.south) -- (resi1.south);
+    \draw [->] (resi1.north)  to node (smid){} (lstm.south);
+    \draw[->] (lstm.north) to node (nmid){} (attn.south);
+    \draw[-] (smid.center) -- (smid -| lstm.west) -- ++ (-0.2cm, 0)
+    node (tmp) {}
+        -- (nmid -| tmp) -- (nmid.center);
+
+
+    \draw [->] (lstm.north)  to node (smid){} (attn.south);
+    \draw [->] (attn.north)  to node (nmid){} (resi2_pre.south);
+    \draw [->] (resi2_pre.north)  -- (resi2.south);
+    \draw[-] (smid.center) -- (smid -| lstm.west) -- ++ (-0.2cm, 0)
+    node (tmp) {}
+        -- (nmid -| tmp) -- (nmid.center);
+
+    \node (a) at ($(conv.north) + (-\deltax, 0)$) {};
+    \node (b) at ($(resi2.north) + (0, 0.5 * \yshift)$) {};
+    \draw [-] (resi2.north) -- (b.center) -- (b-|a);
+
+    % done
+    \node (rewrite) [rewrite, minimum width=\base - 2 * \dec, anchor=south, yshift=\yshift] at
+      (conv.north |- resi2.north)  {$\GLU(\Conv(C_{out}, 2 \cdot C_{out}, K=1, S=1))$};
+    \draw [->] ($(conv.north) + (-\deltax, 0)$) -- ($(rewrite.south) + (-\deltax, 0)$);
+
+
+
+
+    \node (skip) [inout, anchor=south] at ($(rewrite.north) + (-\deltax, \yshift)$) {$\mathrm{Decoder}_i$};
+    \draw[->] ($(rewrite.north) + (-\deltax, 0)$) -- (skip.south);
+
+    \node (prev) [inout, anchor=north] at ($(conv.south) - (0, \yshift)$) {$\mathrm{Encoder}_{i-1}$ or input};
+    \draw[->]  (prev.north) -- (conv.south);
+
+    \node (next) [inout, anchor=south] at ($(rewrite.north) + (\deltax, \yshift)$) {$\mathrm{Encoder}_{i+1}$};
+    \draw[->]  ($(rewrite.north) + (\deltax, 0)$) -- (next.south);
+\end{tikzpicture}
+
+
+\end{document}
